@@ -16,3 +16,23 @@ Thoughts, opinions and decissions during the development process of the maintena
 - Integration test: 
   - want to test the whole api
   - therefore create a test-project that spins up the webserver and provides a client to test api calls
+
+## create integration test project + write first integration test
+
+https://github.com/georg-braun/maintenance-buddy/commit/ac9ad7354161014ea05d31b6660e3188eb88fd79
+
+# Resume:
+- [x] setup project
+- [x] setup integration tests
+- [x] write first test
+
+# Next: Deployment
+- there are many possible traps in the release/deployment process
+- deploy at the start of the project to identify these traps. It's not cool if you have a finished product that only runs local on your machine.
+
+The idea is to deploy the api as container on my virtual private server
+
+# Todo:
+## create docker container
+## create github action to push the image
+## start the container on my vps
