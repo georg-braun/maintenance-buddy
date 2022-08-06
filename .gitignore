@@ -1,3 +1,5 @@
 /maintenance-buddy-api/maintenance-buddy-api/obj
 maintenance-buddy-api/.idea
 .DS_Store
+maintenance-buddy-api/maintenance-buddy-api/bin
+maintenance-buddy-api/maintenance-buddy-api-integration-test/obj
