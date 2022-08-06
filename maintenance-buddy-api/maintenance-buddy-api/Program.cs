@@ -22,4 +22,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
+
+app.MapGet("/status", () => "Ok");
 app.Run();
+
+// add class to get an anchor for the integration tests.
+public partial class Program {}
