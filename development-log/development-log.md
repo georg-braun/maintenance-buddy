@@ -32,7 +32,18 @@ https://github.com/georg-braun/maintenance-buddy/commit/ac9ad7354161014ea05d31b6
 
 The idea is to deploy the api as container on my virtual private server
 
-# Todo:
+
 ## create docker container
+https://github.com/georg-braun/maintenance-buddy/commit/068b7985392741b8a5a43c63211a0197e264ac92
+
+
 ## create github action to push the image
+- create github action, that builds the docker image and uploads it to a image repository (dockerhub)
+  - necessary to add dockerhub credentials as github secrets
+    - user
+    - token (you can create this token in the dockerhub settings)
+  - action only triggers on the release branch
+    - create release branch
+    - create pull request to release a new version of the api
+
 ## start the container on my vps
