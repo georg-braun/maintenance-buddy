@@ -28,7 +28,7 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        context: ./backend/
-        file: ./backend/Dockerfile
+        context: ./maintenance-buddy-api/
+        file: ./maintenance-buddy-api/Dockerfile
         push: true
         tags: velox1992/maintenance-buddy:latest
