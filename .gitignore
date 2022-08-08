@@ -4,4 +4,6 @@ maintenance-buddy-api/.idea
 maintenance-buddy-api/maintenance-buddy-api/bin
 maintenance-buddy-api/maintenance-buddy-api-integration-test/obj
 maintenance-buddy-api/maintenance-buddy-api-integration-test/bin
+maintenance-buddy-api/maintenance-buddy-api-unit-tests/obj
+maintenance-buddy-api/maintenance-buddy-api-unit-tests/bin
 maintenance-buddy-api/maintenance-buddy-api.sln.DotSettings.user

@@ -1,7 +1,3 @@
-using System.Collections.Immutable;
-using System.Collections.ObjectModel;
-using Microsoft.AspNetCore.Mvc;
-
 namespace maintenance_buddy_api.domain;
 
 public class Vehicle
@@ -19,6 +15,7 @@ public class Vehicle
     public void AddActionTemplate(string name, int kilometerInterval, TimeSpan timeInterval)
     {
         var actionTemplate = new ActionTemplate(){
+            Id = Guid.NewGuid(),
             Name = name,
             KilometerInterval = kilometerInterval, 
             TimeInterval = timeInterval
@@ -31,6 +28,13 @@ public class Vehicle
     {
         return ActionTemplates;
     }
+
+    public ActionTemplate GetActionTemplate(string actionTemplateName)
+    {
+        return ActionTemplates.FirstOrDefault(_ => _.Name.Equals(actionTemplateName));
+    }
+
+ 
 }
 
 public static class VehicleFactory
