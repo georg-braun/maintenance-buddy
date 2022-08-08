@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maintenance-buddy-api", "ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maintenance-buddy-api-integration-test", "maintenance-buddy-api-integration-test\maintenance-buddy-api-integration-test.csproj", "{A17B7904-AC3F-41DF-9906-3A441B5BC7F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maintenance-buddy-api-unit-tests", "maintenance-buddy-api-unit-tests\maintenance-buddy-api-unit-tests.csproj", "{05595F23-C8F8-49A5-A42F-AC89C6847BF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A17B7904-AC3F-41DF-9906-3A441B5BC7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17B7904-AC3F-41DF-9906-3A441B5BC7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A17B7904-AC3F-41DF-9906-3A441B5BC7F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05595F23-C8F8-49A5-A42F-AC89C6847BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05595F23-C8F8-49A5-A42F-AC89C6847BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05595F23-C8F8-49A5-A42F-AC89C6847BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05595F23-C8F8-49A5-A42F-AC89C6847BF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
