@@ -2,6 +2,7 @@ namespace maintenance_buddy_api.domain;
 
 public class Vehicle
 {
+    public Guid Id { get; init; }
     public string Name { get; init; }
     public int Kilometer { get; init; }
     
@@ -43,6 +44,7 @@ public static class VehicleFactory
     {
         return new Vehicle()
         {
+            Id = Guid.NewGuid(),
             Name = name,
             Kilometer = kilometer
         };
