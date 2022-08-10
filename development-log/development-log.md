@@ -49,3 +49,6 @@ https://github.com/georg-braun/maintenance-buddy/commit/068b7985392741b8a5a43c63
 ## start the container on my vps
 
 # Next: implement api
+
+## start with aggregate and tests
+- Vehicle -> ActionTemplate -> Action

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using budget_backend_integration_tests.backend;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -10,9 +11,8 @@ public class BackendStatusTests
     public async Task StatusEndpointsReturnsValidValue()
     {
         // arrange
-        var application = new WebApplicationFactory<Program>();
-        var client = application.CreateClient();
-        
+        var client = new IntegrationTest().client;
+
         // act
         var response = await client.GetAsync("/status");
 
