@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using budget_backend_integration_tests.backend;
+using maintenance_buddy_api.api;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -14,7 +15,7 @@ public class BackendStatusTests
         var client = new IntegrationTest().client;
 
         // act
-        var response = await client.GetAsync("/status");
+        var response = await client.GetAsync(Routes.Status);
 
         // assert
         response.EnsureSuccessStatusCode();

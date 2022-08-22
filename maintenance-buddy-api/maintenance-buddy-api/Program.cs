@@ -28,8 +28,8 @@ app.MapControllers();
 
 
 
-app.MapGet("/status", () => "Ok");
-app.MapPost("/create-vehicle", VehicleEndpoint.CreateVehicle);
+app.MapGet(Routes.Status, () => "Ok");
+app.MapPost(Routes.CreateVehicle, VehicleEndpoint.CreateVehicle);
 app.Run();
 
 // add class to get an anchor for the integration tests.

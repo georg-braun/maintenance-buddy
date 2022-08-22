@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using budget_backend_integration_tests.backend;
 using FluentAssertions;
+using maintenance_buddy_api.api;
 using maintenance_buddy_api.api.commands;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
@@ -20,7 +21,7 @@ public class VehicleEndpointTests
 
         // act
         var createVehicleCommand = new CreateVehicleCommand("BMW R1100S", 39000);
-        var createVehicleResponse = await client.PostAsync("/create-vehicle", Serialize(createVehicleCommand));
+        var createVehicleResponse = await client.PostAsync(Routes.CreateVehicle, Serialize(createVehicleCommand));
         
         // assert
         var content = await createVehicleResponse.Content.ReadAsStringAsync();
