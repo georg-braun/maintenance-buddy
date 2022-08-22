@@ -1,4 +1,5 @@
 using maintenance_buddy_api;
+using maintenance_buddy_api.api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ app.MapControllers();
 
 
 app.MapGet("/status", () => "Ok");
+app.MapPost("/create-vehicle", VehicleEndpoint.CreateVehicle);
 app.Run();
 
 // add class to get an anchor for the integration tests.
