@@ -32,7 +32,7 @@ public class VehicleAggregateTests
         var actionTemplate = vehicle.GetActionTemplate(actionTemplateName);
         
         // assert
-        actionTemplate.Id.Should().NotBeEmpty();
+        actionTemplate.ActionTemplateId.Should().NotBeEmpty();
         actionTemplate.Name.Should().Be(actionTemplateName);
     }
     
@@ -43,7 +43,7 @@ public class VehicleAggregateTests
         var vehicle = VehicleFactory.Create("BMW R1100S", 39000);
         vehicle.AddActionTemplate("Ölwechsel", 5000, TimeSpan.FromDays(365));
         var oilTemplate = vehicle.GetActionTemplate("Ölwechsel");
-        oilTemplate.AddAction(oilTemplate.Id, 39000, new DateTime(2022,8,8));
+        oilTemplate.AddAction(oilTemplate.ActionTemplateId, 39000, new DateTime(2022,8,8));
         
         // assert
         var actions = oilTemplate.GetActions();

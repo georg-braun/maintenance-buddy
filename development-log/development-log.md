@@ -48,7 +48,22 @@ https://github.com/georg-braun/maintenance-buddy/commit/068b7985392741b8a5a43c63
 
 ## start the container on my vps
 
-# Next: implement api
+# implement api
 
 ## start with aggregate and tests
+
+New aggregate concept:
 - Vehicle -> ActionTemplate -> Action
+
+write simple add / remove tests
+
+## implement necessary endpoints in tdd manner
+
+- [x] create vehicle
+- [x] add action template
+- [ ] add action
+- [ ] remove action
+- [ ] remove action template
+
+
+# implement frontend

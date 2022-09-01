@@ -7,4 +7,5 @@ public static class Routes
 
     public const string Status = $"{Base}{Version}/Status";
     public const string CreateVehicle = $"{Base}{Version}/create-vehicle";
+    public const string AddActionTemplate = $"{Base}{Version}/add-action-template";
 }

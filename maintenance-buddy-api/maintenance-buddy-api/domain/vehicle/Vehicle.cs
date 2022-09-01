@@ -1,31 +1,44 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace maintenance_buddy_api.domain;
 
 public class Vehicle
 {
-    public Guid Id { get; init; }
+    public Guid VehicleId { get; init; }
     public string Name { get; init; }
     public int Kilometer { get; init; }
-    
-    public List<ActionTemplate> ActionTemplates { get; private set; }
 
-    public Vehicle()
+    public ICollection<ActionTemplate> ActionTemplates { get;  init; }
+
+    private Vehicle()
     {
         ActionTemplates = new List<ActionTemplate>();
     }
 
-    public void AddActionTemplate(string name, int kilometerInterval, TimeSpan timeInterval)
+    public static Vehicle Create(Guid id, string name, int kilometer)
+    {
+        return new Vehicle()
+        {
+            VehicleId = id,
+            Name = name,
+            Kilometer = kilometer
+        };
+    }
+
+    public ActionTemplate AddActionTemplate(string name, int kilometerInterval, TimeSpan timeInterval)
     {
         var actionTemplate = new ActionTemplate(){
-            Id = Guid.NewGuid(),
+            ActionTemplateId = Guid.NewGuid(),
             Name = name,
-            KilometerInterval = kilometerInterval, 
+            KilometerInterval = kilometerInterval,
             TimeInterval = timeInterval
         };
         
         ActionTemplates.Add(actionTemplate);
+        return actionTemplate;
     }
 
-    public IReadOnlyList<ActionTemplate> GetActionTemplates()
+    public ICollection<ActionTemplate> GetActionTemplates()
     {
         return ActionTemplates;
     }
@@ -42,11 +55,6 @@ public static class VehicleFactory
 {
     public static Vehicle Create(string name, int kilometer)
     {
-        return new Vehicle()
-        {
-            Id = Guid.NewGuid(),
-            Name = name,
-            Kilometer = kilometer
-        };
+        return Vehicle.Create(Guid.NewGuid(), name, kilometer);
     }
 }
