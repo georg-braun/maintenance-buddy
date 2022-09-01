@@ -35,10 +35,10 @@ public class VehicleEndpointTests
         var client = new IntegrationTest().client;
         var createVehicleResponse = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
         var responseContent = await createVehicleResponse.Content.ReadAsStringAsync();
-        var vehicle = JsonConvert.DeserializeAnonymousType(responseContent, new {VehicleId = ""});
+        var vehicle = JsonConvert.DeserializeAnonymousType(responseContent, new {Id = ""});
 
         // Act
-        var addActionTemplateCommand = new AddActionTemplateCommand(vehicle.VehicleId, "Oil change", 5000, new TimeSpan(365) );
+        var addActionTemplateCommand = new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365) );
         var addActionTemplateResponse = await client.PostAsync(Routes.AddActionTemplate, Serialize(addActionTemplateCommand));
 
         // Assert

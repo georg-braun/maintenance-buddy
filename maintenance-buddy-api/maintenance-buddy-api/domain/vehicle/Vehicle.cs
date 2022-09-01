@@ -4,7 +4,7 @@ namespace maintenance_buddy_api.domain;
 
 public class Vehicle
 {
-    public Guid VehicleId { get; init; }
+    public Guid Id { get; init; }
     public string Name { get; init; }
     public int Kilometer { get; init; }
 
@@ -19,7 +19,7 @@ public class Vehicle
     {
         return new Vehicle()
         {
-            VehicleId = id,
+            Id = id,
             Name = name,
             Kilometer = kilometer
         };

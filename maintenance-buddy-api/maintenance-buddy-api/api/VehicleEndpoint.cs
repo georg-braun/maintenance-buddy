@@ -13,7 +13,7 @@ public static class VehicleEndpoint
         context.Vehicles.Add(vehicle);
         context.SaveChangesAsync();
 
-        return Results.Created($"/vehicle/{vehicle.VehicleId}", vehicle);
+        return Results.Created($"/vehicle/{vehicle.Id}", vehicle);
     }    
     
     public static async Task<IResult> AddActionTemplate(AddActionTemplateCommand command, VehicleContext context)
@@ -26,6 +26,6 @@ public static class VehicleEndpoint
         
         await context.SaveChangesAsync();
 
-        return Results.Created($"/vehicle/{vehicle.VehicleId}", vehicle);
+        return Results.Created($"/vehicle/{vehicle.Id}", vehicle);
     }
 }
