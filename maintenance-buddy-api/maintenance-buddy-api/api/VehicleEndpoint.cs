@@ -20,8 +20,7 @@ public static class VehicleEndpoint
     {
         var vehicleId = new Guid(command.VehicleId);
        
-        var vehicle = context.Vehicles.SingleOrDefault(_ => _.VehicleId.Equals(vehicleId));
-        //var vehicle = context.Vehicles.Include(_ => _.ActionTemplates).First();
+        var vehicle = await context.Vehicles.FindAsync(vehicleId);
         vehicle.AddActionTemplate(command.Name, command.KilometerInterval, command.TimeInterval);
         context.Vehicles.Update(vehicle);
         
