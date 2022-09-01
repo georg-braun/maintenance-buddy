@@ -28,7 +28,7 @@ public class Vehicle
     public ActionTemplate AddActionTemplate(string name, int kilometerInterval, TimeSpan timeInterval)
     {
         var actionTemplate = new ActionTemplate(){
-            ActionTemplateId = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             Name = name,
             KilometerInterval = kilometerInterval,
             TimeInterval = timeInterval
