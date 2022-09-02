@@ -21,11 +21,33 @@ public static class VehicleEndpoint
         var vehicleId = new Guid(command.VehicleId);
        
         var vehicle = await context.Vehicles.FindAsync(vehicleId);
-        vehicle.AddActionTemplate(command.Name, command.KilometerInterval, command.TimeInterval);
+        var actionTemplate = vehicle.AddActionTemplate(command.Name, command.KilometerInterval, command.TimeInterval);
         context.Vehicles.Update(vehicle);
         
         await context.SaveChangesAsync();
 
+        return Results.Created($"/vehicle/{vehicle.Id}", actionTemplate);
+    }
+    
+    public static async Task<IResult> DeleteActionTemplate(DeleteActionTemplateCommand command, VehicleContext context)
+    {
+        var vehicleId = new Guid(command.VehicleId);
+        var actionTemplateId = new Guid(command.ActionTemplateId);
+        
+        var vehicle = context.Vehicles.Include(_ => _.ActionTemplates).FirstOrDefault(_ => _.Id.Equals(vehicleId));
+        vehicle.RemoveActionTemplate(actionTemplateId);
+        
+        context.Vehicles.Update(vehicle);
+        await context.SaveChangesAsync();
+        
         return Results.Created($"/vehicle/{vehicle.Id}", vehicle);
+    }
+
+    public static async Task<IResult> ActionTemplatesQuery(string vehicleId, VehicleContext context)
+    {
+        var vehicleGuid = new Guid(vehicleId);
+        var vehicle = context.Vehicles.Include(_ => _.ActionTemplates).FirstOrDefault(_ => _.Id.Equals(vehicleGuid));
+
+        return vehicle is null ? Results.NotFound() : Results.Ok(vehicle.ActionTemplates);
     }
 }

@@ -45,6 +45,61 @@ public class VehicleEndpointTests
         var actionTemplateResponseContent = await addActionTemplateResponse.Content.ReadAsStringAsync();
         actionTemplateResponseContent.Should().Contain("Oil change");
     }
+    
+    [Fact]
+    public async Task ActionTemplatesQuery_ContainsCorrectActionTemplate()
+    {
+        // Arrange
+        var client = new IntegrationTest().client;
+        
+        // add vehicle
+        var createVehicleResponse = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        var responseContent = await createVehicleResponse.Content.ReadAsStringAsync();
+        var vehicle = JsonConvert.DeserializeAnonymousType(responseContent, new {Id = ""});
+
+        // add action template
+        var addActionTemplateCommand = new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365) );
+        var addActionTemplateResponse = await client.PostAsync(Routes.AddActionTemplate, Serialize(addActionTemplateCommand));
+        var addActionTemplateResponseContent = await addActionTemplateResponse.Content.ReadAsStringAsync();
+        var actionTemplate = JsonConvert.DeserializeAnonymousType(addActionTemplateResponseContent, new {Id = ""});
+        
+  
+        // get the action templates of a vehicle
+        var actionTemplatesQueryResponse = await client.GetAsync($"{Routes.ActionTemplateQuery}?vehicleId={vehicle.Id}");
+        
+        // Assert
+        var actionTemplateQueryResponseContent = await actionTemplatesQueryResponse.Content.ReadAsStringAsync();
+        actionTemplateQueryResponseContent.Should().Contain(actionTemplate.Id);
+    }
+    
+    [Fact]
+    public async Task ActionTemplateIsDeleted()
+    {
+        // Arrange
+        var client = new IntegrationTest().client;
+        
+        // add vehicle
+        var createVehicleResponse = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        var responseContent = await createVehicleResponse.Content.ReadAsStringAsync();
+        var vehicle = JsonConvert.DeserializeAnonymousType(responseContent, new {Id = ""});
+
+        // add action template
+        var addActionTemplateCommand = new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365) );
+        var addActionTemplateResponse = await client.PostAsync(Routes.AddActionTemplate, Serialize(addActionTemplateCommand));
+        var addActionTemplateResponseContent = await addActionTemplateResponse.Content.ReadAsStringAsync();
+        var actionTemplate = JsonConvert.DeserializeAnonymousType(addActionTemplateResponseContent, new {Id = ""});
+        
+        // delete action template
+        var deleteActionTemplateCommand = new DeleteActionTemplateCommand(vehicle.Id, actionTemplate.Id);
+        await client.PostAsync(Routes.DeleteActionTemplate, Serialize(deleteActionTemplateCommand));
+        
+        // get the action templates of a vehicle
+        var actionTemplatesQueryResponse = await client.GetAsync($"{Routes.ActionTemplateQuery}/?vehicleId={vehicle.Id}");
+        
+        // Assert
+        var actionTemplateQueryResponseContent = await actionTemplatesQueryResponse.Content.ReadAsStringAsync();
+        actionTemplateQueryResponseContent.Should().NotContain(actionTemplate.Id);
+    }
 
     private async Task<HttpResponseMessage> CreateVehicleAsync(HttpClient client, CreateVehicleCommand command)
     {

@@ -8,4 +8,6 @@ public static class Routes
     public const string Status = $"{Base}{Version}/Status";
     public const string CreateVehicle = $"{Base}{Version}/create-vehicle";
     public const string AddActionTemplate = $"{Base}{Version}/add-action-template";
+    public const string DeleteActionTemplate = $"{Base}{Version}/delete-action-template";
+    public const string ActionTemplateQuery = $"{Base}{Version}/get-action-templates";
 }

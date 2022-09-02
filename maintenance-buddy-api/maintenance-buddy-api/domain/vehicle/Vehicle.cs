@@ -48,7 +48,12 @@ public class Vehicle
         return ActionTemplates.FirstOrDefault(_ => _.Name.Equals(actionTemplateName));
     }
 
- 
+
+    public void RemoveActionTemplate(Guid actionTemplateId)
+    {
+        var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+        ActionTemplates.Remove(actionTemplate);
+    }
 }
 
 public static class VehicleFactory

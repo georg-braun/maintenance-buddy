@@ -31,6 +31,8 @@ app.MapControllers();
 app.MapGet(Routes.Status, () => "Ok");
 app.MapPost(Routes.CreateVehicle, VehicleEndpoint.CreateVehicle);
 app.MapPost(Routes.AddActionTemplate, VehicleEndpoint.AddActionTemplate);
+app.MapPost(Routes.DeleteActionTemplate, VehicleEndpoint.DeleteActionTemplate);
+app.MapGet(Routes.ActionTemplateQuery, VehicleEndpoint.ActionTemplatesQuery);
 app.Run();
 
 // add class to get an anchor for the integration tests.

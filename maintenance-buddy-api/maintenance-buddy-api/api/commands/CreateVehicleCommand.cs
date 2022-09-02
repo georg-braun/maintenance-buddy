@@ -13,3 +13,14 @@ public record AddActionTemplateCommand
     int KilometerInterval,
     TimeSpan TimeInterval
 );
+
+public record DeleteActionTemplateCommand
+(
+    string VehicleId,
+    string ActionTemplateId
+);
+
+public record ActionTemplatesQuery
+(
+    string VehicleId
+);
