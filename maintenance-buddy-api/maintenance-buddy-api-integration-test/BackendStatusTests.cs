@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using budget_backend_integration_tests.backend;
 using maintenance_buddy_api.api;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
 namespace maintenance_buddy_api_integration_test;
