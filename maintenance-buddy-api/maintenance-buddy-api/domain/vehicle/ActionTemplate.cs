@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace maintenance_buddy_api.domain;
 
 public class ActionTemplate
