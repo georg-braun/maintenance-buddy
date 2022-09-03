@@ -61,10 +61,9 @@ write simple add / remove tests
 
 - [x] create vehicle
 - [x] add action template
-
+- [x] remove action template
 - [ ] add action
 - [ ] remove action
-- [ ] remove action template
 
 
 # implement frontend
