@@ -52,6 +52,20 @@ public class Vehicle
         var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
         ActionTemplates.Remove(actionTemplate);
     }
+
+    public Action? AddAction(Guid actionTemplateId, DateTime date, int kilometer)
+    {
+        var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+        if (actionTemplate is null)
+            return null;
+        
+        return actionTemplate.AddAction(kilometer, date);
+    }
+
+    public IEnumerable<Action> GetActions(Guid actionTemplateId)
+    {
+        return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId))?.Actions ?? Enumerable.Empty<Action>();
+    }
 }
 
 public static class VehicleFactory

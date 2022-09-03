@@ -14,7 +14,7 @@ public class ActionTemplate
           Actions = new List<Action>();
      }
 
-     public void AddAction(Guid id, int kilometer, DateTime date)
+     public Action AddAction(int kilometer, DateTime date)
      {
          var action = new Action()
          {
@@ -24,6 +24,7 @@ public class ActionTemplate
          };
     
          Actions.Add(action);
+         return action;
      }
 
      public IEnumerable<Action> GetActions()
