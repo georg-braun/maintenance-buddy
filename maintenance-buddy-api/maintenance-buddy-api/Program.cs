@@ -33,6 +33,7 @@ app.MapPost(Routes.CreateVehicle, VehicleEndpoint.CreateVehicle);
 app.MapPost(Routes.AddActionTemplate, VehicleEndpoint.AddActionTemplate);
 app.MapPost(Routes.DeleteActionTemplate, VehicleEndpoint.DeleteActionTemplate);
 app.MapPost(Routes.AddAction, VehicleEndpoint.AddAction);
+app.MapPost(Routes.DeleteAction, VehicleEndpoint.DeleteAction);
 
 app.MapGet(Routes.ActionTemplateQuery, VehicleEndpoint.ActionTemplatesQuery);
 app.MapGet(Routes.ActionsQuery, VehicleEndpoint.ActionsQuery);

@@ -66,6 +66,22 @@ public class Vehicle
     {
         return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId))?.Actions ?? Enumerable.Empty<Action>();
     }
+
+    
+    
+    public void DeleteAction(Guid actionTemplateId, Guid actionId)
+    {
+        var actionTemplate = GetAction(actionTemplateId);
+        if (actionTemplate is null)
+            return;
+
+        actionTemplate.DeleteAction(actionId);
+    }
+
+    private ActionTemplate? GetAction(Guid actionTemplateId)
+    {
+        return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+    }
 }
 
 public static class VehicleFactory

@@ -61,6 +61,26 @@ public static class VehicleEndpoint
 
         return Results.Created($"/action/{action.Id}", action);
     }
+    
+    public static async Task<IResult> DeleteAction(DeleteActionCommand command, VehicleContext context)
+    {
+        var vehicleId = new Guid(command.VehicleId);
+        var actionTemplateId = new Guid(command.ActionTemplateId);
+        var actionId = new Guid(command.ActionId);
+
+        var vehicle = await context.Vehicles.Include(_ => _.ActionTemplates).ThenInclude(_ => _.Actions)
+            .FirstOrDefaultAsync(_ => _.Id.Equals(vehicleId));
+
+        if (vehicle is null)
+            return Results.NotFound();
+
+        vehicle.DeleteAction(actionTemplateId, actionId);
+        context.Vehicles.Update(vehicle);
+        
+        await context.SaveChangesAsync();
+
+        return Results.Ok();
+    }
 
     public static async Task<IResult> ActionTemplatesQuery(string vehicleId, VehicleContext context)
     {

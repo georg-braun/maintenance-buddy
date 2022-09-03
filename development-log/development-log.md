@@ -76,8 +76,9 @@ Keep application code simple. No extra MediatR or service layer. YAGNI.
 - [x] add action template
 - [x] remove action template
 - [x] add action
-- [ ] remove action
+- [x] remove action
 
+## handle build warnings as errors
 
 ## add authentication
 

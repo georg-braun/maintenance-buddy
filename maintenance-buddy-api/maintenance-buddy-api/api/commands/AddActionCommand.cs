@@ -8,3 +8,9 @@ public record AddActionCommand
     int Kilometer,
     string Note
 );
+public record DeleteActionCommand
+(
+    string VehicleId,
+    string ActionTemplateId,
+    string ActionId
+);

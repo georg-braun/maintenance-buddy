@@ -32,4 +32,19 @@ public class ActionTemplate
      {
          return Actions;
      }
+
+     public Action? GetAction(Guid actionId)
+     {
+         return Actions.FirstOrDefault(_ => _.Id.Equals(actionId));
+     }
+
+     public void DeleteAction(Guid actionId)
+     {
+         var action = GetAction(actionId);
+
+         if (action is null)
+             return;
+
+         Actions.Remove(action);
+     }
 }

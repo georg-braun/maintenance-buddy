@@ -10,6 +10,7 @@ public static class Routes
     public const string AddActionTemplate = $"{Base}{Version}/add-action-template";
     public const string DeleteActionTemplate = $"{Base}{Version}/delete-action-template";
     public const string AddAction = $"{Base}{Version}/add-action";
+    public const string DeleteAction = $"{Base}{Version}/delete-action";
     
     // Queries
     public const string Status = $"{Base}{Version}/Status";

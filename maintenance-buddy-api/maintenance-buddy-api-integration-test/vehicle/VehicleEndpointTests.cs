@@ -101,27 +101,39 @@ public class VehicleEndpointTests
     }
 
     [Fact]
-    public async Task DeleteAction_CreatesAction()
+    public async Task DeleteAction_DeletesAction()
     {
         // Arrange
         var client = new IntegrationTest().client;
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
         var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
         
-        // act
-
         var actionDate = new DateTime(2022,9,3);
-        var addActionCommand = new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50");
-        await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
+        var action = await AddActionAsync(client, new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50"));
         
-        
-        var actions = await GetActionsAsync(client, vehicle.Id, actionTemplate.Id);
-        
+        // act
+        await DeleteAction(client, vehicle.Id, actionTemplate.Id, action.Id);
+
         // Assert
-        actions.Should().Contain(_ => _.Date.Equals(actionDate));
+        var actions = await GetActionsAsync(client, vehicle.Id, actionTemplate.Id);
+        actions.Should().NotContain(_ => _.Date.Equals(actionDate));
     }
-    
-    
+
+    private async Task DeleteAction(HttpClient client, string vehicleId, string actionTemplateId, string actionId)
+    {
+        var deleteActionCommand = new DeleteActionCommand(vehicleId, actionTemplateId, actionId);
+        await client.PostAsync(Routes.DeleteAction, Serialize(deleteActionCommand));
+    }
+
+    private async Task<ActionDto> AddActionAsync(HttpClient client, AddActionCommand addActionCommand)
+    {
+        var response =  await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<ActionDto>(responseContent);
+    }
+
+
     private async Task<IEnumerable<ActionDto>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
     {
         var response = await client.GetAsync($"{Routes.ActionsQuery}/?vehicleId={vehicleId}&actionTemplateId={actionTemplateId}");
@@ -161,4 +173,4 @@ record VehicleDto(string Id, string Name);
 
 record ActionTemplateDto(string Id, string Name);
 
-record ActionDto(DateTime Date, int Kilometer);
+record ActionDto(string Id, DateTime Date, int Kilometer);
