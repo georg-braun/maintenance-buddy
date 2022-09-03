@@ -20,30 +20,5 @@ public class VehicleContext : DbContext
         modelBuilder.Entity<domain.Action>().Property(at => at.Id).ValueGeneratedNever();
     }
 
-    public DbSet<Vehicle> Vehicles { get; set; }
-    
-    public DbSet<ActionTemplate> ActionTemplates { get; set; }
-
-    public IEnumerable<Vehicle> GetVehicles()
-    {
-        return Vehicles.ToList();
-    }
-
-    public async Task AddVehicle(Vehicle vehicle)
-    {
-        await Vehicles.AddAsync(vehicle);
-
-    }
-
-    public async Task<Vehicle> GetVehicleAsync(Guid vehicleId)
-    {
-        //var vehicle = await Vehicles.FirstOrDefaultAsync(_ => _.Id.Equals(vehicleId));
-        var vehicle = await Vehicles.FindAsync(vehicleId);
-        return vehicle;
-    }
-
-    public void UpdateVehicle(Vehicle vehicle)
-    {
-        Vehicles.Update(vehicle);
-    }
+    public DbSet<Vehicle> Vehicles { get; set; } = null!;
 }

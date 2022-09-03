@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using maintenance_buddy_api_integration_test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Data.Sqlite;
+using Xunit.Sdk;
 
 namespace budget_backend_integration_tests.backend;
 
@@ -18,6 +19,9 @@ public class IntegrationTest : IDisposable
     {
         StartSqliteConnection();
 
+        if (_connection is null)
+            throw new NullException(_connection);
+        
         var appFactory = new SqLiteWebApplicationFactory<Program>(_connection);
         client = appFactory.CreateClient();
     }

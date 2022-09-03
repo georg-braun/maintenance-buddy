@@ -11,7 +11,7 @@ public static class VehicleEndpoint
         var vehicle = VehicleFactory.Create(command.Name, command.Kilometer);
         
         context.Vehicles.Add(vehicle);
-        context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return Results.Created($"/vehicle/{vehicle.Id}", vehicle);
     }    
@@ -21,6 +21,10 @@ public static class VehicleEndpoint
         var vehicleId = new Guid(command.VehicleId);
        
         var vehicle = await context.Vehicles.FindAsync(vehicleId);
+
+        if (vehicle is null)
+            return Results.NotFound("Vehicle not found");
+        
         var actionTemplate = vehicle.AddActionTemplate(command.Name, command.KilometerInterval, command.TimeInterval);
         context.Vehicles.Update(vehicle);
         
@@ -35,6 +39,9 @@ public static class VehicleEndpoint
         var actionTemplateId = new Guid(command.ActionTemplateId);
         
         var vehicle = context.Vehicles.Include(_ => _.ActionTemplates).FirstOrDefault(_ => _.Id.Equals(vehicleId));
+        if (vehicle is null)
+            return Results.NotFound();
+        
         vehicle.RemoveActionTemplate(actionTemplateId);
         
         context.Vehicles.Update(vehicle);
@@ -55,6 +62,9 @@ public static class VehicleEndpoint
             return Results.NotFound();
 
         var action = vehicle.AddAction(actionTemplateId, command.Date, command.Kilometer, command.Note);
+        if (action is null)
+            return Results.UnprocessableEntity("Action couldn't be created");
+        
         context.Vehicles.Update(vehicle);
         
         await context.SaveChangesAsync();
@@ -85,7 +95,7 @@ public static class VehicleEndpoint
     public static async Task<IResult> ActionTemplatesQuery(string vehicleId, VehicleContext context)
     {
         var vehicleGuid = new Guid(vehicleId);
-        var vehicle = context.Vehicles.Include(_ => _.ActionTemplates).FirstOrDefault(_ => _.Id.Equals(vehicleGuid));
+        var vehicle = await context.Vehicles.Include(_ => _.ActionTemplates).FirstOrDefaultAsync(_ => _.Id.Equals(vehicleGuid));
 
         return vehicle is null ? Results.NotFound() : Results.Ok(vehicle.ActionTemplates);
     }
@@ -97,6 +107,9 @@ public static class VehicleEndpoint
 
         var vehicle = await context.Vehicles.Include(_ => _.ActionTemplates).ThenInclude(_ => _.Actions)
             .FirstOrDefaultAsync(_ => _.Id.Equals(vehicleGuid));
+
+        if (vehicle is null)
+            return Results.NotFound("Vehicle not found.");
 
         var actions = vehicle.GetActions(actionTemplateId);
 

@@ -3,7 +3,7 @@ namespace maintenance_buddy_api.domain;
 public class ActionTemplate
 {
     public Guid Id { get; init; }
-    public string Name { get; init; }
+    public string Name { get; init; } = string.Empty;
     public int KilometerInterval { get; init; }
     public TimeSpan TimeInterval { get; init; }
     

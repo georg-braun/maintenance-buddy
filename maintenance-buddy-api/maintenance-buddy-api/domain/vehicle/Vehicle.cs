@@ -3,7 +3,7 @@ namespace maintenance_buddy_api.domain;
 public class Vehicle
 {
     public Guid Id { get; init; }
-    public string Name { get; init; }
+    public string Name { get; init; } = string.Empty;
     public int Kilometer { get; init; }
 
     public ICollection<ActionTemplate> ActionTemplates { get;  init; }
@@ -41,7 +41,7 @@ public class Vehicle
         return ActionTemplates;
     }
 
-    public ActionTemplate GetActionTemplate(string actionTemplateName)
+    public ActionTemplate? GetActionTemplate(string actionTemplateName)
     {
         return ActionTemplates.FirstOrDefault(_ => _.Name.Equals(actionTemplateName));
     }
@@ -50,6 +50,9 @@ public class Vehicle
     public void RemoveActionTemplate(Guid actionTemplateId)
     {
         var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+
+        if (actionTemplate is null)
+            return;
         ActionTemplates.Remove(actionTemplate);
     }
 
