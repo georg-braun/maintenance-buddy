@@ -13,4 +13,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="..\..\development-log\development-log.md">
+        <Link>development-log.md</Link>
+      </Content>
+    </ItemGroup>
+
 </Project>

@@ -5,5 +5,6 @@ public record AddActionCommand
     string VehicleId,
     string ActionTemplateId,
     DateTime Date,
-    int Kilometer
+    int Kilometer,
+    string Note
 );

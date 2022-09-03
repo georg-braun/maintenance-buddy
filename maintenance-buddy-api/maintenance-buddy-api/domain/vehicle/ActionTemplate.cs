@@ -14,13 +14,14 @@ public class ActionTemplate
           Actions = new List<Action>();
      }
 
-     public Action AddAction(int kilometer, DateTime date)
+     public Action AddAction(int kilometer, DateTime date, string note)
      {
          var action = new Action()
          {
              Id = Guid.NewGuid(),
              Kilometer = kilometer,
-             Date = date
+             Date = date,
+             Note = note 
          };
     
          Actions.Add(action);

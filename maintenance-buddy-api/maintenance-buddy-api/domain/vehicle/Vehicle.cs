@@ -53,13 +53,13 @@ public class Vehicle
         ActionTemplates.Remove(actionTemplate);
     }
 
-    public Action? AddAction(Guid actionTemplateId, DateTime date, int kilometer)
+    public Action? AddAction(Guid actionTemplateId, DateTime date, int kilometer, string note)
     {
         var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
         if (actionTemplate is null)
             return null;
         
-        return actionTemplate.AddAction(kilometer, date);
+        return actionTemplate.AddAction(kilometer, date, note);
     }
 
     public IEnumerable<Action> GetActions(Guid actionTemplateId)

@@ -54,7 +54,7 @@ public static class VehicleEndpoint
         if (vehicle is null)
             return Results.NotFound();
 
-        var action = vehicle.AddAction(actionTemplateId, command.Date, command.Kilometer);
+        var action = vehicle.AddAction(actionTemplateId, command.Date, command.Kilometer, command.Note);
         context.Vehicles.Update(vehicle);
         
         await context.SaveChangesAsync();

@@ -43,7 +43,7 @@ public class VehicleAggregateTests
         var vehicle = VehicleFactory.Create("BMW R1100S", 39000);
         vehicle.AddActionTemplate("Ölwechsel", 5000, TimeSpan.FromDays(365));
         var oilTemplate = vehicle.GetActionTemplate("Ölwechsel");
-        oilTemplate.AddAction(39000, new DateTime(2022,8,8));
+        oilTemplate.AddAction(39000, new DateTime(2022,8,8), "5W50");
         
         // assert
         var actions = oilTemplate.GetActions();

@@ -90,7 +90,7 @@ public class VehicleEndpointTests
         // act
 
         var actionDate = new DateTime(2022,9,3);
-        var addActionCommand = new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000);
+        var addActionCommand = new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50");
         await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
         
         
@@ -100,6 +100,28 @@ public class VehicleEndpointTests
         actions.Should().Contain(_ => _.Date.Equals(actionDate));
     }
 
+    [Fact]
+    public async Task DeleteAction_CreatesAction()
+    {
+        // Arrange
+        var client = new IntegrationTest().client;
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        
+        // act
+
+        var actionDate = new DateTime(2022,9,3);
+        var addActionCommand = new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50");
+        await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
+        
+        
+        var actions = await GetActionsAsync(client, vehicle.Id, actionTemplate.Id);
+        
+        // Assert
+        actions.Should().Contain(_ => _.Date.Equals(actionDate));
+    }
+    
+    
     private async Task<IEnumerable<ActionDto>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
     {
         var response = await client.GetAsync($"{Routes.ActionsQuery}/?vehicleId={vehicleId}&actionTemplateId={actionTemplateId}");

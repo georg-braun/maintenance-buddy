@@ -70,11 +70,15 @@ write simple add / remove tests
 
 ## implement necessary endpoints in tdd manner
 
+Keep application code simple. No extra MediatR or service layer. YAGNI.
+
 - [x] create vehicle
 - [x] add action template
 - [x] remove action template
-- [ ] add action
+- [x] add action
 - [ ] remove action
 
+
+## add authentication
 
 # implement frontend
