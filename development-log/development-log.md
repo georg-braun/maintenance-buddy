@@ -80,6 +80,8 @@ Keep application code simple. No extra MediatR or service layer. YAGNI.
 
 ## handle build warnings as errors
 
-## add authentication
+# authentication
+
+## setup authentication and authorization for the integration tests
 
 # implement frontend

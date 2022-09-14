@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using maintenance_buddy_api.api.commands;
 using maintenance_buddy_api.domain;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +7,9 @@ namespace maintenance_buddy_api.api;
 
 public static class VehicleEndpoint
 {
-    public static async Task<IResult> CreateVehicle(CreateVehicleCommand command, VehicleContext context)
+    public static async Task<IResult> CreateVehicle(CreateVehicleCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
+        Console.WriteLine(claims.FindFirstValue(ClaimTypes.NameIdentifier));
         var vehicle = VehicleFactory.Create(command.Name, command.Kilometer);
         
         context.Vehicles.Add(vehicle);

@@ -2,7 +2,6 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using maintenance_buddy_api_integration_test;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Data.Sqlite;
 using Xunit.Sdk;
 
@@ -24,6 +23,10 @@ public class IntegrationTest : IDisposable
         
         var appFactory = new SqLiteWebApplicationFactory<Program>(_connection);
         client = appFactory.CreateClient();
+        
+        // add the bearer token
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", TestTokenIssuer.GenerateBearerToken());
     }
 
     public HttpClient client { get; set; }

@@ -1,9 +1,13 @@
 using maintenance_buddy_api;
 using maintenance_buddy_api.api;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.AddBearerAuthentication();
+builder.RequireAuthenticatedUsers();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<VehicleContext>(op => op.LogTo(Console.Write) );
@@ -21,7 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

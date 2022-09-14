@@ -1,10 +1,14 @@
 using System.Linq;
+using budget_backend_integration_tests.backend;
 using maintenance_buddy_api;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace maintenance_buddy_api_integration_test;
 
@@ -39,6 +43,30 @@ public class SqLiteWebApplicationFactory<TStartup>
             RemoveRegisteredDataContext(services);
             AddSqliteDbContext(services);
             EnsureThatDatabaseIsCreated(services);
+        });
+
+        SetTokenValidationParameters(builder);
+    }
+    
+    /// <summary>
+    /// Modifies the existing Token Validation Parameters in the web server app.
+    /// The result is that the web server accepts tokens issued from the test project.
+    /// </summary>
+    /// <param name="builder"></param>
+    private void SetTokenValidationParameters(IWebHostBuilder builder)
+    {
+        builder.ConfigureTestServices(services =>
+        {
+            services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                // modify the token validation parameters in the server configuration
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = TestTokenIssuer.SecurityKey,
+                    ValidIssuer = TestTokenIssuer.Issuer,
+                    ValidAudience = TestTokenIssuer.Audience
+                };
+            });
         });
     }
     
