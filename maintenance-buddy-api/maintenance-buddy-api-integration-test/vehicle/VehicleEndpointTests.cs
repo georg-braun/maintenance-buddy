@@ -119,6 +119,24 @@ public class VehicleEndpointTests
         actions.Should().NotContain(_ => _.Date.Equals(actionDate));
     }
 
+    [Fact]
+    public async Task GetAllVehicles()
+    {
+        // arrange
+        var client = new IntegrationTest().client;
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Astra", 60000));
+        await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 40000));
+        
+        // act
+        var vehicles = await GetVehiclesAsync(client);
+
+
+        // assert
+        vehicles.Should().HaveCount(2);
+        vehicles.Should().Contain(_ => _.Name.Equals("Opel Astra"));
+        vehicles.Should().Contain(_ => _.Name.Equals("BMW R1100S"));
+    }
+
     private async Task DeleteAction(HttpClient client, string vehicleId, string actionTemplateId, string actionId)
     {
         var deleteActionCommand = new DeleteActionCommand(vehicleId, actionTemplateId, actionId);
@@ -141,6 +159,13 @@ public class VehicleEndpointTests
         return JsonConvert.DeserializeObject<IEnumerable<ActionDto>>(responseContent);
     }
 
+    private async Task<IEnumerable<VehicleDto>> GetVehiclesAsync(HttpClient client)
+    {
+        var response = await client.GetAsync(Routes.VehiclesQuery);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<IEnumerable<VehicleDto>>(responseContent);
+    }
+    
     private async Task<IEnumerable<ActionTemplateDto>> GetActionTemplatesAsync(HttpClient client, string vehicleId)
     {
         var response = await client.GetAsync($"{Routes.ActionTemplateQuery}/?vehicleId={vehicleId}");
@@ -161,6 +186,7 @@ public class VehicleEndpointTests
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<VehicleDto>(responseContent);
     }
+    
     
     private StringContent Serialize(object command)
     {

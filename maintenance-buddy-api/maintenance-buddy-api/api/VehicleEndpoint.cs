@@ -117,4 +117,11 @@ public static class VehicleEndpoint
 
         return Results.Ok(actions);
     }
+    
+    public static async Task<IResult> VehiclesQuery(VehicleContext context)
+    {
+
+        var vehicles = await context.Vehicles.ToListAsync();
+        return Results.Ok(vehicles);
+    }
 }
