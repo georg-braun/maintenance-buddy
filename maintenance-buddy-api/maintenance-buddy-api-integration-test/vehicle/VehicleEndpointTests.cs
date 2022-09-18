@@ -142,18 +142,19 @@ public class VehicleEndpointTests
     {
         // arrange
         var integrationTest = new IntegrationTest();
-        var clientGeorge = integrationTest.SetClientSession("George");
-        await CreateVehicleAsync(clientGeorge, new CreateVehicleCommand("Opel Astra", 60000));
-        await CreateVehicleAsync(clientGeorge, new CreateVehicleCommand("BMW R1100S", 40000));
+        var client = integrationTest.GetClient();
+        integrationTest.SetClientSession("George");
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Astra", 60000));
+        await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 40000));
         
         
-        var clientVroni = integrationTest.SetClientSession("Veronika");
-        await CreateVehicleAsync(clientVroni, new CreateVehicleCommand("Opel Adam", 70000));
-        await CreateVehicleAsync(clientVroni, new CreateVehicleCommand("Cube Stereo Hybrid Race", 1000));
+        integrationTest.SetClientSession("Veronika");
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Adam", 70000));
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Cube Stereo Hybrid Race", 1000));
         
         // act
-        clientGeorge = integrationTest.SetClientSession("George");
-        var vehicles = await GetVehiclesAsync(clientGeorge);
+        integrationTest.SetClientSession("George");
+        var vehicles = await GetVehiclesAsync(client);
 
 
         // assert
