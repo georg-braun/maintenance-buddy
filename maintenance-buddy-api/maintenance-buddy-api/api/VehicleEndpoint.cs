@@ -9,10 +9,11 @@ public static class VehicleEndpoint
 {
     public static async Task<IResult> CreateVehicle(CreateVehicleCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
-        Console.WriteLine(claims.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userId = ExtractUserId(claims);
         var vehicle = VehicleFactory.Create(command.Name, command.Kilometer);
         
         context.Vehicles.Add(vehicle);
+        await context.ConnectVehicleAndUser(userId, vehicle.Id);
         await context.SaveChangesAsync();
 
         return Results.Created($"/vehicle/{vehicle.Id}", vehicle);
@@ -20,6 +21,7 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> AddActionTemplate(AddActionTemplateCommand command, VehicleContext context)
     {
+        // todo: check if user can access the vehicle
         var vehicleId = new Guid(command.VehicleId);
        
         var vehicle = await context.Vehicles.FindAsync(vehicleId);
@@ -37,6 +39,7 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> DeleteActionTemplate(DeleteActionTemplateCommand command, VehicleContext context)
     {
+        // todo: check if user can access the vehicle
         var vehicleId = new Guid(command.VehicleId);
         var actionTemplateId = new Guid(command.ActionTemplateId);
         
@@ -54,6 +57,7 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> AddAction(AddActionCommand command, VehicleContext context)
     {
+        // todo: check if user can access the vehicle
         var vehicleId = new Guid(command.VehicleId);
         var actionTemplateId = new Guid(command.ActionTemplateId);
 
@@ -76,6 +80,7 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> DeleteAction(DeleteActionCommand command, VehicleContext context)
     {
+        // todo: check if user can access the vehicle
         var vehicleId = new Guid(command.VehicleId);
         var actionTemplateId = new Guid(command.ActionTemplateId);
         var actionId = new Guid(command.ActionId);
@@ -96,6 +101,7 @@ public static class VehicleEndpoint
 
     public static async Task<IResult> ActionTemplatesQuery(string vehicleId, VehicleContext context)
     {
+        // todo: check if user can access the vehicle
         var vehicleGuid = new Guid(vehicleId);
         var vehicle = await context.Vehicles.Include(_ => _.ActionTemplates).FirstOrDefaultAsync(_ => _.Id.Equals(vehicleGuid));
 
@@ -104,6 +110,7 @@ public static class VehicleEndpoint
 
     public static async Task<IResult> ActionsQuery(string vehicleId, string ActionTemplateId, VehicleContext context)
     {
+        // todo: check if user can access the vehicle
         var vehicleGuid = new Guid(vehicleId);
         var actionTemplateId = new Guid(ActionTemplateId);
 
@@ -118,10 +125,16 @@ public static class VehicleEndpoint
         return Results.Ok(actions);
     }
     
-    public static async Task<IResult> VehiclesQuery(VehicleContext context)
+    public static async Task<IResult> VehiclesQuery(VehicleContext context, ClaimsPrincipal claims)
     {
-
-        var vehicles = await context.Vehicles.ToListAsync();
+        var userId = ExtractUserId(claims);
+        var vehicles = await context.GetVehiclesAsync(userId);
+        
         return Results.Ok(vehicles);
+    }
+
+    private static string ExtractUserId(ClaimsPrincipal claims)
+    {
+        return claims.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }

@@ -152,6 +152,7 @@ public class VehicleEndpointTests
         await CreateVehicleAsync(clientVroni, new CreateVehicleCommand("Cube Stereo Hybrid Race", 1000));
         
         // act
+        clientGeorge = integrationTest.SetClientSession("George");
         var vehicles = await GetVehiclesAsync(clientGeorge);
 
 

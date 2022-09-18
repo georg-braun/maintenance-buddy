@@ -1,7 +1,5 @@
 using maintenance_buddy_api;
 using maintenance_buddy_api.api;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
