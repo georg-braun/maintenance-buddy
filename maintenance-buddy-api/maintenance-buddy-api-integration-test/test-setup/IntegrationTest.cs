@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using maintenance_buddy_api_integration_test;
@@ -13,6 +14,9 @@ namespace budget_backend_integration_tests.backend;
 public class IntegrationTest : IDisposable
 {
     private SqliteConnection _connection;
+    private readonly SqLiteWebApplicationFactory<Program> _appFactory;
+    private Dictionary<string, string> TokenByUser = new();
+    private HttpClient? _client;
 
     public IntegrationTest()
     {
@@ -21,15 +25,49 @@ public class IntegrationTest : IDisposable
         if (_connection is null)
             throw new NullException(_connection);
         
-        var appFactory = new SqLiteWebApplicationFactory<Program>(_connection);
-        client = appFactory.CreateClient();
+        _appFactory = new SqLiteWebApplicationFactory<Program>(_connection);
+    }
+
+    
+
+    /// <summary>
+    ///     Creates a new client.
+    /// </summary>
+    /// <returns></returns>
+    public HttpClient GetClient()
+    {
+        var client = _appFactory.CreateClient();
         
         // add the bearer token
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", TestTokenIssuer.GenerateBearerToken());
-    }
 
-    public HttpClient client { get; set; }
+        return client;
+    }
+    
+    /// <summary>
+    ///     Get the client and sets the corresponding token.
+    ///     WARNING: The client session is shared! The session of preceding is modified
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public HttpClient SetClientSession(string user)
+    {
+        var token = string.Empty;
+        if (!TokenByUser.TryGetValue(user, out token))
+        {
+            token = TestTokenIssuer.GenerateBearerToken();
+           TokenByUser.Add(user, token); 
+        }
+   
+        _client ??= _appFactory.CreateClient();
+        
+        // add the bearer token of the requested user
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+
+        return _client;
+    }
 
     public void Dispose()
     {

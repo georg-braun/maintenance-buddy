@@ -18,7 +18,7 @@ public class VehicleEndpointTests
     public async Task CreateVehicleCommand_CreatesANewVehicle()
     {
         // arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
 
         // act
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
@@ -31,7 +31,7 @@ public class VehicleEndpointTests
     public async Task AddActionTemplateCommand_CreatesANewActionTemplate()
     {
         // Arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
 
         // Act
@@ -45,7 +45,7 @@ public class VehicleEndpointTests
     public async Task ActionTemplatesQuery_ContainsCorrectActionTemplate()
     {
         // Arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
 
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
         var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
@@ -61,7 +61,7 @@ public class VehicleEndpointTests
     public async Task DeleteActionTemplateCommand_DeletesActionTemplate()
     {
         // Arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
         
         // add vehicle
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
@@ -83,7 +83,7 @@ public class VehicleEndpointTests
     public async Task AddAction_CreatesAction()
     {
         // Arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
         var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
         
@@ -104,7 +104,7 @@ public class VehicleEndpointTests
     public async Task DeleteAction_DeletesAction()
     {
         // Arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
         var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
         
@@ -123,7 +123,7 @@ public class VehicleEndpointTests
     public async Task GetAllVehicles()
     {
         // arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
         await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Astra", 60000));
         await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 40000));
         
@@ -135,6 +135,32 @@ public class VehicleEndpointTests
         vehicles.Should().HaveCount(2);
         vehicles.Should().Contain(_ => _.Name.Equals("Opel Astra"));
         vehicles.Should().Contain(_ => _.Name.Equals("BMW R1100S"));
+    }
+    
+    [Fact]
+    public async Task UserGetsOnlyTheirData()
+    {
+        // arrange
+        var integrationTest = new IntegrationTest();
+        var clientGeorge = integrationTest.SetClientSession("George");
+        await CreateVehicleAsync(clientGeorge, new CreateVehicleCommand("Opel Astra", 60000));
+        await CreateVehicleAsync(clientGeorge, new CreateVehicleCommand("BMW R1100S", 40000));
+        
+        
+        var clientVroni = integrationTest.SetClientSession("Veronika");
+        await CreateVehicleAsync(clientVroni, new CreateVehicleCommand("Opel Adam", 70000));
+        await CreateVehicleAsync(clientVroni, new CreateVehicleCommand("Cube Stereo Hybrid Race", 1000));
+        
+        // act
+        var vehicles = await GetVehiclesAsync(clientGeorge);
+
+
+        // assert
+        vehicles.Should().HaveCount(2);
+        vehicles.Should().Contain(_ => _.Name.Equals("Opel Astra"));
+        vehicles.Should().Contain(_ => _.Name.Equals("BMW R1100S"));
+        vehicles.Should().NotContain(_ => _.Name.Equals("Opel Adam"));
+        vehicles.Should().NotContain(_ => _.Name.Equals("Cube Stereo Hybrid Race"));
     }
 
     private async Task DeleteAction(HttpClient client, string vehicleId, string actionTemplateId, string actionId)

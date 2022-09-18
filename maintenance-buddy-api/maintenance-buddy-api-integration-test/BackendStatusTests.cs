@@ -11,7 +11,7 @@ public class BackendStatusTests
     public async Task StatusEndpointsReturnsValidValue()
     {
         // arrange
-        var client = new IntegrationTest().client;
+        var client = new IntegrationTest().GetClient();
 
         // act
         var response = await client.GetAsync(Routes.Status);
