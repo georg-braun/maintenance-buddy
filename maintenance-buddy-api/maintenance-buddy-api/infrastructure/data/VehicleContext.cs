@@ -24,7 +24,7 @@ public class VehicleContext : DbContext
         modelBuilder.Entity<UserVehicleConnection>().HasKey(_ => new {_.NameIdentifier, _.VehicleId});
     }
 
-    public DbSet<Vehicle> Vehicles { get; set; } = null!;
+    private DbSet<Vehicle> Vehicles { get; set; } = null!;
     
     public DbSet<UserVehicleConnection> UserVehicleConnections { get; set; } = null!;
 
@@ -39,9 +39,19 @@ public class VehicleContext : DbContext
         await UserVehicleConnections.AddAsync(connection);
     }
 
-    public async Task<List<Vehicle>> GetVehiclesAsync(string userId)
+    public async Task<IQueryable<Vehicle>> GetVehicles(string userId)
     {
         var availableVehicles = await GetAvailableVehiclesOfUserAsync(userId);
-        return await Vehicles.Where(_ => availableVehicles.Contains(_.Id)).ToListAsync();
+        return Vehicles.Where(_ => availableVehicles.Contains(_.Id));
+    }
+
+    public void UpdateVehicle(Vehicle vehicle)
+    {
+        Vehicles.Update(vehicle);
+    }
+
+    public void AddVehicle(Vehicle vehicle)
+    {
+        Vehicles.Add(vehicle);
     }
 }
