@@ -1,10 +1,25 @@
 # Maintenance buddy
 Tool to help with the mainteance of different objects.
 
-## Roadmap
+Used technologies:
+- Backend (API)
+  - ASP.NET Core
+  - Entity Framework Core
+- Frontend
+  - Svelte(Kit)
+- Authentication (Frontend + API)
+  - Auth0
 
-- [ ] Manage different objects (car, bicycle, ...) and necessary maintenances
-- [ ] Log done maintenances
-- [ ] Add interval of maintenances (time, kilometer, ...)
-- [ ] Show pending maintenances
-- [ ] Add notes to maintenances (guide, tricks, ...)
+
+# Local dev setup
+
+## Webapp
+
+### Add authentication
+
+- create `/webapp/src/$env/public/dynamic/.env` and add the necessary environment varialbes with a `PUBLIC_` prefic
+```
+PUBLIC_AUTH_DOMAIN=
+PUBLIC_AUTH_CLIENT_ID=
+PUBLIC_AUTH_AUDIENCE=
+```
