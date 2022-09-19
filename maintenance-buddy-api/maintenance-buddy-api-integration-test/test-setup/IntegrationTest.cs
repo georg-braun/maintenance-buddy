@@ -36,13 +36,9 @@ public class IntegrationTest : IDisposable
     /// <returns></returns>
     public HttpClient GetClient()
     {
-        var client = _appFactory.CreateClient();
-        
-        // add the bearer token
-        client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", TestTokenIssuer.GenerateBearerToken());
-
-        return client;
+        _client ??= _appFactory.CreateClient();
+        SetClientSession("default");
+        return _client;
     }
     
     /// <summary>
@@ -51,7 +47,7 @@ public class IntegrationTest : IDisposable
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
-    public HttpClient SetClientSession(string user)
+    public void SetClientSession(string user)
     {
         var token = string.Empty;
         if (!TokenByUser.TryGetValue(user, out token))
@@ -59,14 +55,13 @@ public class IntegrationTest : IDisposable
             token = TestTokenIssuer.GenerateBearerToken();
            TokenByUser.Add(user, token); 
         }
-   
-        _client ??= _appFactory.CreateClient();
         
+        _client ??= _appFactory.CreateClient();
+
         // add the bearer token of the requested user
         _client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
-
-        return _client;
+        
     }
 
     public void Dispose()

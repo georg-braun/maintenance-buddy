@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddBearerAuthentication();
 builder.RequireAuthenticatedUsers();
 
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<VehicleContext>(op => op.LogTo(Console.Write) );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

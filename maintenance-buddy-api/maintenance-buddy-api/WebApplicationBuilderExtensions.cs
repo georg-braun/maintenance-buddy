@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
@@ -8,9 +9,9 @@ public static class WebApplicationBuilderExtensions
 
     public static WebApplicationBuilder AddBearerAuthentication(this WebApplicationBuilder builder)
     {
-        var domain = builder.Configuration["Auth0:Domain"];
-        var audience = builder.Configuration["Auth0:Audience"];
-        
+        var domain = builder.Configuration["AuthProvider:Authority"];
+        var audience = builder.Configuration["AuthProvider:Audience"];
+
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
             {
@@ -33,5 +34,4 @@ public static class WebApplicationBuilderExtensions
 
         return builder;
     }
-
 }

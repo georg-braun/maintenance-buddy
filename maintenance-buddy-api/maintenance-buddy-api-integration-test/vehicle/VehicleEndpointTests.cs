@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -142,18 +143,19 @@ public class VehicleEndpointTests
     {
         // arrange
         var integrationTest = new IntegrationTest();
-        var clientGeorge = integrationTest.SetClientSession("George");
-        await CreateVehicleAsync(clientGeorge, new CreateVehicleCommand("Opel Astra", 60000));
-        await CreateVehicleAsync(clientGeorge, new CreateVehicleCommand("BMW R1100S", 40000));
+        var client = integrationTest.GetClient();
+        integrationTest.SetClientSession("George");
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Astra", 60000));
+        await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 40000));
         
         
-        var clientVroni = integrationTest.SetClientSession("Veronika");
-        await CreateVehicleAsync(clientVroni, new CreateVehicleCommand("Opel Adam", 70000));
-        await CreateVehicleAsync(clientVroni, new CreateVehicleCommand("Cube Stereo Hybrid Race", 1000));
+        integrationTest.SetClientSession("Veronika");
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Adam", 70000));
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Cube Stereo Hybrid Race", 1000));
         
         // act
-        clientGeorge = integrationTest.SetClientSession("George");
-        var vehicles = await GetVehiclesAsync(clientGeorge);
+        integrationTest.SetClientSession("George");
+        var vehicles = await GetVehiclesAsync(client);
 
 
         // assert
@@ -162,6 +164,39 @@ public class VehicleEndpointTests
         vehicles.Should().Contain(_ => _.Name.Equals("BMW R1100S"));
         vehicles.Should().NotContain(_ => _.Name.Equals("Opel Adam"));
         vehicles.Should().NotContain(_ => _.Name.Equals("Cube Stereo Hybrid Race"));
+    }
+    
+    [Fact]
+    public async Task UserCantAddAnActionToAVehicleHeDoesntBelongTo()
+    {
+        // arrange
+        var integrationTest = new IntegrationTest();
+        var client = integrationTest.GetClient();
+        integrationTest.SetClientSession("George");
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Astra", 60000));
+        await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 40000));
+        
+        
+        integrationTest.SetClientSession("Veronika");
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Adam", 70000));
+        await CreateVehicleAsync(client, new CreateVehicleCommand("Cube Stereo Hybrid Race", 1000));
+        
+        integrationTest.SetClientSession("George");
+        var georgesVehicles = await GetVehiclesAsync(client);
+        
+        // act
+        // test that Veronika can't add an action template to Georges vehicles
+        integrationTest.SetClientSession("Veronika");
+        var aVehicleOfGeorge = georgesVehicles.First();
+        var response = await client.PostAsync(Routes.AddActionTemplate, 
+            Serialize(new AddActionTemplateCommand(aVehicleOfGeorge.Id, "Oil", 5000, TimeSpan.FromDays(365))));
+        
+
+        // assert
+        integrationTest.SetClientSession("George");
+        var actionTemplates = await GetActionTemplatesAsync(client, aVehicleOfGeorge.Id);
+
+        actionTemplates.Should().HaveCount(0);
     }
 
     private async Task DeleteAction(HttpClient client, string vehicleId, string actionTemplateId, string actionId)
@@ -203,6 +238,7 @@ public class VehicleEndpointTests
     private async Task<ActionTemplateDto> AddActionTemplateAsync(HttpClient client, AddActionTemplateCommand addActionTemplateCommand)
     {
         var response = await client.PostAsync(Routes.AddActionTemplate, Serialize(addActionTemplateCommand));
+    
         var addActionTemplateResponseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<ActionTemplateDto>(addActionTemplateResponseContent);
     }
