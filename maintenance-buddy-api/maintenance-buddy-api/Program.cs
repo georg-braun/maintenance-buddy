@@ -1,5 +1,6 @@
 using maintenance_buddy_api;
 using maintenance_buddy_api.api;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,9 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddBearerAuthentication();
 builder.RequireAuthenticatedUsers();
 
-
+builder.Services.AddCors();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<VehicleContext>(op => op.LogTo(Console.Write) );
+builder.Services.AddDbContext<VehicleContext>(op =>
+{
+    op.UseInMemoryDatabase(databaseName: "Maintenance");
+    op.LogTo(Console.Write);
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,6 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
