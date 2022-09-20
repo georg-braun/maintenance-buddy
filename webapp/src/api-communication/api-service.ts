@@ -1,13 +1,33 @@
 import axios from 'axios';
-import auth from './auth-service';
+import auth from '../auth-service';
 
-import { env } from "$env/dynamic/public"
+import { env } from '$env/dynamic/public';
 
 const serverUrl = env.PUBLIC_API_SERVER_ADDRESS;
 
 
+export async function makeGetRequest(route) {
+	try {
+		const token = await auth.getAccessToken();
 
-async function makeRequest(config) {
+		const config = {
+			url: `${serverUrl}/api/${route}`,
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json',
+				Authorization: `Bearer ${token}`
+			}
+		};
+
+		const response = axios.request(config);
+		return response;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+
+export async function makeRequest(config) {
 	try {
 		const token = await auth.getAccessToken();
 		config.headers = {
@@ -21,6 +41,7 @@ async function makeRequest(config) {
 		console.log(error);
 	}
 }
+
 
 export async function sendPost(endpoint, data) {
 	try {
@@ -36,33 +57,11 @@ export async function sendPost(endpoint, data) {
 
 		try {
 			const response = await axios.post(`${serverUrl}/api/${endpoint}`, data, config);
-		return response;
+			return response;
 		} catch (error) {
 			console.log(`${error.response.status}: ${error.response.data}`);
 			return error.response;
 		}
-
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-
-export async function getVehicles() {
-	try {
-		const config = {
-			url: `${serverUrl}/api/get-vehicles`,
-			method: 'GET',
-			headers: {
-				'content-type': 'application/json'
-			}
-		};
-		const response = await makeRequest(config);
-	
-        console.log(response)
-
-		if (response.data !== undefined)
-			console.log(response.data);
 	} catch (error) {
 		console.log(error);
 	}

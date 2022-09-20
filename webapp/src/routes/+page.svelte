@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
-	import { getVehicles } from '../api-service';
+	import { getVehicles } from '../api-communication/api-vehicles';
 </script>
 
 <svelte:head>

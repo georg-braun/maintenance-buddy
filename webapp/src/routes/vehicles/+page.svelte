@@ -5,7 +5,7 @@
 	import { flip } from 'svelte/animate';
 	import type { PageData } from './$types';
 
-	import { getVehicles } from '../../api-service'
+	import { getVehicles } from '../../api-communication/api-service'
 	console.log("hello")
 
 	export let data: PageData;
