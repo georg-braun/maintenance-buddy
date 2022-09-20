@@ -5,17 +5,21 @@
 	import { flip } from 'svelte/animate';
 	import type { PageData } from './$types';
 
+	import { getVehicles } from '../../api-service'
+	console.log("hello")
+
 	export let data: PageData;
 	$: todos = data.todos;
 </script>
 
 <svelte:head>
-	<title>Todos</title>
+	<title>Vehicles</title>
 	<meta name="description" content="A todo list app" />
 </svelte:head>
 
 <div class="todos">
-	<h1>Todos</h1>
+	<h1>Vehicles</h1>
+	<button on:click={async () => {await getVehicles();}}>Get</button>
 
 	<form
 		class="new"
