@@ -4,11 +4,7 @@
 </script>
 
 <header>
-	<div class="corner">
-		<a href="https://kit.svelte.dev">
-			<img src={logo} alt="SvelteKit" />
-		</a>
-	</div>
+	<div class="corner" />
 
 	<nav data-sveltekit-prefetch>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -16,13 +12,11 @@
 		</svg>
 		<ul>
 			<li class:active={$page.url.pathname === '/'}>
-				<a href="/">Home</a>
+				<a href="/vehicles">Vehicles</a>
 			</li>
-			<li class:active={$page.url.pathname === '/about'}>
-				<a href="/about">About</a>
-			</li>
+
 			<li class:active={$page.url.pathname === '/todos'}>
-				<a href="/todos">Todos</a>
+				<a href="/vehicles/add-vehicle">Add vehicle</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -30,9 +24,7 @@
 		</svg>
 	</nav>
 
-	<div class="corner">
-		<!-- TODO put something else here? github link? -->
-	</div>
+	<div class="corner" />
 </header>
 
 <style>

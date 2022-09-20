@@ -4,8 +4,6 @@
 	import { onMount } from 'svelte';
 	import auth from '../auth-service';
 
-
-
 	onMount(async () => {
 		console.log('Mounting app');
 		await auth.createClient();
@@ -22,24 +20,18 @@
 	let { isAuthenticated, user } = auth;
 </script>
 
-<Header />
-
 <main>
-	<div class="my-auto ml-2">
+	<div>
 		{#if $isAuthenticated}
+			<Header />
+			<a href="/#" on:click={logout}>Log Out</a>
 			<span>{$user.name} ({$user.email})</span>
-		{:else}<span>Not logged in</span>{/if}
-
-		<span>
-			{#if $isAuthenticated}
-				<a href="/#" on:click={logout}>Log Out</a>
-			{:else}
-				<a href="/#" on:click={login}>Log In</a>
-			{/if}
-		</span>		
+			<slot />
+		{:else}
+			<a href="/#" on:click={login}>Log In</a>
+			<span>Not logged in</span>
+		{/if}
 	</div>
-
-	<slot />
 </main>
 
 <footer>
