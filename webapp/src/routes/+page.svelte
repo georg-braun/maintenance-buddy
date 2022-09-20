@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
+	import { getVehicles } from '../api-service';
 </script>
 
 <svelte:head>
@@ -8,6 +9,12 @@
 </svelte:head>
 
 <section>
+	<h1>Vehicles</h1>
+	<button
+		on:click={async () => {
+			await getVehicles();
+		}}>Get</button
+	>
 	<h1>
 		<span class="welcome">
 			<picture>
