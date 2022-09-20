@@ -11,6 +11,9 @@ public static class WebApplicationBuilderExtensions
     {
         var domain = builder.Configuration["AuthProvider:Authority"];
         var audience = builder.Configuration["AuthProvider:Audience"];
+        
+        if (string.IsNullOrEmpty(domain) || string.IsNullOrEmpty(audience))
+            Console.WriteLine("At least one authentication parameter is empty!");
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
