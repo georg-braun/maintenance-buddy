@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
+	import Header from '$lib/header/Header.svelte';
 	import { getVehicles } from '../api-communication/api-vehicles';
+
+	let vehicles = [];
 </script>
 
 <svelte:head>
@@ -12,10 +15,15 @@
 	<h1>Vehicles</h1>
 	<button
 		on:click={async () => {
-			await getVehicles();
+			vehicles = await getVehicles();
+			
 		}}>Get</button
 	>
-		
+
+	<div>Vehicles:</div>
+	{#each vehicles as vehicle}
+		<div>{vehicle.name} {vehicle.kilometer} km</div>
+	{/each}
 </section>
 
 <style>

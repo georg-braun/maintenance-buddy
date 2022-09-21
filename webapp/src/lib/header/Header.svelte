@@ -16,7 +16,7 @@
 			</li>
 
 			<li class:active={$page.url.pathname === '/todos'}>
-				<a href="/vehicles/add-vehicle">Add vehicle</a>
+				<a href="/vehicles/create-vehicle">Add vehicle</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">

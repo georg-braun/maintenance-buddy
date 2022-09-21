@@ -1,4 +1,5 @@
 <script>
+	import { createVehicle } from '../../../api-communication/api-vehicles';
 	let kilometer = 1000;
 	let name = '';
 </script>
@@ -10,12 +11,11 @@
 		<input step="1" class="w-32 bg-slate-50" type="number" bind:value={kilometer} />
 	</div>
 
-	
 	<div class="my-auto">
 		<button
 			class="rounded px-2 ml-4  my-auto bg-slate-200"
 			on:click={async () => {
-				//await addMoneyMovement(selectedCategory.id, date, kilometer, name);
+				await createVehicle(name, kilometer);
 			}}
 			>Add
 		</button>

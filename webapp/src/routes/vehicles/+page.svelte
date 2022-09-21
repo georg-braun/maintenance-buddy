@@ -5,8 +5,10 @@
 	import { flip } from 'svelte/animate';
 	import type { PageData } from './$types';
 
-	import { getVehicles } from '../../api-communication/api-service'
-	console.log("hello")
+	import { getVehicles } from '../../api-communication/api-service';
+	console.log('hello');
+
+	let vehicles = ['test', 'et'];
 
 	export let data: PageData;
 	$: todos = data.todos;
@@ -19,7 +21,13 @@
 
 <div class="todos">
 	<h1>Vehicles</h1>
-	<button on:click={async () => {await getVehicles();}}>Get</button>
+	<button
+		on:click={async () => {
+			console.log(vehicles);
+		}}>Get</button
+	>
+
+
 
 	<form
 		class="new"
