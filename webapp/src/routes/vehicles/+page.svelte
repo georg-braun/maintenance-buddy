@@ -5,10 +5,10 @@
 	import { flip } from 'svelte/animate';
 	import type { PageData } from './$types';
 
-	import { getVehicles } from '../../api-communication/api-service';
-	console.log('hello');
+	import { getVehicles } from '../../api-communication/api-vehicles';
+	
 
-	let vehicles = ['test', 'et'];
+	let vehicles = [];
 
 	export let data: PageData;
 	$: todos = data.todos;
@@ -19,13 +19,22 @@
 	<meta name="description" content="A todo list app" />
 </svelte:head>
 
-<div class="todos">
+
+
+<section>
 	<h1>Vehicles</h1>
 	<button
 		on:click={async () => {
-			console.log(vehicles);
+			vehicles = await getVehicles();
+			
 		}}>Get</button
 	>
+
+	<div>Vehicles:</div>
+	{#each vehicles as vehicle}
+		<div>{vehicle.name} {vehicle.kilometer} km</div>
+	{/each}
+</section>
 
 
 
@@ -82,7 +91,7 @@
 			</form>
 		</div>
 	{/each}
-</div>
+
 
 <style>
 	.todos {
