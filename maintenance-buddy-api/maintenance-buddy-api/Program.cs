@@ -46,6 +46,7 @@ app.MapPost(Routes.DeleteAction, VehicleEndpoint.DeleteAction);
 
 app.MapGet(Routes.ActionTemplateQuery, VehicleEndpoint.ActionTemplatesQuery);
 app.MapGet(Routes.ActionsQuery, VehicleEndpoint.ActionsQuery);
+app.MapGet(Routes.ActionsOfVehicleQuery, VehicleEndpoint.ActionsOfVehicleQuery);
 app.MapGet(Routes.VehiclesQuery, VehicleEndpoint.VehiclesQuery);
 
 app.Run();

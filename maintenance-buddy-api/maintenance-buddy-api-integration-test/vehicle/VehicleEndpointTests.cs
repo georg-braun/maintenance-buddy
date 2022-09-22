@@ -89,7 +89,6 @@ public class VehicleEndpointTests
         var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
         
         // act
-
         var actionDate = new DateTime(2022,9,3);
         var addActionCommand = new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50");
         await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
@@ -99,6 +98,29 @@ public class VehicleEndpointTests
         
         // Assert
         actions.Should().Contain(_ => _.Date.Equals(actionDate));
+    }
+    
+    [Fact]
+    public async Task GetAllActionsOfAVehicle()
+    {
+        // Arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var tireActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Tires", 5000, new TimeSpan(365)));
+        
+        // act
+        var actionDate = new DateTime(2022,9,3);
+        var addOilActionCommand = new AddActionCommand(vehicle.Id, oilActionTemplate.Id, actionDate, 2000, "5W50");
+        await client.PostAsync(Routes.AddAction, Serialize(addOilActionCommand));
+        var addTireActionCommand = new AddActionCommand(vehicle.Id, tireActionTemplate.Id, actionDate, 2000, "Bridgestone");
+        await client.PostAsync(Routes.AddAction, Serialize(addTireActionCommand));
+
+        
+        var actions = await GetActionsOfVehicleAsync(client, vehicle.Id);
+        
+        // Assert
+        actions.Should().HaveCount(2);
     }
 
     [Fact]
@@ -130,8 +152,7 @@ public class VehicleEndpointTests
         
         // act
         var vehicles = await GetVehiclesAsync(client);
-
-
+        
         // assert
         vehicles.Should().HaveCount(2);
         vehicles.Should().Contain(_ => _.Name.Equals("Opel Astra"));
@@ -217,6 +238,13 @@ public class VehicleEndpointTests
     private async Task<IEnumerable<ActionDto>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
     {
         var response = await client.GetAsync($"{Routes.ActionsQuery}/?vehicleId={vehicleId}&actionTemplateId={actionTemplateId}");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<IEnumerable<ActionDto>>(responseContent);
+    }
+    
+    private async Task<IEnumerable<ActionDto>> GetActionsOfVehicleAsync(HttpClient client, string vehicleId)
+    {
+        var response = await client.GetAsync($"{Routes.ActionsOfVehicleQuery}/?vehicleId={vehicleId}");
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<IEnumerable<ActionDto>>(responseContent);
     }

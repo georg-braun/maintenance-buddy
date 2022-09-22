@@ -17,7 +17,7 @@ Used technologies:
 
 ### Add authentication
 
-- create `/webapp/src/$env/public/dynamic/.env` and add the necessary environment varialbes with a `PUBLIC_` prefic
+- create `.env` and add the necessary environment varialbes with a `PUBLIC_` prefix
 ```
 PUBLIC_AUTH_DOMAIN=
 PUBLIC_AUTH_CLIENT_ID=

@@ -70,6 +70,10 @@ public class Vehicle
         return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId))?.Actions ?? Enumerable.Empty<Action>();
     }
 
+    public IEnumerable<Action> GetActions()
+    {
+        return ActionTemplates.SelectMany(_ => _.Actions);
+    }
     
     
     public void DeleteAction(Guid actionTemplateId, Guid actionId)

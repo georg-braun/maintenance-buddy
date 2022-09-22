@@ -18,6 +18,15 @@ export async function getActionTemplates(vehicleId) {
 	}
 }
 
+export async function getActions(vehicleId) {
+	try {
+		const response = await makeGetRequest(`get-action-templates/?vehicleId=${vehicleId}`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export async function createVehicle(name, kilometer) {
 	const data = {
 		Name: name,
