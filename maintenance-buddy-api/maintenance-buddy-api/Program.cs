@@ -10,9 +10,11 @@ builder.RequireAuthenticatedUsers();
 
 builder.Services.AddCors();
 builder.Services.AddControllers();
+
+
 builder.Services.AddDbContext<VehicleContext>(op =>
 {
-    op.UseInMemoryDatabase(databaseName: "Maintenance");
+    op.UseNpgsql(builder.Configuration["DbConnectionString"]);
     op.LogTo(Console.Write);
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
