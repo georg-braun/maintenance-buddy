@@ -8,6 +8,7 @@ using budget_backend_integration_tests.backend;
 using FluentAssertions;
 using maintenance_buddy_api.api;
 using maintenance_buddy_api.api.commands;
+using maintenance_buddy_api.domain;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -121,6 +122,7 @@ public class VehicleEndpointTests
         
         // Assert
         actions.Should().HaveCount(2);
+        actions.Should().AllSatisfy(_ => _.ActionTemplateId.Should().NotBeEmpty());
     }
 
     [Fact]
@@ -135,7 +137,7 @@ public class VehicleEndpointTests
         var action = await AddActionAsync(client, new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50"));
         
         // act
-        await DeleteAction(client, vehicle.Id, actionTemplate.Id, action.Id);
+        await DeleteAction(client, vehicle.Id, actionTemplate.Id, action.Id.ToString());
 
         // Assert
         var actions = await GetActionsAsync(client, vehicle.Id, actionTemplate.Id);
@@ -226,27 +228,27 @@ public class VehicleEndpointTests
         await client.PostAsync(Routes.DeleteAction, Serialize(deleteActionCommand));
     }
 
-    private async Task<ActionDto> AddActionAsync(HttpClient client, AddActionCommand addActionCommand)
+    private async Task<MaintenanceAction> AddActionAsync(HttpClient client, AddActionCommand addActionCommand)
     {
         var response =  await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<ActionDto>(responseContent);
+        return JsonConvert.DeserializeObject<MaintenanceAction>(responseContent);
     }
 
 
-    private async Task<IEnumerable<ActionDto>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
+    private async Task<IEnumerable<MaintenanceAction>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
     {
         var response = await client.GetAsync($"{Routes.ActionsQuery}/?vehicleId={vehicleId}&actionTemplateId={actionTemplateId}");
         var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<IEnumerable<ActionDto>>(responseContent);
+        return JsonConvert.DeserializeObject<IEnumerable<MaintenanceAction>>(responseContent);
     }
     
-    private async Task<IEnumerable<ActionDto>> GetActionsOfVehicleAsync(HttpClient client, string vehicleId)
+    private async Task<IEnumerable<MaintenanceAction>> GetActionsOfVehicleAsync(HttpClient client, string vehicleId)
     {
         var response = await client.GetAsync($"{Routes.ActionsOfVehicleQuery}/?vehicleId={vehicleId}");
         var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<IEnumerable<ActionDto>>(responseContent);
+        return JsonConvert.DeserializeObject<IEnumerable<MaintenanceAction>>(responseContent);
     }
 
     private async Task<IEnumerable<VehicleDto>> GetVehiclesAsync(HttpClient client)
@@ -290,4 +292,3 @@ record VehicleDto(string Id, string Name);
 
 record ActionTemplateDto(string Id, string Name);
 
-record ActionDto(string Id, DateTime Date, int Kilometer);

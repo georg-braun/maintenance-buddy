@@ -19,6 +19,7 @@ public class ActionTemplate
          var action = new MaintenanceAction()
          {
              Id = Guid.NewGuid(),
+             ActionTemplateId = Id,
              Kilometer = kilometer,
              Date = date,
              Note = note 

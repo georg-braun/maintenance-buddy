@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using maintenance_buddy_api.api.commands;
+using maintenance_buddy_api.api.dto;
 using maintenance_buddy_api.domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -121,8 +122,9 @@ public static class VehicleEndpoint
             return Results.NotFound("Vehicle not found.");
 
         var actions = vehicle.GetActions(actionTemplateId);
+        var actionDtos = actions.Select(ActionDtoMapper.ToDto);
 
-        return Results.Ok(actions);
+        return Results.Ok(actionDtos);
     }
     
     public static async Task<IResult> ActionsOfVehicleQuery(string vehicleId, VehicleContext context, ClaimsPrincipal claims)
@@ -137,8 +139,9 @@ public static class VehicleEndpoint
             return Results.NotFound("Vehicle not found.");
 
         var actions = vehicle.GetActions();
+        var actionDtos = actions.Select(ActionDtoMapper.ToDto);
 
-        return Results.Ok(actions);
+        return Results.Ok(actionDtos);
     }
     
     public static async Task<IResult> VehiclesQuery(VehicleContext context, ClaimsPrincipal claims)
