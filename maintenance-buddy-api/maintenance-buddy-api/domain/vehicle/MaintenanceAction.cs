@@ -1,6 +1,6 @@
 namespace maintenance_buddy_api.domain;
 
-public class Action
+public class MaintenanceAction
 {
     public int Kilometer { get; init; }
     public Guid Id { get; init; }

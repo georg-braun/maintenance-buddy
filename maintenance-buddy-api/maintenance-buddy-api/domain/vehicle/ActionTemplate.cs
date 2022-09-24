@@ -7,16 +7,16 @@ public class ActionTemplate
     public int KilometerInterval { get; init; }
     public TimeSpan TimeInterval { get; init; }
     
-     public List<Action> Actions { get; }
+     public List<MaintenanceAction> Actions { get; }
 
      public ActionTemplate()
      {
-          Actions = new List<Action>();
+          Actions = new List<MaintenanceAction>();
      }
 
-     public Action AddAction(int kilometer, DateTime date, string note)
+     public MaintenanceAction AddAction(int kilometer, DateTime date, string note)
      {
-         var action = new Action()
+         var action = new MaintenanceAction()
          {
              Id = Guid.NewGuid(),
              Kilometer = kilometer,
@@ -28,12 +28,12 @@ public class ActionTemplate
          return action;
      }
 
-     public IEnumerable<Action> GetActions()
+     public IEnumerable<MaintenanceAction> GetActions()
      {
          return Actions;
      }
 
-     public Action? GetAction(Guid actionId)
+     public MaintenanceAction? GetAction(Guid actionId)
      {
          return Actions.FirstOrDefault(_ => _.Id.Equals(actionId));
      }

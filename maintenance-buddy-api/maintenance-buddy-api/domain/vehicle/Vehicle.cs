@@ -56,7 +56,7 @@ public class Vehicle
         ActionTemplates.Remove(actionTemplate);
     }
 
-    public Action? AddAction(Guid actionTemplateId, DateTime date, int kilometer, string note)
+    public MaintenanceAction? AddAction(Guid actionTemplateId, DateTime date, int kilometer, string note)
     {
         var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
         if (actionTemplate is null)
@@ -65,12 +65,12 @@ public class Vehicle
         return actionTemplate.AddAction(kilometer, date, note);
     }
 
-    public IEnumerable<Action> GetActions(Guid actionTemplateId)
+    public IEnumerable<MaintenanceAction> GetActions(Guid actionTemplateId)
     {
-        return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId))?.Actions ?? Enumerable.Empty<Action>();
+        return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId))?.Actions ?? Enumerable.Empty<MaintenanceAction>();
     }
 
-    public IEnumerable<Action> GetActions()
+    public IEnumerable<MaintenanceAction> GetActions()
     {
         return ActionTemplates.SelectMany(_ => _.Actions);
     }
