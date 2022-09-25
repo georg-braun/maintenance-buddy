@@ -58,9 +58,12 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> AddAction(AddActionCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
+        if (string.IsNullOrEmpty(command.VehicleId) || string.IsNullOrEmpty(command.ActionTemplateId))
+            return Results.Problem("VehicleId or TemplateId isn't filled");
         var userId = ExtractUserId(claims);
         var vehicleId = new Guid(command.VehicleId);
         var actionTemplateId = new Guid(command.ActionTemplateId);
+        var utcDate = command.Date.ToUniversalTime();
 
         var vehicle = await (await context.GetVehicles(userId)).Include(_ => _.ActionTemplates)
             .FirstOrDefaultAsync(_ => _.Id.Equals(vehicleId));
@@ -68,7 +71,7 @@ public static class VehicleEndpoint
         if (vehicle is null)
             return Results.NotFound();
 
-        var action = vehicle.AddAction(actionTemplateId, command.Date, command.Kilometer, command.Note);
+        var action = vehicle.AddAction(actionTemplateId, utcDate, command.Kilometer, command.Note);
         if (action is null)
             return Results.UnprocessableEntity("Action couldn't be created");
         
