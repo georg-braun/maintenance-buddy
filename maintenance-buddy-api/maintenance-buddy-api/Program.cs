@@ -39,7 +39,7 @@ app.MapControllers();
 
 
 
-app.MapGet(Routes.Status, () => "Ok");
+app.MapGet(Routes.Status, () => "Ok").AllowAnonymous();
 app.MapPost(Routes.CreateVehicle, VehicleEndpoint.CreateVehicle);
 app.MapPost(Routes.AddActionTemplate, VehicleEndpoint.AddActionTemplate);
 app.MapPost(Routes.DeleteActionTemplate, VehicleEndpoint.DeleteActionTemplate);
