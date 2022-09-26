@@ -90,7 +90,7 @@ public class VehicleEndpointTests
         var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
         
         // act
-        var actionDate = new DateTime(2022,9,3);
+        var actionDate = new DateTime(2022,9,3).ToUniversalTime();
         var addActionCommand = new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50");
         await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
         
