@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  cashflow:
+    image: "velox1992/maintenance-buddy"
+    #build: .
+    ports:
+      - "8010:80"
+    environment:
+      # necessary for Apple M1. Missing filewatcher.
+      - ASPNETCORE_hostBuilder__reloadConfigOnChange=false      
+

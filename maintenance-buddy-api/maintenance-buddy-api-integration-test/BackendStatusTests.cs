@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
+using budget_backend_integration_tests.backend;
+using maintenance_buddy_api.api;
 using Xunit;
 
 namespace maintenance_buddy_api_integration_test;
@@ -10,11 +11,10 @@ public class BackendStatusTests
     public async Task StatusEndpointsReturnsValidValue()
     {
         // arrange
-        var application = new WebApplicationFactory<Program>();
-        var client = application.CreateClient();
-        
+        var client = new IntegrationTest().GetClient();
+
         // act
-        var response = await client.GetAsync("/status");
+        var response = await client.GetAsync(Routes.Status);
 
         // assert
         response.EnsureSuccessStatusCode();
