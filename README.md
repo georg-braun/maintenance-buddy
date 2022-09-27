@@ -1,5 +1,17 @@
 # Maintenance buddy
-Tool to help with the mainteance of different objects.
+*This project is still in development*
+
+> Manage maintenances and get reminders about pending tasks. 
+The history and notes of maintenances will simplify maintenances in the future and keep the machines running ;)
+
+## Motivation
+
+I own some bicycles and motorcycles which I maintain. In the past I used some excel sheets about the done maintenances. But I didn't saw what maintenances are pending. Therefore I started to create an application that helps me. In future the app shouldn't be limited to vehicles.
+
+
+## Features and Roadmap
+
+## Technologies and techniques
 
 Used technologies:
 - Backend (API)
