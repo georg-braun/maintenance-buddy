@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/header/Header.svelte';
+	import { env } from '$env/dynamic/public';
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import auth from '../auth-service';
@@ -35,7 +36,7 @@
 </main>
 
 <footer>
-	<p>welcome to the maintenance app</p>
+	<p>welcome to the maintenance app ({env?.PUBLIC_SYSTEM_IDENTIFIER})</p>
 </footer>
 
 <style>
