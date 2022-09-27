@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
@@ -11,13 +10,12 @@ public static class WebApplicationBuilderExtensions
     {
         var domain = builder.Configuration["AuthProvider:Authority"];
         var audience = builder.Configuration["AuthProvider:Audience"];
-
+    
         if (string.IsNullOrEmpty(domain) || string.IsNullOrEmpty(audience))
         {
-            // todo: custom exception
-            throw new ArgumentException("At least one authentication parameter is empty!");
+            Console.WriteLine("At least one authentication parameter is empty!");    
         }
-            
+
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
