@@ -15,6 +15,9 @@ public static class WebApplicationBuilderExtensions
         {
             Console.WriteLine("At least one authentication parameter is empty!");    
         }
+        
+        Console.WriteLine($"Domain: {domain}");
+        Console.WriteLine($"Audience: {audience}");
 
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
