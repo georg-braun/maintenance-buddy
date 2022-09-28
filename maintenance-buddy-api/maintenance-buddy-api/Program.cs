@@ -42,6 +42,8 @@ app.MapControllers();
 app.MapGet(Routes.Status, () => "Ok").AllowAnonymous();
 app.MapPost(Routes.CreateVehicle, VehicleEndpoint.CreateVehicle);
 app.MapGet(Routes.DeleteVehicle, VehicleEndpoint.DeleteVehicle);
+app.MapPost(Routes.RenameVehicle, VehicleEndpoint.RenameVehicle);
+app.MapPost(Routes.ChangeVehicleKilometer, VehicleEndpoint.ChangeVehicleKilometer);
 app.MapPost(Routes.AddActionTemplate, VehicleEndpoint.AddActionTemplate);
 app.MapPost(Routes.DeleteActionTemplate, VehicleEndpoint.DeleteActionTemplate);
 app.MapPost(Routes.AddAction, VehicleEndpoint.AddAction);

@@ -3,8 +3,8 @@ namespace maintenance_buddy_api.domain;
 public class Vehicle
 {
     public Guid Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public int Kilometer { get; init; }
+    public string Name { get; private set; } = string.Empty;
+    public int Kilometer { get; private set; }
 
     public ICollection<ActionTemplate> ActionTemplates { get;  init; }
 
@@ -88,6 +88,16 @@ public class Vehicle
     private ActionTemplate? GetAction(Guid actionTemplateId)
     {
         return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+    }
+
+    public void Rename(string name)
+    {
+        Name = name;
+    }
+
+    public void ChangeKilometer(int kilometer)
+    {
+        Kilometer = kilometer;
     }
 }
 

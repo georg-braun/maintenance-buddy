@@ -38,6 +38,40 @@ public static class VehicleEndpoint
         return Results.Created($"/vehicle/{vehicle.Id}", actionTemplate);
     }
     
+    public static async Task<IResult> RenameVehicle(RenameVehicleCommand command, VehicleContext context, ClaimsPrincipal claims)
+    {
+        var userId = ExtractUserId(claims);
+        var vehicleId = new Guid(command.VehicleId);
+       
+        var vehicle = (await context.GetVehicles(userId)).FirstOrDefault(_ => _.Id.Equals(vehicleId));
+
+        if (vehicle is null)
+            return Results.NotFound("Vehicle not found");
+
+        vehicle.Rename(command.Name);
+        context.Update(vehicle);
+        await context.SaveChangesAsync();
+
+        return Results.Ok("Vehicle name changed");
+    }
+    
+    public static async Task<IResult> ChangeVehicleKilometer(ChangeVehicleKilometerCommand command, VehicleContext context, ClaimsPrincipal claims)
+    {
+        var userId = ExtractUserId(claims);
+        var vehicleId = new Guid(command.VehicleId);
+       
+        var vehicle = (await context.GetVehicles(userId)).FirstOrDefault(_ => _.Id.Equals(vehicleId));
+
+        if (vehicle is null)
+            return Results.NotFound("Vehicle not found");
+
+        vehicle.ChangeKilometer(command.Kilometer);
+        context.Update(vehicle);
+        await context.SaveChangesAsync();
+
+        return Results.Ok("Vehicle name changed");
+    }
+    
     public static async Task<IResult> DeleteActionTemplate(DeleteActionTemplateCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
         var userId = ExtractUserId(claims);

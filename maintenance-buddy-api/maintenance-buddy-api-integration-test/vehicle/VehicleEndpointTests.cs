@@ -45,6 +45,36 @@ public class VehicleEndpointTests
     }
 
     [Fact]
+    public async Task RenameVehicle()
+    {
+        // arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        
+        // act
+        await RenameVehicleAsync(client, new RenameVehicleCommand(vehicle.Id, "Opel Astra"));
+
+        // assert
+        var vehicles = await GetVehiclesAsync(client);
+        vehicles.First().Name.Should().Be("Opel Astra");
+    }
+    
+    [Fact]
+    public async Task ChangeVehicleKilometer()
+    {
+        // arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        
+        // act
+        await ChangeVehicleKilometerAsync(client, new ChangeVehicleKilometerCommand(vehicle.Id, 40000));
+
+        // assert
+        var vehicles = await GetVehiclesAsync(client);
+        vehicles.First().Kilometer.Should().Be(40000);
+    }
+    
+    [Fact]
     public async Task AddActionTemplateCommand_CreatesANewActionTemplate()
     {
         // Arrange
@@ -300,6 +330,16 @@ public class VehicleEndpointTests
         return await client.GetAsync($"{Routes.DeleteVehicle}/?vehicleId={vehicleId}");
     }
 
+    private async Task<HttpResponseMessage> RenameVehicleAsync(HttpClient client, RenameVehicleCommand command)
+    {
+        return await client.PostAsync(Routes.RenameVehicle, Serialize(command));
+    }
+    
+    
+    private async Task<HttpResponseMessage> ChangeVehicleKilometerAsync(HttpClient client, ChangeVehicleKilometerCommand command)
+    {
+        return await client.PostAsync(Routes.ChangeVehicleKilometer, Serialize(command));
+    }
     
     
     private StringContent Serialize(object command)
@@ -309,7 +349,7 @@ public class VehicleEndpointTests
     }
 }
 
-record VehicleDto(string Id, string Name);
+record VehicleDto(string Id, string Name, int Kilometer);
 
 record ActionTemplateDto(string Id, string Name);
 
