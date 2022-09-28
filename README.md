@@ -29,12 +29,12 @@ The idea is to get a notification via mail
 
 ## Technologies, techniques and principles
 
-Used technologies:
 - Backend (API)
   - ASP.NET Core
   - Entity Framework Core
   - data persistence with a PostgreSQL database
   - API is designed in CQRS style instead of REST
+  - Model domain with domain-driven design approach
   - deployment in a docker container on a digital ocean vps
   - Integration tests that cover the whole API (I like to develop new API endpoints in a TDD manner)
   - Continuous integration on every github commit 
@@ -81,9 +81,8 @@ One possibility is to create a `.env` file and add the necessary environment var
 PUBLIC_AUTH_DOMAIN=
 PUBLIC_AUTH_CLIENT_ID=
 PUBLIC_AUTH_AUDIENCE=
+PUBLIC_API_SERVER_ADDRESS=
 ```
-- [ ] add backend env
-
 
 After this you can
 ```
