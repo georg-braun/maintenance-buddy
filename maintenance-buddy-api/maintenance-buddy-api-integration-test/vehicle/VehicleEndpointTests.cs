@@ -30,6 +30,21 @@ public class VehicleEndpointTests
     }
 
     [Fact]
+    public async Task DeleteVehicle()
+    {
+        // arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        
+        // act
+        await DeleteVehicleAsync(client, vehicle.Id);
+
+        // assert
+        var vehicles = await GetVehiclesAsync(client);
+        vehicles.Should().HaveCount(0);
+    }
+
+    [Fact]
     public async Task AddActionTemplateCommand_CreatesANewActionTemplate()
     {
         // Arrange
@@ -279,6 +294,12 @@ public class VehicleEndpointTests
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<VehicleDto>(responseContent);
     }
+    
+    private async Task<HttpResponseMessage> DeleteVehicleAsync(HttpClient client, string vehicleId)
+    {
+        return await client.GetAsync($"{Routes.DeleteVehicle}/?vehicleId={vehicleId}");
+    }
+
     
     
     private StringContent Serialize(object command)

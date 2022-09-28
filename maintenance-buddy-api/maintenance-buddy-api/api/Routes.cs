@@ -7,6 +7,7 @@ public static class Routes
 
     // Commands
     public const string CreateVehicle = $"{Base}{Version}/create-vehicle";
+    public const string DeleteVehicle = $"{Base}{Version}/delete-vehicle";
     public const string AddActionTemplate = $"{Base}{Version}/add-action-template";
     public const string DeleteActionTemplate = $"{Base}{Version}/delete-action-template";
     public const string AddAction = $"{Base}{Version}/add-action";
