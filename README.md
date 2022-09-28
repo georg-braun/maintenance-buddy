@@ -56,9 +56,21 @@ To get everything running you need an authentication provider (e.g. Auth0), a po
 
 ## [1/4] Setup an authentication provider
 
+I will show the necessary Auth0 steps 
+- [ ] create application
+  - [ ] redirects, allowed origins, ...
+- [ ] create api
+
+
 ## [2/4] Setup database
 
+- [ ] run docker container with postgresql
+- [ ] migration cli
+
 ## [3/4] Setup backend
+
+- [ ] add environment variables
+  - [ ] secrets manager
 
 ## [4/4] Setup frontend
 
@@ -70,6 +82,8 @@ PUBLIC_AUTH_DOMAIN=
 PUBLIC_AUTH_CLIENT_ID=
 PUBLIC_AUTH_AUDIENCE=
 ```
+- [ ] add backend env
+
 
 After this you can
 ```
