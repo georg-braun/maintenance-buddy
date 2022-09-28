@@ -27,37 +27,52 @@ You get a list of pending maintenances or maintenances that will be relevant in 
 ### Get a notification of pending changes
 The idea is to get a notification via mail
 
-## Technologies and techniques
+## Technologies, techniques and principles
 
 Used technologies:
 - Backend (API)
   - ASP.NET Core
   - Entity Framework Core
   - data persistence with a PostgreSQL database
+  - API is designed in CQRS style instead of REST
   - deployment in a docker container on a digital ocean vps
   - Integration tests that cover the whole API (I like to develop new API endpoints in a TDD manner)
   - Continuous integration on every github commit 
+  - Continuous deployment of the container image on every PR merge to the release branch
 - Frontend
   - Svelte(Kit)
-  - deployed via vercel
+  - deployed via vercel with every commit to the release branch
 - Authentication (Frontend + API)
   - Auth0
 
 
-Used techniques:
-- CQRS backend API design instead of REST
+General development principles:
 - YAGNI - You aren't gonna need it: Especially the backend has some potential technial debts (e.g. domain objects as persistence objects). But as long as it's not necessary I won't refactor this. But it's important to be aware of these things.
 
 
-# Local dev setup
+# How can I setup this on my computer?
 
-## Webapp
+To get everything running you need an authentication provider (e.g. Auth0), a postgresql database and you have to configure some things in the back- and frontend
 
-### Add authentication
+## [1/4] Setup an authentication provider
 
-- create `.env` and add the necessary environment varialbes with a `PUBLIC_` prefix
+## [2/4] Setup database
+
+## [3/4] Setup backend
+
+## [4/4] Setup frontend
+
+To use the correct authentication provider and to talk to the correct backend you have to set some environment variables.
+
+One possibility is to create a `.env` file and add the necessary environment varialbes with a `PUBLIC_` prefix
 ```
 PUBLIC_AUTH_DOMAIN=
 PUBLIC_AUTH_CLIENT_ID=
 PUBLIC_AUTH_AUDIENCE=
+```
+
+After this you can
+```
+npm install
+npm run dev
 ```
