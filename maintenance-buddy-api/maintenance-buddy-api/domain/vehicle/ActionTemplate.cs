@@ -51,10 +51,19 @@ public class ActionTemplate
 
     public void ChangeActionKilometer(Guid actionId, int kilometer)
     {
-        var action = Actions.FirstOrDefault(_ => _.Id.Equals(actionId));
-        if (action is null)
-            return;
-
-        action.ChangeKilometer(kilometer);
+        GetAction(actionId)?.ChangeKilometer(kilometer);
     }
+
+    public void ChangeActionNote(Guid actionId, string note)
+    {
+        GetAction(actionId)?.ChangeNote(note);
+    }
+    
+    public void ChangeActionDate(Guid actionId, DateTime date)
+    {
+        GetAction(actionId)?.ChangeDate(date);
+    }
+
+
+    
 }

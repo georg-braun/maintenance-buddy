@@ -76,7 +76,7 @@ public class VehicleEndpointTests
     }
     
     [Fact]
-    public async Task ChangeActionKilometer()
+    public async Task ChangeActionProperties()
     {
         /// Arrange
         var client = new IntegrationTest().GetClient();
@@ -86,13 +86,16 @@ public class VehicleEndpointTests
         // act
         var addOilActionCommand = new AddActionCommand(vehicle.Id, oilActionTemplate.Id, new DateTime(2022,9,3), 2000, "5W50");
         var action = await AddActionAsync(client, addOilActionCommand);
-        await client.PostAsync(Routes.ChangeActionKilometer,
-            Serialize(new ChangeActionKilometerCommand(vehicle.Id, oilActionTemplate.Id, action.Id, 4000)));
+        await client.PostAsync(Routes.ChangeActionKilometer, Serialize(new ChangeActionKilometerCommand(vehicle.Id, oilActionTemplate.Id, action.Id, 4000)));
+        await client.PostAsync(Routes.ChangeActionDate, Serialize(new ChangeActionDateCommand(vehicle.Id, oilActionTemplate.Id, action.Id, new DateTime(2022,10,3))));
+        await client.PostAsync(Routes.ChangeActionNote, Serialize(new ChangeActionNoteCommand(vehicle.Id, oilActionTemplate.Id, action.Id, "10W40")));
         
         // Assert
         var actions = await GetActionsOfVehicleAsync(client, vehicle.Id);
         actions.Should().HaveCount(1);
         actions.First().Kilometer.Should().Be(4000);
+        actions.First().Date.Should().Be(new DateTime(2022,10,3));
+        actions.First().Note.Should().Be("10W40");
     }
 
 

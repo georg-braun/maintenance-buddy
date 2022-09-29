@@ -21,5 +21,7 @@ public static class Routes
     public const string ActionsQuery = $"{Base}{Version}/get-actions-of-template";
     public const string ActionsOfVehicleQuery = $"{Base}{Version}/get-actions-of-vehicle";
     public const string VehiclesQuery = $"{Base}{Version}/get-vehicles";
-    public static string ChangeActionKilometer = $"{Base}{Version}/change-action-kilometer";
+    public const string ChangeActionKilometer = $"{Base}{Version}/change-action-kilometer";
+    public const string ChangeActionNote = $"{Base}{Version}/change-action-note";
+    public const string ChangeActionDate = $"{Base}{Version}/change-action-date";
 }

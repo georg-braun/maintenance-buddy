@@ -56,6 +56,8 @@ app.MapGet(Routes.ActionTemplateQuery, VehicleEndpoint.ActionTemplatesQuery);
 app.MapPost(Routes.AddAction, VehicleEndpoint.AddAction);
 app.MapPost(Routes.DeleteAction, VehicleEndpoint.DeleteAction);
 app.MapPost(Routes.ChangeActionKilometer, VehicleEndpoint.ChangeActionKilometer);
+app.MapPost(Routes.ChangeActionNote, VehicleEndpoint.ChangeActionNote);
+app.MapPost(Routes.ChangeActionDate, VehicleEndpoint.ChangeActionDate);
 app.MapGet(Routes.ActionsQuery, VehicleEndpoint.ActionsQuery);
 app.MapGet(Routes.ActionsOfVehicleQuery, VehicleEndpoint.ActionsOfVehicleQuery);
 

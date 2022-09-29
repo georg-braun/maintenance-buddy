@@ -7,3 +7,19 @@ public record ChangeActionKilometerCommand
     string ActionId,
     int Kilometer
 );
+
+public record ChangeActionNoteCommand
+(
+    string VehicleId,
+    string ActionTemplateId,
+    string ActionId,
+    string Note
+);
+
+public record ChangeActionDateCommand
+(
+    string VehicleId,
+    string ActionTemplateId,
+    string ActionId,
+    DateTime Date
+);

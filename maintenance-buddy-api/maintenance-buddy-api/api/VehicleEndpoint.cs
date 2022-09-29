@@ -173,6 +173,48 @@ public static class VehicleEndpoint
 
         return Results.Ok();
     }
+    
+    public static async Task<IResult> ChangeActionNote(ChangeActionNoteCommand command, VehicleContext context, ClaimsPrincipal claims)
+    {
+        var userId = ExtractUserId(claims);
+        var vehicleId = new Guid(command.VehicleId);
+        var actionTemplateId = new Guid(command.ActionTemplateId);
+        var actionId = new Guid(command.ActionId);
+
+        var vehicle = await (await context.GetVehicles(userId)).Include(_ => _.ActionTemplates).ThenInclude(_ => _.Actions)
+            .FirstOrDefaultAsync(_ => _.Id.Equals(vehicleId));
+
+        if (vehicle is null)
+            return Results.NotFound();
+        
+        vehicle.ChangeActionNote(actionTemplateId, actionId, command.Note);
+        context.UpdateVehicle(vehicle);
+        
+        await context.SaveChangesAsync();
+
+        return Results.Ok();
+    }
+    
+    public static async Task<IResult> ChangeActionDate(ChangeActionDateCommand command, VehicleContext context, ClaimsPrincipal claims)
+    {
+        var userId = ExtractUserId(claims);
+        var vehicleId = new Guid(command.VehicleId);
+        var actionTemplateId = new Guid(command.ActionTemplateId);
+        var actionId = new Guid(command.ActionId);
+
+        var vehicle = await (await context.GetVehicles(userId)).Include(_ => _.ActionTemplates).ThenInclude(_ => _.Actions)
+            .FirstOrDefaultAsync(_ => _.Id.Equals(vehicleId));
+
+        if (vehicle is null)
+            return Results.NotFound();
+        
+        vehicle.ChangeActionDate(actionTemplateId, actionId, command.Date);
+        context.UpdateVehicle(vehicle);
+        
+        await context.SaveChangesAsync();
+
+        return Results.Ok();
+    }
 
     public static async Task<IResult> ActionTemplatesQuery(string vehicleId, VehicleContext context, ClaimsPrincipal claims)
     {

@@ -102,11 +102,26 @@ public class Vehicle
 
     public void ChangeActionKilometer(Guid actionTemplateId, Guid actionId, int kilometer)
     {
-        var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
-        if (actionTemplate is null)
-            return;
+        var actionTemplate = GetActionTemplate(actionTemplateId);
+        actionTemplate?.ChangeActionKilometer(actionId, kilometer);
+    }
 
-        actionTemplate.ChangeActionKilometer(actionId, kilometer);
+    private ActionTemplate? GetActionTemplate(Guid actionTemplateId)
+    {
+        var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+        return actionTemplate;
+    }
+    
+    public void ChangeActionNote(Guid actionTemplateId, Guid actionId, string note)
+    {
+        var actionTemplate = GetActionTemplate(actionTemplateId);
+        actionTemplate?.ChangeActionNote(actionId, note);
+    }
+    
+    public void ChangeActionDate(Guid actionTemplateId, Guid actionId, DateTime date)
+    {
+        var actionTemplate = GetActionTemplate(actionTemplateId);
+        actionTemplate?.ChangeActionDate(actionId, date);
     }
 }
 
