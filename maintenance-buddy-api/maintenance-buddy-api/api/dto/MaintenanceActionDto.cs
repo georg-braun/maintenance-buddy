@@ -21,7 +21,8 @@ public static class ActionDtoMapper
             Id = action.Id.ToString(),
             ActionTemplateId = action.ActionTemplateId,
             Date = action.Date,
-            Note = action.Note
+            Note = action.Note,
+            Kilometer = action.Kilometer
         };
     }
 }

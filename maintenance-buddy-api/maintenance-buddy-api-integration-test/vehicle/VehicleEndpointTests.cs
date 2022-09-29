@@ -311,11 +311,11 @@ public class VehicleEndpointTests
         return JsonConvert.DeserializeObject<IEnumerable<MaintenanceAction>>(responseContent);
     }
     
-    private async Task<IEnumerable<MaintenanceAction>> GetActionsOfVehicleAsync(HttpClient client, string vehicleId)
+    private async Task<IEnumerable<MaintenanceActionDto>> GetActionsOfVehicleAsync(HttpClient client, string vehicleId)
     {
         var response = await client.GetAsync($"{Routes.ActionsOfVehicleQuery}/?vehicleId={vehicleId}");
         var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<IEnumerable<MaintenanceAction>>(responseContent);
+        return JsonConvert.DeserializeObject<IEnumerable<MaintenanceActionDto>>(responseContent);
     }
 
     private async Task<IEnumerable<VehicleDto>> GetVehiclesAsync(HttpClient client)
