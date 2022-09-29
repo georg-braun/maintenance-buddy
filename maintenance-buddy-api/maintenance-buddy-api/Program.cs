@@ -51,6 +51,9 @@ app.MapPost(Routes.ChangeVehicleKilometer, VehicleEndpoint.ChangeVehicleKilomete
 app.MapPost(Routes.AddActionTemplate, VehicleEndpoint.AddActionTemplate);
 app.MapPost(Routes.DeleteActionTemplate, VehicleEndpoint.DeleteActionTemplate);
 app.MapGet(Routes.ActionTemplateQuery, VehicleEndpoint.ActionTemplatesQuery);
+app.MapPost(Routes.ChangeActionTemplateName, VehicleEndpoint.ChangeActionTemplateName);
+app.MapPost(Routes.ChangeActionTemplateKilometerInterval, VehicleEndpoint.ChangeActionTemplateKilometerInterval);
+app.MapPost(Routes.ChangeActionTemplateTimeInterval, VehicleEndpoint.ChangeActionTemplateTimeInterval);
 
 // maintenance action
 app.MapPost(Routes.AddAction, VehicleEndpoint.AddAction);

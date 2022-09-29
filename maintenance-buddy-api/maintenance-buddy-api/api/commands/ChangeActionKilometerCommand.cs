@@ -23,3 +23,23 @@ public record ChangeActionDateCommand
     string ActionId,
     DateTime Date
 );
+
+public record ChangeActionTemplateNameCommand
+(
+    string VehicleId,
+    string ActionTemplateId,
+    string Name
+);
+
+public record ChangeActionTemplateKilometerIntervalCommand
+(
+    string VehicleId,
+    string ActionTemplateId,
+    int KilometerInterval
+);
+public record ChangeActionTemplateTimeIntervalCommand
+(
+    string VehicleId,
+    string ActionTemplateId,
+    TimeSpan TimeInterval
+);

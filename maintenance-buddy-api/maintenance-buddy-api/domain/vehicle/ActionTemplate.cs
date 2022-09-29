@@ -3,9 +3,9 @@ namespace maintenance_buddy_api.domain;
 public class ActionTemplate
 {
     public Guid Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public int KilometerInterval { get; init; }
-    public TimeSpan TimeInterval { get; init; }
+    public string Name { get; internal  set; } = string.Empty;
+    public int KilometerInterval { get; internal set; }
+    public TimeSpan TimeInterval { get; internal set; }
 
     public List<MaintenanceAction> Actions { get; }
 
@@ -65,5 +65,18 @@ public class ActionTemplate
     }
 
 
-    
+    public void ChangeKilometerInterval(int kilometerInterval)
+    {
+        KilometerInterval = kilometerInterval;
+    }
+
+    public void ChangeTimeInterval(TimeSpan timeInterval)
+    {
+        TimeInterval = timeInterval;
+    }
+
+    public void ChangeName(string name)
+    {
+        Name = name;
+    }
 }

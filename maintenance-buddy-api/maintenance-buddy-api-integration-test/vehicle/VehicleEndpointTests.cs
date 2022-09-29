@@ -97,6 +97,27 @@ public class VehicleEndpointTests
         actions.First().Date.Should().Be(new DateTime(2022,10,3));
         actions.First().Note.Should().Be("10W40");
     }
+    
+    [Fact]
+    public async Task ChangeActionTemplateProperties()
+    {
+        /// Arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365,0,0,0)));
+
+        // act
+        await client.PostAsync(Routes.ChangeActionTemplateName, Serialize(new ChangeActionTemplateNameCommand(vehicle.Id, oilActionTemplate.Id, "Tires")));
+        await client.PostAsync(Routes.ChangeActionTemplateKilometerInterval, Serialize(new ChangeActionTemplateKilometerIntervalCommand(vehicle.Id, oilActionTemplate.Id, 1000)));
+        await client.PostAsync(Routes.ChangeActionTemplateTimeInterval, Serialize(new ChangeActionTemplateTimeIntervalCommand(vehicle.Id, oilActionTemplate.Id, new TimeSpan(300,0,0,0))));
+        
+        // Assert
+        var actionTemplate = await GetActionTemplatesAsync(client, vehicle.Id);
+        actionTemplate.Should().HaveCount(1);
+        actionTemplate.First().Name.Should().Be("Tires");
+        actionTemplate.First().TimeInterval.Should().Be(new TimeSpan(300,0,0,0));
+        actionTemplate.First().KilometerInterval.Should().Be(1000);
+    }
 
 
     [Fact]
@@ -168,7 +189,9 @@ public class VehicleEndpointTests
         var actions = await GetActionsAsync(client, vehicle.Id, actionTemplate.Id);
         
         // Assert
-        actions.Should().Contain(_ => _.Date.Equals(actionDate));
+        actions.First().Date.Should().Be(actionDate);
+        actions.First().Note.Should().Be("5W50");
+        actions.First().Kilometer.Should().Be(2000);
     }
     
     [Fact]
@@ -307,11 +330,11 @@ public class VehicleEndpointTests
     }
 
 
-    private async Task<IEnumerable<MaintenanceAction>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
+    private async Task<IEnumerable<MaintenanceActionDto>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
     {
         var response = await client.GetAsync($"{Routes.ActionsQuery}/?vehicleId={vehicleId}&actionTemplateId={actionTemplateId}");
         var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<IEnumerable<MaintenanceAction>>(responseContent);
+        return JsonConvert.DeserializeObject<IEnumerable<MaintenanceActionDto>>(responseContent);
     }
     
     private async Task<IEnumerable<MaintenanceActionDto>> GetActionsOfVehicleAsync(HttpClient client, string vehicleId)
@@ -376,5 +399,5 @@ public class VehicleEndpointTests
 
 record VehicleDto(string Id, string Name, int Kilometer);
 
-record ActionTemplateDto(string Id, string Name);
+
 

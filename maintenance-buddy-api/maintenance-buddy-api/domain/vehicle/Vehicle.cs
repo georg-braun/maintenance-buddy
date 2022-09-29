@@ -123,6 +123,21 @@ public class Vehicle
         var actionTemplate = GetActionTemplate(actionTemplateId);
         actionTemplate?.ChangeActionDate(actionId, date);
     }
+
+    public void ChangeActionTemplateKilometerInterval(Guid actionTemplateId, int kilometerInterval)
+    {
+        GetActionTemplate(actionTemplateId)?.ChangeKilometerInterval(kilometerInterval);
+    }
+
+    public void ChangeActionTemplateTimeInterval(Guid actionTemplateId, TimeSpan timeInterval)
+    {
+        GetActionTemplate(actionTemplateId)?.ChangeTimeInterval(timeInterval);
+    }
+
+    public void ChangeActionTemplateName(Guid actionTemplateId, string name)
+    {
+        GetActionTemplate(actionTemplateId)?.ChangeName(name);
+    }
 }
 
 public static class VehicleFactory
