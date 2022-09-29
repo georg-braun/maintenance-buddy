@@ -99,6 +99,15 @@ public class Vehicle
     {
         Kilometer = kilometer;
     }
+
+    public void ChangeActionKilometer(Guid actionTemplateId, Guid actionId, int kilometer)
+    {
+        var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+        if (actionTemplate is null)
+            return;
+
+        actionTemplate.ChangeActionKilometer(actionId, kilometer);
+    }
 }
 
 public static class VehicleFactory

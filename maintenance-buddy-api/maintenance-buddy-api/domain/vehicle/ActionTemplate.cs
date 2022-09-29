@@ -6,46 +6,55 @@ public class ActionTemplate
     public string Name { get; init; } = string.Empty;
     public int KilometerInterval { get; init; }
     public TimeSpan TimeInterval { get; init; }
-    
-     public List<MaintenanceAction> Actions { get; }
 
-     public ActionTemplate()
-     {
-          Actions = new List<MaintenanceAction>();
-     }
+    public List<MaintenanceAction> Actions { get; }
 
-     public MaintenanceAction AddAction(int kilometer, DateTime date, string note)
-     {
-         var action = new MaintenanceAction()
-         {
-             Id = Guid.NewGuid(),
-             ActionTemplateId = Id,
-             Kilometer = kilometer,
-             Date = date,
-             Note = note 
-         };
-    
-         Actions.Add(action);
-         return action;
-     }
+    public ActionTemplate()
+    {
+        Actions = new List<MaintenanceAction>();
+    }
 
-     public IEnumerable<MaintenanceAction> GetActions()
-     {
-         return Actions;
-     }
+    public MaintenanceAction AddAction(int kilometer, DateTime date, string note)
+    {
+        var action = new MaintenanceAction()
+        {
+            Id = Guid.NewGuid(),
+            ActionTemplateId = Id,
+            Kilometer = kilometer,
+            Date = date,
+            Note = note
+        };
 
-     public MaintenanceAction? GetAction(Guid actionId)
-     {
-         return Actions.FirstOrDefault(_ => _.Id.Equals(actionId));
-     }
+        Actions.Add(action);
+        return action;
+    }
 
-     public void DeleteAction(Guid actionId)
-     {
-         var action = GetAction(actionId);
+    public IEnumerable<MaintenanceAction> GetActions()
+    {
+        return Actions;
+    }
 
-         if (action is null)
-             return;
+    public MaintenanceAction? GetAction(Guid actionId)
+    {
+        return Actions.FirstOrDefault(_ => _.Id.Equals(actionId));
+    }
 
-         Actions.Remove(action);
-     }
+    public void DeleteAction(Guid actionId)
+    {
+        var action = GetAction(actionId);
+
+        if (action is null)
+            return;
+
+        Actions.Remove(action);
+    }
+
+    public void ChangeActionKilometer(Guid actionId, int kilometer)
+    {
+        var action = Actions.FirstOrDefault(_ => _.Id.Equals(actionId));
+        if (action is null)
+            return;
+
+        action.ChangeKilometer(kilometer);
+    }
 }

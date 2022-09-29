@@ -8,6 +8,7 @@ using budget_backend_integration_tests.backend;
 using FluentAssertions;
 using maintenance_buddy_api.api;
 using maintenance_buddy_api.api.commands;
+using maintenance_buddy_api.api.dto;
 using maintenance_buddy_api.domain;
 using Newtonsoft.Json;
 using Xunit;
@@ -74,6 +75,27 @@ public class VehicleEndpointTests
         vehicles.First().Kilometer.Should().Be(40000);
     }
     
+    [Fact]
+    public async Task ChangeActionKilometer()
+    {
+        /// Arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+
+        // act
+        var addOilActionCommand = new AddActionCommand(vehicle.Id, oilActionTemplate.Id, new DateTime(2022,9,3), 2000, "5W50");
+        var action = await AddActionAsync(client, addOilActionCommand);
+        await client.PostAsync(Routes.ChangeActionKilometer,
+            Serialize(new ChangeActionKilometerCommand(vehicle.Id, oilActionTemplate.Id, action.Id, 4000)));
+        
+        // Assert
+        var actions = await GetActionsOfVehicleAsync(client, vehicle.Id);
+        actions.Should().HaveCount(1);
+        actions.First().Kilometer.Should().Be(4000);
+    }
+
+
     [Fact]
     public async Task AddActionTemplateCommand_CreatesANewActionTemplate()
     {
@@ -182,7 +204,7 @@ public class VehicleEndpointTests
         var action = await AddActionAsync(client, new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50"));
         
         // act
-        await DeleteAction(client, vehicle.Id, actionTemplate.Id, action.Id.ToString());
+        await DeleteAction(client, vehicle.Id, actionTemplate.Id, action.Id);
 
         // Assert
         var actions = await GetActionsAsync(client, vehicle.Id, actionTemplate.Id);
@@ -273,12 +295,12 @@ public class VehicleEndpointTests
         await client.PostAsync(Routes.DeleteAction, Serialize(deleteActionCommand));
     }
 
-    private async Task<MaintenanceAction> AddActionAsync(HttpClient client, AddActionCommand addActionCommand)
+    private async Task<MaintenanceActionDto> AddActionAsync(HttpClient client, AddActionCommand addActionCommand)
     {
         var response =  await client.PostAsync(Routes.AddAction, Serialize(addActionCommand));
 
         var responseContent = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<MaintenanceAction>(responseContent);
+        return JsonConvert.DeserializeObject<MaintenanceActionDto>(responseContent);
     }
 
 

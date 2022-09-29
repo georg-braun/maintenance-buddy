@@ -1,7 +1,7 @@
 namespace maintenance_buddy_api.api.commands;
 
-public record CreateVehicleCommand
+public record ChangeVehicleKilometerCommand
 (
-    string Name,
+    string VehicleId,
     int Kilometer
 );
