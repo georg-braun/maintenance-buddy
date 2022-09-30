@@ -15,10 +15,8 @@ I own some bicycles and motorcycles which I maintain. In the past I used some ex
 The app has a [web frontend](https://maintenance-buddy.georg-braun.de) that connects to a backend. The backend persists the data in a database and run some calculations on the provided data (like peneding maintenances) and supply these information via some endpoints.
 
 
-### ✔️ Manage vehicles and their action templates 
+### ✔️ Manage vehicles and their maintenances
 You can add vehicles and add necessary maintenances templates. A template is a recurring maintenance like a oil exchange every 5000 km or every year.
-
-### ✔️ Manage finished maintenances
 Add a finished maintenance that corresponds to a previously created maintenance template.
 
 ### See pending maintenances
