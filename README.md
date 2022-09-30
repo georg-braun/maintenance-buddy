@@ -5,7 +5,7 @@ The history and notes of maintenances will simplify maintenances in the future a
 
 ## Motivation
 
-I own some bicycles and motorcycles which I maintain. In the past I used some excel sheets about the done maintenances. But I didn't saw what maintenances are pending. Therefore I started to create an application that helps me. In future the app shouldn't be limited to vehicles.
+I own some bicycles and motorcycles which I maintain. In the past I used some excel sheets about the maintenances. But I didn't saw what maintenances are pending. Therefore I started to create an application that helps me. In future the app shouldn't be limited to vehicles.
 
 
 ## Features and Roadmap
@@ -66,6 +66,16 @@ I will show the necessary Auth0 steps
 - [ ] migration cli
 
 ## [3/4] Setup backend
+
+You have to add authentication parameters (e.g. Auth0) and the connection string to the PostgreSQL database.
+
+One possiblity is to modify the appsettings.json
+```json
+  "DbConnectionString": "Host=localhost;Port=5432;Database=maintenance;Username=postgres;Password=postgres",
+  "AuthProvider": {
+    "Authority": "",
+    "Audience": ""
+```
 
 - [ ] add environment variables
   - [ ] secrets manager
