@@ -2,7 +2,6 @@ namespace maintenance_buddy_api.domain;
 
 public class ActionTemplate
 {
-
     public static ActionTemplate Create(Guid id, string name, int kilometerInterval, TimeSpan timeInterval)
     {
         return new ActionTemplate()
@@ -11,11 +10,14 @@ public class ActionTemplate
             Name = name,
             KilometerInterval = kilometerInterval,
             TimeInterval = timeInterval,
-            Actions = new List<MaintenanceAction>()
         };
 
     }
-    private ActionTemplate() { }
+
+    private ActionTemplate()
+    {
+        Actions = new List<MaintenanceAction>();
+    }
 
     public Guid Id { get; init; }
     public string Name { get; internal set; } = string.Empty;

@@ -324,6 +324,21 @@ public static class VehicleEndpoint
         return Results.Ok(actionDtos);
     }
     
+    public static async Task<IResult> VehiclePendingActionsQuery(string vehicleId, VehicleContext context, ClaimsPrincipal claims)
+    {
+        var userId = ExtractUserId(claims);
+        var vehicleGuid = new Guid(vehicleId);
+
+        var vehicle = await (await context.GetVehicles(userId)).Include(_ => _.ActionTemplates).ThenInclude(_ => _.Actions)
+            .FirstOrDefaultAsync(_ => _.Id.Equals(vehicleGuid));
+
+        if (vehicle is null)
+            return Results.NotFound("Vehicle not found.");
+
+        var pendingActions = vehicle.GetPendingActions(DateTime.Today.ToUniversalTime());
+        return Results.Ok(pendingActions);
+    }
+    
     public static async Task<IResult> VehiclesQuery(VehicleContext context, ClaimsPrincipal claims)
     {
         var userId = ExtractUserId(claims);

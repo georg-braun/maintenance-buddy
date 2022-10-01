@@ -28,5 +28,7 @@ public static class Routes
     public const string ActionsQuery = $"{Base}{Version}/get-actions-of-template";
     public const string ActionsOfVehicleQuery = $"{Base}{Version}/get-actions-of-vehicle";
     public const string VehiclesQuery = $"{Base}{Version}/get-vehicles";
+    public const string VehiclePendingActions = $"{Base}{Version}/get-vehicle-pending-actions";
+    
     
 }

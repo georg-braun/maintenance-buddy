@@ -236,6 +236,25 @@ public class VehicleEndpointTests
         var actions = await GetActionsAsync(client, vehicle.Id, actionTemplate.Id);
         actions.Should().NotContain(_ => _.Date.Equals(actionDate));
     }
+    
+    [Fact]
+    public async Task Vehicle_GetPendingActions()
+    {
+        // Arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 20000));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        
+        var actionDate = DateTime.Today.ToUniversalTime();
+        var action = await AddActionAsync(client, new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 12000, "5W50"));
+        
+        // act
+        var pendingActions = await GetPendingActionsAsync(client, vehicle.Id);
+
+        // Assert
+        pendingActions.Should().HaveCount(1);
+        pendingActions.First().KilometerTillAction.Should().Be(-3000);
+    }
 
     [Fact]
     public async Task GetAllVehicles()
@@ -342,6 +361,13 @@ public class VehicleEndpointTests
         var response = await client.GetAsync($"{Routes.ActionsOfVehicleQuery}/?vehicleId={vehicleId}");
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<IEnumerable<MaintenanceActionDto>>(responseContent);
+    }
+    
+    private async Task<IEnumerable<PendingAction>> GetPendingActionsAsync(HttpClient client, string vehicleId)
+    {
+        var response = await client.GetAsync($"{Routes.VehiclePendingActions}/?vehicleId={vehicleId}");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<IEnumerable<PendingAction>>(responseContent);
     }
 
     private async Task<IEnumerable<VehicleDto>> GetVehiclesAsync(HttpClient client)

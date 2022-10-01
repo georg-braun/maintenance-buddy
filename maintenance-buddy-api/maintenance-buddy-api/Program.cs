@@ -64,6 +64,8 @@ app.MapPost(Routes.ChangeActionDate, VehicleEndpoint.ChangeActionDate);
 app.MapGet(Routes.ActionsQuery, VehicleEndpoint.ActionsQuery);
 app.MapGet(Routes.ActionsOfVehicleQuery, VehicleEndpoint.ActionsOfVehicleQuery);
 
+// pending actions
+app.MapGet(Routes.VehiclePendingActions, VehicleEndpoint.VehiclePendingActionsQuery);
 
 app.Run();
 
