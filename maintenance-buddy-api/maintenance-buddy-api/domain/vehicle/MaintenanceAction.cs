@@ -2,6 +2,10 @@ namespace maintenance_buddy_api.domain;
 
 public class MaintenanceAction
 {
+    private MaintenanceAction()
+    {
+    }
+
     public int Kilometer { get; internal set; }
     public Guid Id { get; init; }
     
@@ -22,5 +26,17 @@ public class MaintenanceAction
     public void ChangeDate(DateTime date)
     {
         Date = date;
+    }
+
+    public static MaintenanceAction Create(Guid id, Guid actionTemplateId, int kilometer, DateTime date, string note)
+    {
+        return new MaintenanceAction()
+        {
+            Id = id,
+            ActionTemplateId = actionTemplateId,
+            Kilometer = kilometer,
+            Date = date,
+            Note = note
+        };
     }
 }

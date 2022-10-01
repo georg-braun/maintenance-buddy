@@ -25,12 +25,11 @@ public class Vehicle
 
     public ActionTemplate AddActionTemplate(string name, int kilometerInterval, TimeSpan timeInterval)
     {
-        var actionTemplate = new ActionTemplate(){
-            Id = Guid.NewGuid(),
-            Name = name,
-            KilometerInterval = kilometerInterval,
-            TimeInterval = timeInterval
-        };
+        var actionTemplate = ActionTemplate.Create(
+            Guid.NewGuid(),
+            name,
+            kilometerInterval,
+            timeInterval);
         
         ActionTemplates.Add(actionTemplate);
         return actionTemplate;
@@ -137,6 +136,11 @@ public class Vehicle
     public void ChangeActionTemplateName(Guid actionTemplateId, string name)
     {
         GetActionTemplate(actionTemplateId)?.ChangeName(name);
+    }
+
+    public IEnumerable<PendingAction> GetPendingActions(DateTime checkDate)
+    {
+        return ActionTemplates.Select(_ => _.GetPendingAction(checkDate, Kilometer));
     }
 }
 

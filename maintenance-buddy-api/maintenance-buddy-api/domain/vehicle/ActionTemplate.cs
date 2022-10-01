@@ -2,28 +2,37 @@ namespace maintenance_buddy_api.domain;
 
 public class ActionTemplate
 {
+
+    public static ActionTemplate Create(Guid id, string name, int kilometerInterval, TimeSpan timeInterval)
+    {
+        return new ActionTemplate()
+        {
+            Id = id,
+            Name = name,
+            KilometerInterval = kilometerInterval,
+            TimeInterval = timeInterval,
+            Actions = new List<MaintenanceAction>()
+        };
+
+    }
+    private ActionTemplate() { }
+
     public Guid Id { get; init; }
-    public string Name { get; internal  set; } = string.Empty;
+    public string Name { get; internal set; } = string.Empty;
     public int KilometerInterval { get; internal set; }
     public TimeSpan TimeInterval { get; internal set; }
 
-    public List<MaintenanceAction> Actions { get; }
-
-    public ActionTemplate()
-    {
-        Actions = new List<MaintenanceAction>();
-    }
+    public List<MaintenanceAction> Actions { get; internal set; } = null!;
 
     public MaintenanceAction AddAction(int kilometer, DateTime date, string note)
     {
-        var action = new MaintenanceAction()
-        {
-            Id = Guid.NewGuid(),
-            ActionTemplateId = Id,
-            Kilometer = kilometer,
-            Date = date,
-            Note = note
-        };
+        var action = MaintenanceAction.Create(
+            Guid.NewGuid(),
+            Id,
+            kilometer,
+            date,
+            note
+        );
 
         Actions.Add(action);
         return action;
@@ -58,7 +67,7 @@ public class ActionTemplate
     {
         GetAction(actionId)?.ChangeNote(note);
     }
-    
+
     public void ChangeActionDate(Guid actionId, DateTime date)
     {
         GetAction(actionId)?.ChangeDate(date);
@@ -78,5 +87,42 @@ public class ActionTemplate
     public void ChangeName(string name)
     {
         Name = name;
+    }
+
+    public PendingAction GetPendingAction(DateTime checkDate, int vehicleKilometer)
+    {
+        
+        TimeSpan timespanTillAction = new TimeSpan();
+        var kilometerTillAction = 0;
+        
+        if (Actions.Count > 0)
+        {
+            // assume that the kilometer doesn't decrease with time :> (no engine change)
+            var latestAction = Actions.MaxBy(_ => _.Date)!;
+            timespanTillAction = latestAction.Date.Add(TimeInterval) - checkDate;
+            kilometerTillAction = latestAction.Kilometer + KilometerInterval - vehicleKilometer;
+        }
+        
+        return PendingAction.Create(Id, timespanTillAction, kilometerTillAction);
+    }
+}
+
+public class PendingAction
+{
+    public Guid ActionTemplateId { get; init; }
+    public TimeSpan TimeTillAction { get; init; }
+    public int KilometerTillAction { get; init; }
+    public bool Exceeded => TimeTillAction.Ticks < 0 || KilometerTillAction < 0;
+
+    private PendingAction(){}
+
+    public static PendingAction Create(Guid actionTemplateId, TimeSpan timeTillAction, int kilometer)
+    {
+        return new PendingAction
+        {
+            ActionTemplateId = actionTemplateId,
+            TimeTillAction = timeTillAction,
+            KilometerTillAction = kilometer
+        };
     }
 }
