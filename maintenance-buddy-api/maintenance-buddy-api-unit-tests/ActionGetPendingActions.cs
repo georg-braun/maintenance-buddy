@@ -38,7 +38,7 @@ public class ActionGetPendingActions
         pendingAction.KilometerTillAction.Should().Be(-8000);
         pendingAction.TimeTillAction.Should().Be(TimeSpan.FromDays(11));
         pendingAction.ActionTemplateId.Should().Be(actionTemplate.Id);
-        pendingAction.Exceeded.Should().BeFalse();
+        pendingAction.Exceeded.Should().BeTrue();
     }
     
     [Fact]
