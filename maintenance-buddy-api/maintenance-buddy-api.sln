@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maintenance-buddy-api-integ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maintenance-buddy-api-unit-tests", "maintenance-buddy-api-unit-tests\maintenance-buddy-api-unit-tests.csproj", "{05595F23-C8F8-49A5-A42F-AC89C6847BF1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{115B80B3-A4BD-4861-BC09-03203DD6D4E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{05595F23-C8F8-49A5-A42F-AC89C6847BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05595F23-C8F8-49A5-A42F-AC89C6847BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05595F23-C8F8-49A5-A42F-AC89C6847BF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A17B7904-AC3F-41DF-9906-3A441B5BC7F5} = {115B80B3-A4BD-4861-BC09-03203DD6D4E1}
+		{05595F23-C8F8-49A5-A42F-AC89C6847BF1} = {115B80B3-A4BD-4861-BC09-03203DD6D4E1}
 	EndGlobalSection
 EndGlobal
