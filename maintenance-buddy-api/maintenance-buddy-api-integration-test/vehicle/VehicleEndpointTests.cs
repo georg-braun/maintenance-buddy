@@ -351,14 +351,14 @@ public class VehicleEndpointTests
 
     private async Task<IEnumerable<MaintenanceActionDto>> GetActionsAsync(HttpClient client, string vehicleId, string actionTemplateId)
     {
-        var response = await client.GetAsync($"{Routes.ActionsQuery}/?vehicleId={vehicleId}&actionTemplateId={actionTemplateId}");
+        var response = await client.GetAsync($"{Routes.ActionsByTemplate}/?vehicleId={vehicleId}&actionTemplateId={actionTemplateId}");
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<IEnumerable<MaintenanceActionDto>>(responseContent);
     }
     
     private async Task<IEnumerable<MaintenanceActionDto>> GetActionsOfVehicleAsync(HttpClient client, string vehicleId)
     {
-        var response = await client.GetAsync($"{Routes.ActionsOfVehicleQuery}/?vehicleId={vehicleId}");
+        var response = await client.GetAsync($"{Routes.ActionsByVehicle}/?vehicleId={vehicleId}");
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<IEnumerable<MaintenanceActionDto>>(responseContent);
     }

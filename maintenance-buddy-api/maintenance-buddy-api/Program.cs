@@ -61,8 +61,8 @@ app.MapPost(Routes.DeleteAction, VehicleEndpoint.DeleteAction);
 app.MapPost(Routes.ChangeActionKilometer, VehicleEndpoint.ChangeActionKilometer);
 app.MapPost(Routes.ChangeActionNote, VehicleEndpoint.ChangeActionNote);
 app.MapPost(Routes.ChangeActionDate, VehicleEndpoint.ChangeActionDate);
-app.MapGet(Routes.ActionsQuery, VehicleEndpoint.ActionsQuery);
-app.MapGet(Routes.ActionsOfVehicleQuery, VehicleEndpoint.ActionsOfVehicleQuery);
+app.MapGet(Routes.ActionsByTemplate, VehicleEndpoint.ActionsQuery);
+app.MapGet(Routes.ActionsByVehicle, VehicleEndpoint.ActionsOfVehicleQuery);
 
 // pending actions
 app.MapGet(Routes.VehiclePendingActions, VehicleEndpoint.VehiclePendingActionsQuery);
