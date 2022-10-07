@@ -1,14 +1,21 @@
 import { makeGetRequest, sendPost } from './api-service';
-import FakeServer from "./api-vehicles-faker"
 
-const fakeData = true;
-const fakeServer = new FakeServer()
 export async function getVehicles() {
-	return fakeServer.getVehicles();
+	try {
+		const response = await makeGetRequest('get-vehicles');
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 export async function getActionTemplates(vehicleId) {
-	return fakeServer.getActionTemplates(vehicleId);
+	try {
+		const response = await makeGetRequest(`get-action-templates/?vehicleId=${vehicleId}`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 export async function getActions(vehicleId) {
@@ -21,7 +28,12 @@ export async function getActions(vehicleId) {
 }
 
 export async function createVehicle(name, kilometer) {
-	fakeServer.createVehicle(name, kilometer)
+	const data = {
+		Name: name,
+		Kilometer: kilometer
+	};
+	const response = await sendPost('create-vehicle', data);
+	if (response.status === 201 || response.status === 200) console.log('vehicle created');
 }
 
 export async function addActionTemplate(vehicleId, name, kilometerInterval, timeInterval) {

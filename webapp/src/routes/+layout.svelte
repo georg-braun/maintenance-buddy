@@ -19,11 +19,13 @@
 	}
 
 	let { isAuthenticated, user } = auth;
+	// just for developing purposes to ignore the login
+	let ignoreAuthentication = true;
 </script>
 
 <main>
 	<div>
-		{#if $isAuthenticated}
+		{#if $isAuthenticated || ignoreAuthentication}
 			<Header />
 			<a href="/#" on:click={logout}>Log Out</a>
 			<span>{$user.name} ({$user.email})</span>
