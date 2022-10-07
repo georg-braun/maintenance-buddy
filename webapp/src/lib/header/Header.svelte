@@ -11,11 +11,11 @@
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
 		<ul>
-			<li class:active={$page.url.pathname === '/'}>
+			<li class:active={$page.url.pathname === '/vehicles'}>
 				<a href="/vehicles">Vehicles</a>
 			</li>
 
-			<li class:active={$page.url.pathname === '/todos'}>
+			<li class:active={$page.url.pathname === '/vehicles/create-vehicle'}>
 				<a href="/vehicles/create-vehicle">Add vehicle</a>
 			</li>
 		</ul>
