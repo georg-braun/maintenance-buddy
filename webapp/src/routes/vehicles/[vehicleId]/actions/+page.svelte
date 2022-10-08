@@ -43,7 +43,7 @@
 	{#each actions as action}
 		<div>
 			{getTemplateNameById(action.actionTemplateId)} {new Date(action.date).toLocaleDateString()}
-			{action.note}
+			{action.Note}
 		</div>
 	{/each}
 
@@ -52,7 +52,7 @@
 			<select bind:value={selectedActionTemplate}>
 				{#each actionTemplates as actionTemplate}
 					<option value={actionTemplate}>
-						{actionTemplate.name}
+						{actionTemplate.Name}
 					</option>
 				{/each}
 			</select>

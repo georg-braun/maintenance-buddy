@@ -1,21 +1,22 @@
 import FakeServer from "./api-vehicles-faker"
+import ApiServer from "./api-vehicles-http";
 
-const fakeData = true;
-const fakeServer = new FakeServer()
+
+const server = new ApiServer() //new FakeServer()
 export async function getVehicles() {
-	return fakeServer.getVehicles();
+	return server.getVehicles();
 }
 
 export async function getActionTemplates(vehicleId) {
-	return fakeServer.getActionTemplates(vehicleId);
+	return server.getActionTemplates(vehicleId);
 }
 
 export async function getVehicleSummary(vehicleId){
-	return fakeServer.getVehicleSummary(vehicleId);
+	//return server.getVehicleSummary(vehicleId);
 }
 
 export async function getActions(vehicleId) {
-
+	return server.getActions(vehicleId);
 }
 
 export async function createVehicle(name, kilometer) {

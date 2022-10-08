@@ -6,15 +6,17 @@ class FakeServer {
 	vehicles = [{ Id: 1, Name: "Opel", Kilometer: 50000 },
 	{ Id: 2, Name: "BMW", Kilometer: 33000 }]
 
-	actionTemplates = { 1: [{ Id: 1, name: "Oil exchange", KilometerInterval: 5000 }, 
+	actionTemplates = { 1: [{ Id: 1, Name: "Oil exchange", KilometerInterval: 5000 }, 
 	{ Id: 2, Name: "Lights", KilometerInterval: 50000 }] }
+
+	actions = {1: [{Id: 1, Kilometer: 2000, Note: "5W50"}]}
 
 	public async getVehicles() {
 		return this.vehicles;
 	}
 
 	public async getActionTemplates(vehicleId) {
-		//return this.actionTemplates[vehicleId];
+		return this.actionTemplates[vehicleId];
 	}
 
 	public async getVehicleSummary(vehicleId){
@@ -23,7 +25,7 @@ class FakeServer {
 	}
 
 	public async getActions(vehicleId) {
-
+		return this.actions[vehicleId]
 	}
 
 	public async createVehicle(name, kilometer) {

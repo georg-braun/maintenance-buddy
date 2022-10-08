@@ -24,7 +24,7 @@
 
 	.menu-item-active{
 		margin-right: 5px;
-		background-color: gray;
+		background-color: lightgray;
 	}
 
 </style>
