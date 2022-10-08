@@ -7,7 +7,7 @@
         <IsPackable>false</IsPackable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.7.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\maintenance-buddy-api\maintenance-buddy-api.csproj" />
+        <ProjectReference Include="..\maintenance-buddy-api\maintenance-buddy-api.csproj" />
     </ItemGroup>
 
 </Project>

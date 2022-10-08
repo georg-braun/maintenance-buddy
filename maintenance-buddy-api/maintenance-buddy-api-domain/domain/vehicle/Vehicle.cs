@@ -3,8 +3,8 @@ namespace maintenance_buddy_api.domain;
 public class Vehicle
 {
     public Guid Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public int Kilometer { get; init; }
+    public string Name { get; private set; } = string.Empty;
+    public int Kilometer { get; private set; }
 
     public ICollection<ActionTemplate> ActionTemplates { get;  init; }
 
@@ -25,12 +25,11 @@ public class Vehicle
 
     public ActionTemplate AddActionTemplate(string name, int kilometerInterval, TimeSpan timeInterval)
     {
-        var actionTemplate = new ActionTemplate(){
-            Id = Guid.NewGuid(),
-            Name = name,
-            KilometerInterval = kilometerInterval,
-            TimeInterval = timeInterval
-        };
+        var actionTemplate = ActionTemplate.Create(
+            Guid.NewGuid(),
+            name,
+            kilometerInterval,
+            timeInterval);
         
         ActionTemplates.Add(actionTemplate);
         return actionTemplate;
@@ -88,6 +87,60 @@ public class Vehicle
     private ActionTemplate? GetAction(Guid actionTemplateId)
     {
         return ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+    }
+
+    public void Rename(string name)
+    {
+        Name = name;
+    }
+
+    public void ChangeKilometer(int kilometer)
+    {
+        Kilometer = kilometer;
+    }
+
+    public void ChangeActionKilometer(Guid actionTemplateId, Guid actionId, int kilometer)
+    {
+        var actionTemplate = GetActionTemplate(actionTemplateId);
+        actionTemplate?.ChangeActionKilometer(actionId, kilometer);
+    }
+
+    private ActionTemplate? GetActionTemplate(Guid actionTemplateId)
+    {
+        var actionTemplate = ActionTemplates.FirstOrDefault(_ => _.Id.Equals(actionTemplateId));
+        return actionTemplate;
+    }
+    
+    public void ChangeActionNote(Guid actionTemplateId, Guid actionId, string note)
+    {
+        var actionTemplate = GetActionTemplate(actionTemplateId);
+        actionTemplate?.ChangeActionNote(actionId, note);
+    }
+    
+    public void ChangeActionDate(Guid actionTemplateId, Guid actionId, DateTime date)
+    {
+        var actionTemplate = GetActionTemplate(actionTemplateId);
+        actionTemplate?.ChangeActionDate(actionId, date);
+    }
+
+    public void ChangeActionTemplateKilometerInterval(Guid actionTemplateId, int kilometerInterval)
+    {
+        GetActionTemplate(actionTemplateId)?.ChangeKilometerInterval(kilometerInterval);
+    }
+
+    public void ChangeActionTemplateTimeInterval(Guid actionTemplateId, TimeSpan timeInterval)
+    {
+        GetActionTemplate(actionTemplateId)?.ChangeTimeInterval(timeInterval);
+    }
+
+    public void ChangeActionTemplateName(Guid actionTemplateId, string name)
+    {
+        GetActionTemplate(actionTemplateId)?.ChangeName(name);
+    }
+
+    public IEnumerable<PendingAction> GetPendingActions(DateTime checkDate)
+    {
+        return ActionTemplates.Select(_ => _.GetPendingAction(checkDate, Kilometer));
     }
 }
 

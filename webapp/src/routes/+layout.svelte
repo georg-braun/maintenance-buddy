@@ -4,10 +4,12 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import auth from '../auth-service';
+	
 
 	onMount(async () => {
-		console.log('Mounting app');
-		await auth.createClient();
+		console.log(env?.PUBLIC_DEV_MODE);
+		if (env?.PUBLIC_DEV_MODE != "active")
+			await auth.createClient();
 	});
 
 	function login() {
@@ -19,14 +21,15 @@
 	}
 
 	let { isAuthenticated, user } = auth;
+	// just for developing purposes to ignore the login
 </script>
 
 <main>
 	<div>
-		{#if $isAuthenticated}
-			<Header />
+		{#if $isAuthenticated || env?.PUBLIC_DEV_MODE == "active"}
 			<a href="/#" on:click={logout}>Log Out</a>
 			<span>{$user.name} ({$user.email})</span>
+			<Header />
 			<slot />
 		{:else}
 			<a href="/#" on:click={login}>Log In</a>

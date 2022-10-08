@@ -47,10 +47,10 @@ public class SqLiteWebApplicationFactory<TStartup>
 
         SetTokenValidationParameters(builder);
     }
-    
+
     /// <summary>
-    /// Modifies the existing Token Validation Parameters in the web server app.
-    /// The result is that the web server accepts tokens issued from the test project.
+    ///     Modifies the existing Token Validation Parameters in the web server app.
+    ///     The result is that the web server accepts tokens issued from the test project.
     /// </summary>
     /// <param name="builder"></param>
     private void SetTokenValidationParameters(IWebHostBuilder builder)
@@ -69,7 +69,7 @@ public class SqLiteWebApplicationFactory<TStartup>
             });
         });
     }
-    
+
 
     private void EnsureThatDatabaseIsCreated(IServiceCollection services)
     {

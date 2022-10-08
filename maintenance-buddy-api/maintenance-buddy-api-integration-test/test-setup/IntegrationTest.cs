@@ -13,10 +13,10 @@ namespace budget_backend_integration_tests.backend;
 /// </summary>
 public class IntegrationTest : IDisposable
 {
-    private SqliteConnection _connection;
     private readonly SqLiteWebApplicationFactory<Program> _appFactory;
-    private Dictionary<string, string> TokenByUser = new();
     private HttpClient? _client;
+    private SqliteConnection _connection;
+    private readonly Dictionary<string, string> TokenByUser = new();
 
     public IntegrationTest()
     {
@@ -24,11 +24,16 @@ public class IntegrationTest : IDisposable
 
         if (_connection is null)
             throw new NullException(_connection);
-        
+
         _appFactory = new SqLiteWebApplicationFactory<Program>(_connection);
     }
 
-    
+    public void Dispose()
+    {
+        // Sqlite in-memory data is cleared with connection dispose.
+        _connection.Dispose();
+    }
+
 
     /// <summary>
     ///     Creates a new client.
@@ -40,7 +45,7 @@ public class IntegrationTest : IDisposable
         SetClientSession("default");
         return _client;
     }
-    
+
     /// <summary>
     ///     Get the client and sets the corresponding token.
     ///     WARNING: The client session is shared! The session of preceding is modified
@@ -53,21 +58,14 @@ public class IntegrationTest : IDisposable
         if (!TokenByUser.TryGetValue(user, out token))
         {
             token = TestTokenIssuer.GenerateBearerToken();
-           TokenByUser.Add(user, token); 
+            TokenByUser.Add(user, token);
         }
-        
+
         _client ??= _appFactory.CreateClient();
 
         // add the bearer token of the requested user
         _client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", token);
-        
-    }
-
-    public void Dispose()
-    {
-        // Sqlite in-memory data is cleared with connection dispose.
-        _connection.Dispose();
     }
 
     private void StartSqliteConnection()

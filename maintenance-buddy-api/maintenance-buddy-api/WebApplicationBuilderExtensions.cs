@@ -8,22 +8,22 @@ public static class WebApplicationBuilderExtensions
 
     public static WebApplicationBuilder AddBearerAuthentication(this WebApplicationBuilder builder)
     {
-        var domain = builder.Configuration["AuthProvider:Authority"];
+        var authority = builder.Configuration["AuthProvider:Authority"];
         var audience = builder.Configuration["AuthProvider:Audience"];
     
-        if (string.IsNullOrEmpty(domain) || string.IsNullOrEmpty(audience))
+        if (string.IsNullOrEmpty(authority) || string.IsNullOrEmpty(audience))
         {
             Console.WriteLine("At least one authentication parameter is empty!");    
         }
         
-        Console.WriteLine($"Domain: {domain}");
+        Console.WriteLine($"Domain: {authority}");
         Console.WriteLine($"Audience: {audience}");
 
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
             {
-                jwtOptions.Authority = domain;
+                jwtOptions.Authority = authority;
                 jwtOptions.Audience = audience;
                 jwtOptions.RequireHttpsMetadata = false;
             });

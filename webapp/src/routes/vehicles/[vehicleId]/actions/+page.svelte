@@ -3,7 +3,8 @@
 	import {
 		getActions,
 		addAction,
-		getActionTemplates
+		getActionTemplates,
+		deleteAction
 	} from '../../../../api-communication/api-vehicles';
 	import { page } from '$app/stores';
 
@@ -11,7 +12,6 @@
 
 	onMount(async () => {
 		if (vehicleId !== undefined) {
-
 			actionTemplates = await getActionTemplates(vehicleId);
 			actions = await getActions(vehicleId);
 			selectFirstActionTemplate();
@@ -42,13 +42,21 @@
 
 	{#each actions as action}
 		<div>
-			{getTemplateNameById(action.actionTemplateId)} {new Date(action.date).toLocaleDateString()}
+			{getTemplateNameById(action.actionTemplateId)}
+			{new Date(action.date).toLocaleDateString()}
 			{action.note}
+			<button
+				class="bg-red-200"
+				on:click={async () => {
+					console.log(action);
+					await deleteAction(vehicleId, action.actionTemplateId, action.id);
+				}}>Delete</button
+			>
 		</div>
 	{/each}
 
 	<div class="">
-		<div class="ml-4 my-auto">
+		<div class="my-auto">
 			<select bind:value={selectedActionTemplate}>
 				{#each actionTemplates as actionTemplate}
 					<option value={actionTemplate}>
