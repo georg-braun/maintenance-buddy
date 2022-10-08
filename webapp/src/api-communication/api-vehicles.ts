@@ -1,59 +1,36 @@
-import { makeGetRequest, sendPost } from './api-service';
+import FakeServer from './api-vehicles-faker';
+import ApiServer from './api-vehicles-http';
 
+const server = new ApiServer(); //new FakeServer()
 export async function getVehicles() {
-	try {
-		const response = await makeGetRequest('get-vehicles');
-		return response.data;
-	} catch (error) {
-		console.log(error);
-	}
+	return server.getVehicles();
 }
 
 export async function getActionTemplates(vehicleId) {
-	try {
-		const response = await makeGetRequest(`get-action-templates/?vehicleId=${vehicleId}`);
-		return response.data;
-	} catch (error) {
-		console.log(error);
-	}
+	return server.getActionTemplates(vehicleId);
+}
+
+export async function getVehicleSummary(vehicleId) {
+	//return server.getVehicleSummary(vehicleId);
 }
 
 export async function getActions(vehicleId) {
-	try {
-		const response = await makeGetRequest(`get-actions-of-vehicle/?vehicleId=${vehicleId}`);
-		return response.data;
-	} catch (error) {
-		console.log(error);
-	}
+	return server.getActions(vehicleId);
 }
 
 export async function createVehicle(name, kilometer) {
-	const data = {
-		Name: name,
-		Kilometer: kilometer
-	};
-	const response = await sendPost('create-vehicle', data);
-	if (response.status === 201 || response.status === 200) console.log('vehicle created');
+	server.createVehicle(name, kilometer);
 }
 
 export async function addActionTemplate(vehicleId, name, kilometerInterval, timeInterval) {
-	const data = {
-		VehicleId: vehicleId,
-		Name: name,
-		KilometerInterval: kilometerInterval
-	};
-	const response = await sendPost('add-action-template', data);
-	if (response.status === 201 || response.status === 200) console.log('action template added');
+	server.addActionTemplate(vehicleId, name, kilometerInterval, timeInterval);
 }
 
 export async function addAction(vehicleId, actionTemplateId, date, kilometer, note) {
-	const data = {
-		VehicleId: vehicleId,
-		ActionTemplateId: actionTemplateId,
-		Date: date,
-		Kilometer: kilometer,
-		Note: note
-	};
-	const response = await sendPost('add-action', data);
-	if (response.status === 201 || response.status === 200) console.log('action template added');
+	server.addAction(vehicleId, actionTemplateId, date, kilometer, note);
+}
+
+
+export async function deleteAction(vehicleId, actionTemplateId, actionId) {
+	server.deleteAction(vehicleId, actionTemplateId, actionId);
 }

@@ -134,6 +134,10 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> DeleteAction(DeleteActionCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
+        if (string.IsNullOrEmpty(command.ActionId) || string.IsNullOrEmpty(command.VehicleId) ||
+            string.IsNullOrEmpty(command.ActionTemplateId))
+            return Results.NotFound("missing id");
+        
         var userId = ExtractUserId(claims);
         var vehicleId = new Guid(command.VehicleId);
         var actionTemplateId = new Guid(command.ActionTemplateId);
