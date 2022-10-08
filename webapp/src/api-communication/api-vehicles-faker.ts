@@ -4,10 +4,10 @@ import { makeGetRequest, sendPost } from './api-service';
 class FakeServer {
 
 	vehicles = [{ Id: 1, Name: "Opel", Kilometer: 50000 },
-	{ id: 2, name: "BMW", kilometer: 33000 }]
+	{ Id: 2, Name: "BMW", Kilometer: 33000 }]
 
-	actionTemplates = { 1: [{ id: 1, name: "Oil exchange", KilometerInterval: 5000 }, 
-	{ id: 2, name: "Lights", KilometerInterval: 50000 }] }
+	actionTemplates = { 1: [{ Id: 1, name: "Oil exchange", KilometerInterval: 5000 }, 
+	{ Id: 2, Name: "Lights", KilometerInterval: 50000 }] }
 
 	public async getVehicles() {
 		return this.vehicles;

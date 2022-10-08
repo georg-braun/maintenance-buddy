@@ -16,8 +16,8 @@
 	{#each vehicles as vehicle}
 	<a href="/vehicles/{vehicle.Id}">
 		<div>
-			{vehicle.name}
-			{vehicle.kilometer} km
+			{vehicle.Name}
+			{vehicle.Kilometer} km
 		</div>
 	</a>
 	{/each}
