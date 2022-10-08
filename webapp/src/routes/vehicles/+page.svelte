@@ -14,11 +14,11 @@
 	<h1>Vehicles</h1>
 
 	{#each vehicles as vehicle}
+	<a href="/vehicles/{vehicle.Id}">
 		<div>
 			{vehicle.name}
 			{vehicle.kilometer} km
-			<a href="vehicles/{vehicle.id}/action-templates">Action templates</a>
-			<a href="vehicles/{vehicle.id}/actions">Actions</a>
 		</div>
+	</a>
 	{/each}
 </section>

@@ -3,7 +3,7 @@ import { makeGetRequest, sendPost } from './api-service';
 
 class FakeServer {
 
-	vehicles = [{ id: 1, name: "Opel", kilometer: 50000 },
+	vehicles = [{ Id: 1, Name: "Opel", Kilometer: 50000 },
 	{ id: 2, name: "BMW", kilometer: 33000 }]
 
 	actionTemplates = { 1: [{ id: 1, name: "Oil exchange", KilometerInterval: 5000 }, 
@@ -14,7 +14,12 @@ class FakeServer {
 	}
 
 	public async getActionTemplates(vehicleId) {
-		return this.actionTemplates[vehicleId];
+		//return this.actionTemplates[vehicleId];
+	}
+
+	public async getVehicleSummary(vehicleId){
+		let relevant = this.vehicles.filter(_ => _.Id == vehicleId)[0]
+		return relevant;
 	}
 
 	public async getActions(vehicleId) {
@@ -22,29 +27,15 @@ class FakeServer {
 	}
 
 	public async createVehicle(name, kilometer) {
-		this.vehicles.push({name: name, kilometer: kilometer})
+		
 	}
 
 	public async addActionTemplate(vehicleId, name, kilometerInterval, timeInterval) {
-		const data = {
-			VehicleId: vehicleId,
-			Name: name,
-			KilometerInterval: kilometerInterval
-		};
-		const response = await sendPost('add-action-template', data);
-		if (response.status === 201 || response.status === 200) console.log('action template added');
+		
 	}
 
 	public async addAction(vehicleId, actionTemplateId, date, kilometer, note) {
-		const data = {
-			VehicleId: vehicleId,
-			ActionTemplateId: actionTemplateId,
-			Date: date,
-			Kilometer: kilometer,
-			Note: note
-		};
-		const response = await sendPost('add-action', data);
-		if (response.status === 201 || response.status === 200) console.log('action template added');
+
 	}
 }
 
