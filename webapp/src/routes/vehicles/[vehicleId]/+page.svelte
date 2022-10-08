@@ -17,9 +17,12 @@
 
 <section>
 	<div>
-		{vehicle?.Name}
-		{vehicle?.Kilometer}
-		({vehicle?.Id})
+		ID: {vehicleId}
+		<!--
+		{vehicle?.name}
+		{vehicle?.kilometer}
+		({vehicle?.id})
+		-->
 	</div>
 
 	<a href="{vehicleId}/action-templates">Action templates</a>

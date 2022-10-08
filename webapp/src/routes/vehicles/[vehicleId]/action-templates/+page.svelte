@@ -23,7 +23,7 @@
 	<h1>Action Templates</h1>
 
 	{#each plans as plan}
-		<div>{plan.Name} ({plan.Id})</div>
+		<div>{plan.name} ({plan.id})</div>
 	{/each}
 
 	<div class="">

@@ -9,16 +9,15 @@
 	let vehicles = [];
 </script>
 
-
 <section>
 	<h1>Vehicles</h1>
 
 	{#each vehicles as vehicle}
-	<a href="/vehicles/{vehicle.Id}">
-		<div>
-			{vehicle.Name}
-			{vehicle.Kilometer} km
-		</div>
-	</a>
+		<a href="/vehicles/{vehicle.id}">
+			<div>
+				{vehicle.name}
+				{vehicle.kilometer} km
+			</div>
+		</a>
 	{/each}
 </section>

@@ -63,7 +63,11 @@ I will show the necessary Auth0 steps
 ## [2/4] Setup database
 
 - [ ] run docker container with postgresql
-- [ ] migration cli
+migration via cli tool
+
+```bash
+./utility-cli.exe migrate "Host=localhost;Port=5432;Database=maintenance;Username=postgres;Password=postgres" "C:\Development\Repositories\maintenance-buddy\maintenance-buddy-api\maintenance-buddy-api\Migrations"
+```
 
 ## [3/4] Setup backend
 
