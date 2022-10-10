@@ -3,7 +3,17 @@ import { makeGetRequest, sendPost } from './api-service';
 class ApiServer {
 	public async getVehicles() {
 		try {
-			const response = await makeGetRequest('vehicle');
+			const response = await makeGetRequest('vehicles');
+			if (response?.data == undefined) return [];
+			return response.data;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	public async getVehicle(vehicleId) {
+		try {
+			const response = await makeGetRequest(`vehicles/find/?vehicleId=${vehicleId}`);
 			if (response?.data == undefined) return [];
 			return response.data;
 		} catch (error) {

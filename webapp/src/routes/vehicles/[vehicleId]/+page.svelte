@@ -1,30 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { getVehicleSummary } from '../../../api-communication/api-vehicles';
-
+	import { getVehicle } from '../../../api-communication/api-vehicles';
 
 	onMount(async () => {
-		vehicle = await getVehicleSummary(vehicleId);
-		console.log(vehicle)
+		vehicle = await getVehicle(vehicleId);
+		console.log(vehicle);
 	});
 
 	let vehicle;
 	let vehicleId = $page.params.vehicleId;
-
 </script>
 
-
 <section>
+	<h1>{vehicle?.name}</h1>
 	<div>
-		ID: {vehicleId}
-		<!--
-		{vehicle?.name}
-		{vehicle?.kilometer}
-		({vehicle?.id})
-		-->
+		<div class="w-1/2 grid grid-rows-4 grid-cols-2">
+			<div>Name</div>
+			<div title={vehicle?.id}>{vehicle?.name}</div>
+			<div>Kilometer</div>
+			<div>{vehicle?.kilometer}</div>
+		</div>
 	</div>
 
-	<a href="{vehicleId}/action-templates">Action templates</a>
-	<a href="{vehicleId}/actions">Actions</a>
+	<h2>Actions</h2>
+	<ul>
+		<li>
+			<a href="{vehicleId}/action-templates">Templates</a>
+		</li>
+		<li>
+			<a href="{vehicleId}/actions">History</a>
+		</li>
+	</ul>
 </section>

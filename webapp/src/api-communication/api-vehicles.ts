@@ -10,8 +10,8 @@ export async function getActionTemplates(vehicleId) {
 	return server.getActionTemplates(vehicleId);
 }
 
-export async function getVehicleSummary(vehicleId) {
-	//return server.getVehicleSummary(vehicleId);
+export async function getVehicle(vehicleId) {
+	return server.getVehicle(vehicleId);
 }
 
 export async function getActions(vehicleId) {
@@ -29,7 +29,6 @@ export async function addActionTemplate(vehicleId, name, kilometerInterval, time
 export async function addAction(vehicleId, actionTemplateId, date, kilometer, note) {
 	server.addAction(vehicleId, actionTemplateId, date, kilometer, note);
 }
-
 
 export async function deleteAction(vehicleId, actionTemplateId, actionId) {
 	server.deleteAction(vehicleId, actionTemplateId, actionId);

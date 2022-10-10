@@ -10,14 +10,19 @@
 </script>
 
 <section>
-	<h1>Vehicles</h1>
+	<h1>Your vehicles 🚗</h1>
 
-	{#each vehicles as vehicle}
-		<a href="/vehicles/{vehicle.id}">
-			<div>
-				{vehicle.name}
-				{vehicle.kilometer} km
-			</div>
-		</a>
-	{/each}
+	<div class="flex">
+		{#each vehicles as vehicle}
+		<div class="mr-4 mb-4">
+			<a href="/vehicles/{vehicle.id}">
+				<div class="border rounded-md p-4">
+					<p title={vehicle.id} class="text-center">{vehicle.name}</p>
+					<p>{vehicle.kilometer} km</p>
+				</div>
+			</a>
+		</div>
+		{/each}
+	</div>
+	
 </section>
