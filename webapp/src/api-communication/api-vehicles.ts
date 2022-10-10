@@ -33,3 +33,8 @@ export async function addAction(vehicleId, actionTemplateId, date, kilometer, no
 export async function deleteAction(vehicleId, actionTemplateId, actionId) {
 	server.deleteAction(vehicleId, actionTemplateId, actionId);
 }
+
+export async function changeVehicleName(vehicleId, name) {
+	console.log(`change vehicle name to ${name}`);
+	server.changeVehicleName(vehicleId, name);
+}

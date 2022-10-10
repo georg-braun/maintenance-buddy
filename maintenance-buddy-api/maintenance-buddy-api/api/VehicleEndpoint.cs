@@ -40,6 +40,10 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> RenameVehicle(RenameVehicleCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
+        Console.WriteLine("RenameVehicle");
+        if (string.IsNullOrEmpty(command.VehicleId))
+            return Results.BadRequest("the vehicle id is empty");
+        
         var userId = ExtractUserId(claims);
         var vehicleId = new Guid(command.VehicleId);
        
@@ -109,6 +113,7 @@ public static class VehicleEndpoint
     
     public async static Task<IResult> GetVehicle(VehicleContext context, ClaimsPrincipal claims, string vehicleId)
     {
+        Console.WriteLine("GetVehicle");
         var userId = ExtractUserId(claims);
         var vehicleGuid = new Guid(vehicleId);
         var vehicles = (await context.GetVehicles(userId)).ToList();

@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<VehicleContext>(op =>
 {
     op.UseNpgsql(builder.Configuration["DbConnectionString"]);
-    op.LogTo(Console.Write);
+    //op.LogTo(Console.Write);
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

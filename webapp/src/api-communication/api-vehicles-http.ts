@@ -79,6 +79,14 @@ class ApiServer {
 		const response = await sendPost('action/delete', data);
 		if (response.status === 201 || response.status === 200) console.log('action deleted');
 	}
+
+	public async changeVehicleName(vehicleId, name) {
+		const data = {
+			VehicleId: vehicleId,
+			Name: name
+		};
+		await sendPost('vehicle/rename', data);
+	}
 }
 
 export default ApiServer;

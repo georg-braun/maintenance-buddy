@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +59,20 @@ public class VehicleEndpointTests
         // assert
         var vehicles = await GetVehiclesAsync(client);
         vehicles.First().Name.Should().Be("Opel Astra");
+    }
+    
+    [Fact]
+    public async Task RenameVehicleWithInvalidVehicleIdReturnsBadRequest()
+    {
+        // arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        
+        // act
+        var response = await RenameVehicleAsync(client, new RenameVehicleCommand(string.Empty, "Opel Astra"));
+
+        // assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
     
     [Fact]
