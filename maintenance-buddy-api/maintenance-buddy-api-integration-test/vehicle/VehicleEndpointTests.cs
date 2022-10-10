@@ -274,6 +274,20 @@ public class VehicleEndpointTests
     }
     
     [Fact]
+    public async Task GetVehicle()
+    {
+        // arrange
+        var client = new IntegrationTest().GetClient();
+        var createdVehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Astra", 60000));
+
+        // act
+        var vehicle = await GetVehicleAsync(client, createdVehicle.Id);
+        
+        // assert
+        vehicle.Name.Should().Be("Opel Astra");
+    }
+    
+    [Fact]
     public async Task UserGetsOnlyTheirData()
     {
         // arrange
@@ -375,6 +389,13 @@ public class VehicleEndpointTests
         var response = await client.GetAsync(Routes.VehiclesQuery);
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<IEnumerable<VehicleDto>>(responseContent);
+    }
+    
+    private async Task<VehicleDto> GetVehicleAsync(HttpClient client, string vehicleId)
+    {
+        var response = await client.GetAsync($"{Routes.GetVehicle}/?vehicleId={vehicleId}");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<VehicleDto>(responseContent);
     }
     
     private async Task<IEnumerable<ActionTemplateDto>> GetActionTemplatesAsync(HttpClient client, string vehicleId)

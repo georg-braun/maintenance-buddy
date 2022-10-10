@@ -106,6 +106,21 @@ public static class VehicleEndpoint
         
         return Results.Ok("vehicle deleted");
     }
+    
+    public async static Task<IResult> GetVehicle(VehicleContext context, ClaimsPrincipal claims, string vehicleId)
+    {
+        var userId = ExtractUserId(claims);
+        var vehicleGuid = new Guid(vehicleId);
+        var vehicles = (await context.GetVehicles(userId)).ToList();
+
+        var vehicle = vehicles.FirstOrDefault(_ => _.Id.Equals(vehicleGuid));
+
+        if (vehicle is null)
+            return Results.Problem("Couldn't find that vehicle.");
+
+        return Results.Ok(vehicle);
+    }
+    
     public static async Task<IResult> AddAction(AddActionCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
         if (string.IsNullOrEmpty(command.VehicleId) || string.IsNullOrEmpty(command.ActionTemplateId))
