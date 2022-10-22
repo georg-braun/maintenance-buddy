@@ -41,5 +41,5 @@ public record ChangeActionTemplateTimeIntervalCommand
 (
     string VehicleId,
     string ActionTemplateId,
-    TimeSpan TimeInterval
+    int TimeIntervalInDays
 );

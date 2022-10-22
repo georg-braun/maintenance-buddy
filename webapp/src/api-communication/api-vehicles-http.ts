@@ -48,12 +48,14 @@ class ApiServer {
 		if (response.status === 201 || response.status === 200) console.log('vehicle created');
 	}
 
-	public async addActionTemplate(vehicleId, name, kilometerInterval, timeInterval) {
+	public async addActionTemplate(vehicleId, name, kilometerInterval, timeIntervalInDays) {
 		const data = {
 			VehicleId: vehicleId,
 			Name: name,
-			KilometerInterval: kilometerInterval
+			KilometerInterval: kilometerInterval,
+			TimeIntervalInDays: timeIntervalInDays
 		};
+		console.log(data)
 		const response = await sendPost('action-template/create', data);
 		if (response.status === 201 || response.status === 200) console.log('action template added');
 	}

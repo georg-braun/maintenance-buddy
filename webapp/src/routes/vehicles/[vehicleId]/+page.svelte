@@ -47,13 +47,13 @@
 			</div>
 		</div>
 
-		<h2>Actions</h2>
+		<h2>More:</h2>
 		<ul>
 			<li>
-				<a href="{vehicleId}/action-templates">Templates</a>
+				<a href="{vehicleId}/action-templates">Schedule</a>
 			</li>
 			<li>
-				<a href="{vehicleId}/actions">History</a>
+				<a href="{vehicleId}/actions">Actions</a>
 			</li>
 		</ul>
 	{/if}

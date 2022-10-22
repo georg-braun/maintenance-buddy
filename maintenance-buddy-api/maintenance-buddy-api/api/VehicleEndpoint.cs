@@ -29,8 +29,9 @@ public static class VehicleEndpoint
 
         if (vehicle is null)
             return Results.NotFound("Vehicle not found");
-        
-        var actionTemplate = vehicle.AddActionTemplate(command.Name, command.KilometerInterval, command.TimeInterval);
+
+        var timeInterval = TimeSpan.FromDays(command.TimeIntervalInDays);
+        var actionTemplate = vehicle.AddActionTemplate(command.Name, command.KilometerInterval, timeInterval);
         context.UpdateVehicle(vehicle);
         
         await context.SaveChangesAsync();
@@ -252,8 +253,9 @@ public static class VehicleEndpoint
 
         if (vehicle is null)
             return Results.NotFound();
-        
-        vehicle.ChangeActionTemplateTimeInterval(actionTemplateId, command.TimeInterval);
+
+        var newTimeInterval = TimeSpan.FromDays(command.TimeIntervalInDays);
+        vehicle.ChangeActionTemplateTimeInterval(actionTemplateId, newTimeInterval);
         context.UpdateVehicle(vehicle);
         
         await context.SaveChangesAsync();
