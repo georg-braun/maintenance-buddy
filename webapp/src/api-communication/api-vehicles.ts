@@ -38,3 +38,8 @@ export async function changeVehicleName(vehicleId, name) {
 	console.log(`change vehicle name to ${name}`);
 	server.changeVehicleName(vehicleId, name);
 }
+
+export async function changeVehicleKilometer(vehicleId, kilometer) {
+	console.log(`change vehicle kilometer to ${kilometer}`);
+	server.changeVehicleKilometer(vehicleId, kilometer);
+}

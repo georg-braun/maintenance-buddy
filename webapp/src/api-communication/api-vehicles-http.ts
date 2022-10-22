@@ -87,6 +87,14 @@ class ApiServer {
 		};
 		await sendPost('vehicle/rename', data);
 	}
+
+	public async changeVehicleKilometer(vehicleId, kilometer) {
+		const data = {
+			VehicleId: vehicleId,
+			Kilometer: kilometer
+		};
+		await sendPost('vehicle/change-kilometer', data);
+	}
 }
 
 export default ApiServer;
