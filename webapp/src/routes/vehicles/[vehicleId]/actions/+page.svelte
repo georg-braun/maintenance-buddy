@@ -23,7 +23,7 @@
 
 	// add new form
 	let selectedActionTemplate;
-	let date, kilometer, note;
+	let date, kilometer, note = "";
 
 	function selectFirstActionTemplate() {
 		if (actionTemplates.length > 0) selectedActionTemplate = actionTemplates[0];
@@ -40,38 +40,48 @@
 <section>
 	<h1>Actions</h1>
 
-	{#each actions as action}
+	<div class="grid grid-cols-1">
+
+		
+		{#each actions as action}
 		<div>
 			{getTemplateNameById(action.actionTemplateId)}
 			{new Date(action.date).toLocaleDateString()}
 			{action.note}
 			<button
-				class="bg-red-200"
-				on:click={async () => {
-					console.log(action);
-					await deleteAction(vehicleId, action.actionTemplateId, action.id);
-				}}>Delete</button
+			class="bg-red-200"
+			on:click={async () => {
+				console.log(action);
+				await deleteAction(vehicleId, action.actionTemplateId, action.id);
+			}}>Delete</button
 			>
 		</div>
-	{/each}
+		{/each}
+	</div>
+	
+	<div class="grid grid-cols-2">
 
-	<div class="">
+		<div>Schedule</div>
 		<div class="my-auto">
 			<select bind:value={selectedActionTemplate}>
 				{#each actionTemplates as actionTemplate}
-					<option value={actionTemplate}>
-						{actionTemplate.name}
-					</option>
+				<option value={actionTemplate}>
+					{actionTemplate.name}
+				</option>
 				{/each}
 			</select>
 		</div>
+		<div>Day</div>
 		<input type="date" placeholder="Oil exchange" class="w-96 bg-slate-50" bind:value={date} />
+		<div>Kilometer</div>
 		<input type="number" step="1" class="w-96 bg-slate-50" bind:value={kilometer} />
+		<div>Note</div>
 		<input placeholder="50W50" class="w-96 bg-slate-50" bind:value={note} />
+
+	
 	</div>
-	<button
+	<button class="bg-slate-100 hover:bg-slate-200 px-2"
 		on:click={async () => {
 			await addAction(vehicleId, selectedActionTemplate.id, date, kilometer, note);
-		}}>Add</button
-	>
+		}}>Add</button>
 </section>
