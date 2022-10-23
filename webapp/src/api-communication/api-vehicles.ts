@@ -43,6 +43,15 @@ export async function changeScheduleTimeInterval(vehicleId, scheduleId, days) {
 export async function addAction(vehicleId, actionTemplateId, date, kilometer, note) {
 	server.addAction(vehicleId, actionTemplateId, date, kilometer, note);
 }
+export async function changeActionNote(vehicleId, actionTemplateId, actionId, note) {
+	server.changeActionNote(vehicleId, actionTemplateId, actionId, note);
+}
+export async function changeActionDate(vehicleId, actionTemplateId, actionId, date) {
+	server.changeActionDate(vehicleId, actionTemplateId, actionId, date);
+}
+export async function changeActionKilometer(vehicleId, actionTemplateId, actionId, kilometer) {
+	server.changeActionKilometer(vehicleId, actionTemplateId, actionId, kilometer);
+}
 
 export async function deleteAction(vehicleId, actionTemplateId, actionId) {
 	server.deleteAction(vehicleId, actionTemplateId, actionId);

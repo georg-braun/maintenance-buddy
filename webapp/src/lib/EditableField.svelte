@@ -4,6 +4,7 @@
 
 
     export let value = "some value"
+    export let type = "text"
     let changedValue = "";
     let editMode = false;
 
@@ -22,7 +23,11 @@
     {#if editMode}
         <!-- Edit name -->
         <div class="flex">
+            {#if type=="date"}
+            <input bind:value={changedValue} type="date" class="bg-slate-100 w-40" />
+            {:else}
             <input bind:value={changedValue} class="bg-slate-100 w-40" />
+            {/if}
             <button on:click={changeValue}>💾</button>
             <button on:click={() => (editMode = false)}>❌</button>
         </div>

@@ -4,9 +4,13 @@
 		getActions,
 		addAction,
 		getActionTemplates,
-		deleteAction
+		deleteAction,
+		changeActionNote,
+		changeActionDate,
+		changeActionKilometer
 	} from '../../../../api-communication/api-vehicles';
 	import { page } from '$app/stores';
+	import EditableField from '$lib/EditableField.svelte';
 
 	let vehicleId = $page.params.vehicleId;
 
@@ -40,25 +44,41 @@
 <section>
 	<h1>Actions</h1>
 
-	<div class="grid grid-cols-1">
+	<div class="grid grid-cols-5">
 
-		
+		<div>Schedule</div>
+		<div>Date</div>
+		<div>Kilometer</div>
+		<div>Note</div>
+		<div></div>
 		{#each actions as action}
-		<div>
+		
 			{getTemplateNameById(action.actionTemplateId)}
-			{new Date(action.date).toLocaleDateString()}
-			{action.note}
-			<button
-			class="bg-red-200"
-			on:click={async () => {
-				console.log(action);
-				await deleteAction(vehicleId, action.actionTemplateId, action.id);
-			}}>Delete</button
-			>
+			<EditableField
+					value={new Date(action.date)}
+					type="date"
+					on:value-changed={(e) => changeActionDate(vehicleId, action.actionTemplateId, action.id, e.detail.newValue)} />
+			<EditableField
+					value={action.kilometer}
+					on:value-changed={(e) => changeActionKilometer(vehicleId, action.actionTemplateId, action.id, e.detail.newValue)} />
+			<EditableField
+					value={action.note}
+					on:value-changed={(e) => changeActionNote(vehicleId, action.actionTemplateId, action.id, e.detail.newValue)} />
+	
+					<div>
+						<button
+						class="bg-red-200 px-2"
+						on:click={async () => {
+							console.log(action);
+							await deleteAction(vehicleId, action.actionTemplateId, action.id);
+						}}>Delete</button>
 		</div>
+		
+			
 		{/each}
 	</div>
 	
+	<h1>New action</h1>
 	<div class="grid grid-cols-2">
 
 		<div>Schedule</div>

@@ -296,8 +296,9 @@ public static class VehicleEndpoint
 
         if (vehicle is null)
             return Results.NotFound();
-        
-        vehicle.ChangeActionDate(actionTemplateId, actionId, command.Date);
+
+        var date = command.Date.ToUniversalTime();
+        vehicle.ChangeActionDate(actionTemplateId, actionId, date);
         context.UpdateVehicle(vehicle);
         
         await context.SaveChangesAsync();

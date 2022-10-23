@@ -109,6 +109,42 @@ class ApiServer {
 		if (response.status === 201 || response.status === 200) console.log('action template added');
 	}
 
+	public async changeActionNote(vehicleId, actionTemplateId, actionId, note) {
+		const data = {
+			VehicleId: vehicleId,
+			ActionTemplateId: actionTemplateId,
+			ActionId: actionId,
+			Note: note
+		};
+
+		console.log(data)
+		const response = await sendPost('action/change-note', data);
+	}
+
+	public async changeActionKilometer(vehicleId, actionTemplateId, actionId, kilometer) {
+		const data = {
+			VehicleId: vehicleId,
+			ActionTemplateId: actionTemplateId,
+			ActionId: actionId,
+			Kilometer: kilometer
+		};
+
+		console.log(data)
+		const response = await sendPost('action/change-kilometer', data);
+	}
+
+	public async changeActionDate(vehicleId, actionTemplateId, actionId, date) {
+		const data = {
+			VehicleId: vehicleId,
+			ActionTemplateId: actionTemplateId,
+			ActionId: actionId,
+			Date: date
+		};
+
+		console.log(data)
+		const response = await sendPost('action/change-date', data);
+	}
+
 	public async deleteAction(vehicleId, actionTemplateId, actionId) {
 		const data = {
 			VehicleId: vehicleId,
