@@ -26,6 +26,20 @@ export async function addActionTemplate(vehicleId, name, kilometerInterval, time
 	server.addActionTemplate(vehicleId, name, kilometerInterval, timeInterval);
 }
 
+export async function deleteSchedule(vehicleId, scheduleId) {
+	server.deleteSchedule(vehicleId, scheduleId);
+}
+export async function changeScheduleName(vehicleId, scheduleId, name) {
+	server.changeScheduleName(vehicleId, scheduleId, name);
+}
+export async function changeScheduleKilometerInterval(vehicleId, scheduleId, kilometer) {
+	server.changeScheduleKilometerInterval(vehicleId, scheduleId, kilometer);
+}
+export async function changeScheduleTimeInterval(vehicleId, scheduleId, days) {
+	server.changeScheduleTimeInterval(vehicleId, scheduleId, days);
+}
+
+
 export async function addAction(vehicleId, actionTemplateId, date, kilometer, note) {
 	server.addAction(vehicleId, actionTemplateId, date, kilometer, note);
 }

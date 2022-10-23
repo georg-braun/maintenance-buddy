@@ -60,6 +60,41 @@ class ApiServer {
 		if (response.status === 201 || response.status === 200) console.log('action template added');
 	}
 
+	public async deleteSchedule(vehicleId, scheduleId) {
+		const data = {
+			VehicleId: vehicleId,
+			ActionTemplateId: scheduleId,
+		};
+		const response = await sendPost('action-template/delete', data);
+	}
+
+	public async changeScheduleName(vehicleId, scheduleId, name) {
+		const data = {
+			VehicleId: vehicleId,
+			ActionTemplateId: scheduleId,
+			Name: name
+		};
+		const response = await sendPost('action-template/rename', data);
+	}
+
+	public async changeScheduleKilometerInterval(vehicleId, scheduleId, kilometer) {
+		const data = {
+			VehicleId: vehicleId,
+			ActionTemplateId: scheduleId,
+			KilometerInterval: kilometer
+		};
+		const response = await sendPost('action-template/change-kilometer-interval', data);
+	}
+
+	public async changeScheduleTimeInterval(vehicleId, scheduleId, dayx) {
+		const data = {
+			VehicleId: vehicleId,
+			ActionTemplateId: scheduleId,
+			TimeIntervalInDays: dayx
+		};
+		const response = await sendPost('action-template/change-time-interval', data);
+	}
+
 	public async addAction(vehicleId, actionTemplateId, date, kilometer, note) {
 		const data = {
 			VehicleId: vehicleId,
