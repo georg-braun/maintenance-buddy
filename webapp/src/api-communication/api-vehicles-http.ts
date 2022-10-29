@@ -48,6 +48,11 @@ class ApiServer {
 		if (response.status === 201 || response.status === 200) console.log('vehicle created');
 	}
 
+	public async deleteVehicle(vehicleId){
+		console.log(`Delete ${vehicleId}`)
+		return makeGetRequest(`vehicle/delete/?vehicleId=${vehicleId}`);
+	}
+
 	public async addActionTemplate(vehicleId, name, kilometerInterval, timeIntervalInDays) {
 		const data = {
 			VehicleId: vehicleId,
@@ -65,7 +70,7 @@ class ApiServer {
 			VehicleId: vehicleId,
 			ActionTemplateId: scheduleId,
 		};
-		const response = await sendPost('action-template/delete', data);
+		return sendPost('action-template/delete', data);
 	}
 
 	public async changeScheduleName(vehicleId, scheduleId, name) {
@@ -74,7 +79,7 @@ class ApiServer {
 			ActionTemplateId: scheduleId,
 			Name: name
 		};
-		const response = await sendPost('action-template/rename', data);
+		return await sendPost('action-template/rename', data);
 	}
 
 	public async changeScheduleKilometerInterval(vehicleId, scheduleId, kilometer) {
@@ -83,7 +88,7 @@ class ApiServer {
 			ActionTemplateId: scheduleId,
 			KilometerInterval: kilometer
 		};
-		const response = await sendPost('action-template/change-kilometer-interval', data);
+		return await sendPost('action-template/change-kilometer-interval', data);
 	}
 
 	public async changeScheduleTimeInterval(vehicleId, scheduleId, dayx) {
@@ -92,7 +97,7 @@ class ApiServer {
 			ActionTemplateId: scheduleId,
 			TimeIntervalInDays: dayx
 		};
-		const response = await sendPost('action-template/change-time-interval', data);
+		return await sendPost('action-template/change-time-interval', data);
 	}
 
 	public async addAction(vehicleId, actionTemplateId, date, kilometer, note) {
@@ -117,8 +122,7 @@ class ApiServer {
 			Note: note
 		};
 
-		console.log(data)
-		const response = await sendPost('action/change-note', data);
+		return await sendPost('action/change-note', data);
 	}
 
 	public async changeActionKilometer(vehicleId, actionTemplateId, actionId, kilometer) {
@@ -130,7 +134,7 @@ class ApiServer {
 		};
 
 		console.log(data)
-		const response = await sendPost('action/change-kilometer', data);
+		return await sendPost('action/change-kilometer', data);
 	}
 
 	public async changeActionDate(vehicleId, actionTemplateId, actionId, date) {
@@ -141,8 +145,7 @@ class ApiServer {
 			Date: date
 		};
 
-		console.log(data)
-		const response = await sendPost('action/change-date', data);
+		return await sendPost('action/change-date', data);
 	}
 
 	public async deleteAction(vehicleId, actionTemplateId, actionId) {
@@ -160,7 +163,7 @@ class ApiServer {
 			VehicleId: vehicleId,
 			Name: name
 		};
-		await sendPost('vehicle/rename', data);
+		return sendPost('vehicle/rename', data);
 	}
 
 	public async changeVehicleKilometer(vehicleId, kilometer) {
@@ -168,7 +171,7 @@ class ApiServer {
 			VehicleId: vehicleId,
 			Kilometer: kilometer
 		};
-		await sendPost('vehicle/change-kilometer', data);
+		return sendPost('vehicle/change-kilometer', data);
 	}
 }
 

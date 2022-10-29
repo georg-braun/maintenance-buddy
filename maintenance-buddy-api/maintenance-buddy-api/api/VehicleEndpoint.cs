@@ -94,8 +94,8 @@ public static class VehicleEndpoint
         
         return Results.Created($"/vehicle/{vehicle.Id}", vehicle);
     }
-
-    public async static Task<IResult> DeleteVehicle(VehicleContext context, ClaimsPrincipal claims, string vehicleId)
+    
+    public static async Task<IResult> DeleteVehicle(VehicleContext context, ClaimsPrincipal claims, string vehicleId)
     {
         var userId = ExtractUserId(claims);
         var vehicleGuid = new Guid(vehicleId);

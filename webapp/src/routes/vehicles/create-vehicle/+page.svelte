@@ -1,5 +1,7 @@
 <script>
+	import { goToAllVehicles } from '$lib/NavigationHelper';
 	import { createVehicle } from '../../../api-communication/api-vehicles';
+
 	let kilometer = 1000;
 	let name = '';
 </script>
@@ -19,6 +21,7 @@
 			class="rounded px-2 my-auto bg-slate-200"
 			on:click={async () => {
 				await createVehicle(name, kilometer);
+				await goToAllVehicles();
 			}}
 			>Add
 		</button>
