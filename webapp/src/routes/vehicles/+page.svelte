@@ -32,6 +32,12 @@ import { onMount } from 'svelte';
 		}}>Delete</div>
 	</div>
 		{/each}
+		<div>
+			<a href="/vehicles/create-vehicle">
+			<div class="border text-center text-xl  h-12 w-12">
+				+
+			</div></a>
+		</div>
 	</div>
 	
 </section>
