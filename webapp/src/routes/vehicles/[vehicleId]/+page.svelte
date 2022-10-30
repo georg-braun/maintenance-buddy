@@ -24,8 +24,6 @@
 
 <section>
 	{#if vehicle != undefined}
-		<h1>{vehicle.name}</h1>
-		
 		<div>
 			<div class="w-1/2 grid grid-rows-4 grid-cols-2">
 				<div>Name</div>

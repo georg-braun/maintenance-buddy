@@ -7,5 +7,5 @@ function gotoInternal(path){
 }
 
 export function goToAllVehicles(){
-    return gotoInternal("vehicles")
+    return gotoInternal("")
 }

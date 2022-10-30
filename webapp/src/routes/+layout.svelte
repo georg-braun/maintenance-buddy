@@ -21,6 +21,9 @@
 		auth.logout();
 	}
 
+
+
+
 	let { isAuthenticated, user } = auth;
 	// just for developing purposes to ignore the login
 </script>
@@ -42,8 +45,10 @@
 		</div>
 	</div>
 	{#if $isAuthenticated}
+	<div class="mt-4">
 		<Vehicles />
 		<slot />
+	</div>
 	{/if}
 </main>
 
