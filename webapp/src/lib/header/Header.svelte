@@ -5,9 +5,11 @@
 <header>
 	<nav data-sveltekit-prefetch>
 		<ul class="flex">
+			<!--
 			<li class="{$page.url.pathname === '/vehicles' ? 'menu-item-active' : 'menu-item'} ">
 				<a href="/vehicles">Vehicles</a>
 			</li>
+			-->
 		</ul>
 
 	</nav>

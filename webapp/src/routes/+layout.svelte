@@ -4,6 +4,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import auth from '../auth-service';
+	import Vehicles from '$lib/Vehicles.svelte';
 	
 
 	onMount(async () => {
@@ -41,6 +42,7 @@
 		</div>
 	</div>
 	{#if $isAuthenticated}
+		<Vehicles />
 		<slot />
 	{/if}
 </main>

@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { getVehicle, changeVehicleName, changeVehicleKilometer } from '../../../api-communication/api-vehicles';
 	import EditableField from '$lib/EditableField.svelte';
+	import { afterNavigate } from '$app/navigation';
 
-	onMount(async () => {
-		await refreshVehicle();
-	});
-
+	afterNavigate(async () => {
+		
+        await refreshVehicle();
+    })
 
 	let vehicle;
-	let vehicleId = $page.params.vehicleId;
+	$: vehicleId = $page.params.vehicleId;
 
 
 	async function refreshVehicle() {
