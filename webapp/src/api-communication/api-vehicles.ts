@@ -67,3 +67,7 @@ export async function changeVehicleName(vehicleId, name) : Promise<void> {
 export async function changeVehicleKilometer(vehicleId, kilometer) : Promise<void> {
 	return server.changeVehicleKilometer(vehicleId, kilometer);
 }
+
+export async function getPendingActions(vehicleId) : Promise<void> {
+	return server.getPendingActions(vehicleId);
+}

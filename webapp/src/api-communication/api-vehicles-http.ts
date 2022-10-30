@@ -173,6 +173,16 @@ class ApiServer {
 		};
 		return sendPost('vehicle/change-kilometer', data);
 	}
+
+	public async getPendingActions(vehicleId) {
+		try {
+			const response = await makeGetRequest(`vehicle/pending-actions/?vehicleId=${vehicleId}`);
+			if (response?.data == undefined) return [];
+			return response.data;
+		} catch (error) {
+			console.log(error);
+		}		
+	}
 }
 
 export default ApiServer;

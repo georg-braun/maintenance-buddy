@@ -3,6 +3,7 @@
 	import { getVehicle, changeVehicleName, changeVehicleKilometer } from '../../../api-communication/api-vehicles';
 	import EditableField from '$lib/EditableField.svelte';
 	import { afterNavigate } from '$app/navigation';
+	import PendingActions from '$lib/PendingActions.svelte';
 
 	afterNavigate(async () => {
 		
@@ -24,8 +25,9 @@
 
 <section>
 	{#if vehicle != undefined}
+		<h2 class="text-xl mt-4">Vehicle details</h2>
 		<div>
-			<div class="w-1/2 grid grid-rows-4 grid-cols-2">
+			<div class="w-1/2 grid grid-rows-2 grid-cols-2">
 				<div>Name</div>
 				<div>
 							<EditableField
@@ -45,8 +47,7 @@
 			</div>
 		</div>
 
-		<h2>More:</h2>
-		<ul>
+		<ul class="mt-2">
 			<li>
 				<a href="{vehicleId}/action-templates">Schedule</a>
 			</li>
@@ -54,5 +55,8 @@
 				<a href="{vehicleId}/actions">Actions</a>
 			</li>
 		</ul>
+
+		<h2 class="text-xl mt-4">Pending actions</h2>
+		<PendingActions vehicleId={vehicleId}/>
 	{/if}
 </section>
