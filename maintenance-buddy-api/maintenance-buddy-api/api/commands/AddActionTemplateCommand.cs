@@ -5,5 +5,5 @@ public record AddActionTemplateCommand
     string VehicleId,
     string Name,
     int KilometerInterval,
-    TimeSpan TimeInterval
+    int TimeIntervalInDays
 );

@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<VehicleContext>(op =>
 {
     op.UseNpgsql(builder.Configuration["DbConnectionString"]);
-    op.LogTo(Console.Write);
+    //op.LogTo(Console.Write);
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -43,6 +43,7 @@ app.MapGet(Routes.Status, () => "Ok").AllowAnonymous();
 // vehicle
 app.MapPost(Routes.CreateVehicle, VehicleEndpoint.CreateVehicle);
 app.MapGet(Routes.VehiclesQuery, VehicleEndpoint.VehiclesQuery);
+app.MapGet(Routes.GetVehicle, VehicleEndpoint.GetVehicle);
 app.MapGet(Routes.DeleteVehicle, VehicleEndpoint.DeleteVehicle);
 app.MapPost(Routes.RenameVehicle, VehicleEndpoint.RenameVehicle);
 app.MapPost(Routes.ChangeVehicleKilometer, VehicleEndpoint.ChangeVehicleKilometer);

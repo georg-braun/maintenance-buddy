@@ -10,7 +10,8 @@ public static class Routes
     public const string DeleteVehicle = $"{Base}{Version}/vehicle/delete";
     public const string RenameVehicle = $"{Base}{Version}/vehicle/rename";
     public const string ChangeVehicleKilometer = $"{Base}{Version}/vehicle/change-kilometer";
-    public const string VehiclesQuery = $"{Base}{Version}/vehicle";
+    public const string VehiclesQuery = $"{Base}{Version}/vehicles";
+    public const string GetVehicle = $"{Base}{Version}/vehicles/find";
     public const string VehiclePendingActions = $"{Base}{Version}/vehicle/pending-actions";
     
     // action template

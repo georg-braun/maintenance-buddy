@@ -29,8 +29,9 @@ public static class VehicleEndpoint
 
         if (vehicle is null)
             return Results.NotFound("Vehicle not found");
-        
-        var actionTemplate = vehicle.AddActionTemplate(command.Name, command.KilometerInterval, command.TimeInterval);
+
+        var timeInterval = TimeSpan.FromDays(command.TimeIntervalInDays);
+        var actionTemplate = vehicle.AddActionTemplate(command.Name, command.KilometerInterval, timeInterval);
         context.UpdateVehicle(vehicle);
         
         await context.SaveChangesAsync();
@@ -40,6 +41,10 @@ public static class VehicleEndpoint
     
     public static async Task<IResult> RenameVehicle(RenameVehicleCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
+        Console.WriteLine("RenameVehicle");
+        if (string.IsNullOrEmpty(command.VehicleId))
+            return Results.BadRequest("the vehicle id is empty");
+        
         var userId = ExtractUserId(claims);
         var vehicleId = new Guid(command.VehicleId);
        
@@ -89,8 +94,8 @@ public static class VehicleEndpoint
         
         return Results.Created($"/vehicle/{vehicle.Id}", vehicle);
     }
-
-    public async static Task<IResult> DeleteVehicle(VehicleContext context, ClaimsPrincipal claims, string vehicleId)
+    
+    public static async Task<IResult> DeleteVehicle(VehicleContext context, ClaimsPrincipal claims, string vehicleId)
     {
         var userId = ExtractUserId(claims);
         var vehicleGuid = new Guid(vehicleId);
@@ -106,6 +111,22 @@ public static class VehicleEndpoint
         
         return Results.Ok("vehicle deleted");
     }
+    
+    public async static Task<IResult> GetVehicle(VehicleContext context, ClaimsPrincipal claims, string vehicleId)
+    {
+        Console.WriteLine("GetVehicle");
+        var userId = ExtractUserId(claims);
+        var vehicleGuid = new Guid(vehicleId);
+        var vehicles = (await context.GetVehicles(userId)).ToList();
+
+        var vehicle = vehicles.FirstOrDefault(_ => _.Id.Equals(vehicleGuid));
+
+        if (vehicle is null)
+            return Results.Problem("Couldn't find that vehicle.");
+
+        return Results.Ok(vehicle);
+    }
+    
     public static async Task<IResult> AddAction(AddActionCommand command, VehicleContext context, ClaimsPrincipal claims)
     {
         if (string.IsNullOrEmpty(command.VehicleId) || string.IsNullOrEmpty(command.ActionTemplateId))
@@ -232,8 +253,9 @@ public static class VehicleEndpoint
 
         if (vehicle is null)
             return Results.NotFound();
-        
-        vehicle.ChangeActionTemplateTimeInterval(actionTemplateId, command.TimeInterval);
+
+        var newTimeInterval = TimeSpan.FromDays(command.TimeIntervalInDays);
+        vehicle.ChangeActionTemplateTimeInterval(actionTemplateId, newTimeInterval);
         context.UpdateVehicle(vehicle);
         
         await context.SaveChangesAsync();
@@ -274,8 +296,9 @@ public static class VehicleEndpoint
 
         if (vehicle is null)
             return Results.NotFound();
-        
-        vehicle.ChangeActionDate(actionTemplateId, actionId, command.Date);
+
+        var date = command.Date.ToUniversalTime();
+        vehicle.ChangeActionDate(actionTemplateId, actionId, date);
         context.UpdateVehicle(vehicle);
         
         await context.SaveChangesAsync();

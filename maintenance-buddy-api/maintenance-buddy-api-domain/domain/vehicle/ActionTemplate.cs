@@ -105,6 +105,7 @@ public class ActionTemplate
             kilometerTillAction = latestAction.Kilometer + KilometerInterval - vehicleKilometer;
         }
         
-        return PendingAction.Create(Id, timespanTillAction, kilometerTillAction);
+        
+        return PendingAction.Create(Id, Name, timespanTillAction, kilometerTillAction);
     }
 }
