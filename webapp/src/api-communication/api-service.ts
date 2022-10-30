@@ -19,28 +19,18 @@ export async function makeGetRequest(route) {
 			}
 		};
 
-		const response = axios.request(config);
-		return response;
+		try {
+			return axios.get(`${serverUrl}/api/${route}`, config);
+		} catch (error) {
+			console.log(`${error.response.status}: ${error.response.data}`);
+			return error.response;
+		}
+		
 	} catch (error) {
 		console.log(error);
 	}
 }
 
-
-export async function makeRequest(config) {
-	try {
-		const token = await auth.getAccessToken();
-		config.headers = {
-			...config.headers,
-			Authorization: `Bearer ${token}`
-		};
-
-		const response = axios.request(config);
-		return response;
-	} catch (error) {
-		console.log(error);
-	}
-}
 
 
 export async function sendPost(endpoint, data) {

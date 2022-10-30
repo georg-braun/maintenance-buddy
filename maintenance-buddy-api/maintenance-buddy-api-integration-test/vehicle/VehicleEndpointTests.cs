@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,20 @@ public class VehicleEndpointTests
     }
     
     [Fact]
+    public async Task RenameVehicleWithInvalidVehicleIdReturnsBadRequest()
+    {
+        // arrange
+        var client = new IntegrationTest().GetClient();
+        var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
+        
+        // act
+        var response = await RenameVehicleAsync(client, new RenameVehicleCommand(string.Empty, "Opel Astra"));
+
+        // assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+    
+    [Fact]
     public async Task ChangeVehicleKilometer()
     {
         // arrange
@@ -81,7 +96,7 @@ public class VehicleEndpointTests
         /// Arrange
         var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
-        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
 
         // act
         var addOilActionCommand = new AddActionCommand(vehicle.Id, oilActionTemplate.Id, new DateTime(2022,9,3), 2000, "5W50");
@@ -104,18 +119,18 @@ public class VehicleEndpointTests
         /// Arrange
         var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
-        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365,0,0,0)));
+        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
 
         // act
         await client.PostAsync(Routes.ChangeActionTemplateName, Serialize(new ChangeActionTemplateNameCommand(vehicle.Id, oilActionTemplate.Id, "Tires")));
         await client.PostAsync(Routes.ChangeActionTemplateKilometerInterval, Serialize(new ChangeActionTemplateKilometerIntervalCommand(vehicle.Id, oilActionTemplate.Id, 1000)));
-        await client.PostAsync(Routes.ChangeActionTemplateTimeInterval, Serialize(new ChangeActionTemplateTimeIntervalCommand(vehicle.Id, oilActionTemplate.Id, new TimeSpan(300,0,0,0))));
+        await client.PostAsync(Routes.ChangeActionTemplateTimeInterval, Serialize(new ChangeActionTemplateTimeIntervalCommand(vehicle.Id, oilActionTemplate.Id, 300)));
         
         // Assert
         var actionTemplate = await GetActionTemplatesAsync(client, vehicle.Id);
         actionTemplate.Should().HaveCount(1);
         actionTemplate.First().Name.Should().Be("Tires");
-        actionTemplate.First().TimeInterval.Should().Be(new TimeSpan(300,0,0,0));
+        actionTemplate.First().TimeIntervalInDays.Should().Be(300);
         actionTemplate.First().KilometerInterval.Should().Be(1000);
     }
 
@@ -128,7 +143,7 @@ public class VehicleEndpointTests
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
 
         // Act
-        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
 
         // Assert
         actionTemplate.Name.Should().Be("Oil change");
@@ -141,7 +156,7 @@ public class VehicleEndpointTests
         var client = new IntegrationTest().GetClient();
 
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
-        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
         
         // get the action templates of a vehicle
         var actionTemplates = await GetActionTemplatesAsync(client, vehicle.Id);
@@ -158,7 +173,7 @@ public class VehicleEndpointTests
         
         // add vehicle
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
-        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
 
         // delete action template
         var deleteActionTemplateCommand = new DeleteActionTemplateCommand(vehicle.Id, actionTemplate.Id);
@@ -178,7 +193,7 @@ public class VehicleEndpointTests
         // Arrange
         var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
-        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
         
         // act
         var actionDate = new DateTime(2022,9,3).ToUniversalTime();
@@ -200,8 +215,8 @@ public class VehicleEndpointTests
         // Arrange
         var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
-        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
-        var tireActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Tires", 5000, new TimeSpan(365)));
+        var oilActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
+        var tireActionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Tires", 5000, 365));
         
         // act
         var actionDate = new DateTime(2022,9,3);
@@ -224,7 +239,7 @@ public class VehicleEndpointTests
         // Arrange
         var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 39000));
-        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
         
         var actionDate = new DateTime(2022,9,3);
         var action = await AddActionAsync(client, new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 2000, "5W50"));
@@ -243,7 +258,7 @@ public class VehicleEndpointTests
         // Arrange
         var client = new IntegrationTest().GetClient();
         var vehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("BMW R1100S", 20000));
-        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, new TimeSpan(365)));
+        var actionTemplate = await AddActionTemplateAsync(client, new AddActionTemplateCommand(vehicle.Id, "Oil change", 5000, 365));
         
         var actionDate = DateTime.Today.ToUniversalTime();
         var action = await AddActionAsync(client, new AddActionCommand(vehicle.Id, actionTemplate.Id, actionDate, 12000, "5W50"));
@@ -271,6 +286,20 @@ public class VehicleEndpointTests
         vehicles.Should().HaveCount(2);
         vehicles.Should().Contain(_ => _.Name.Equals("Opel Astra"));
         vehicles.Should().Contain(_ => _.Name.Equals("BMW R1100S"));
+    }
+    
+    [Fact]
+    public async Task GetVehicle()
+    {
+        // arrange
+        var client = new IntegrationTest().GetClient();
+        var createdVehicle = await CreateVehicleAsync(client, new CreateVehicleCommand("Opel Astra", 60000));
+
+        // act
+        var vehicle = await GetVehicleAsync(client, createdVehicle.Id);
+        
+        // assert
+        vehicle.Name.Should().Be("Opel Astra");
     }
     
     [Fact]
@@ -324,7 +353,7 @@ public class VehicleEndpointTests
         integrationTest.SetClientSession("Veronika");
         var aVehicleOfGeorge = georgesVehicles.First();
         var response = await client.PostAsync(Routes.AddActionTemplate, 
-            Serialize(new AddActionTemplateCommand(aVehicleOfGeorge.Id, "Oil", 5000, TimeSpan.FromDays(365))));
+            Serialize(new AddActionTemplateCommand(aVehicleOfGeorge.Id, "Oil", 5000, 365)));
         
 
         // assert
@@ -375,6 +404,13 @@ public class VehicleEndpointTests
         var response = await client.GetAsync(Routes.VehiclesQuery);
         var responseContent = await response.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<IEnumerable<VehicleDto>>(responseContent);
+    }
+    
+    private async Task<VehicleDto> GetVehicleAsync(HttpClient client, string vehicleId)
+    {
+        var response = await client.GetAsync($"{Routes.GetVehicle}/?vehicleId={vehicleId}");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<VehicleDto>(responseContent);
     }
     
     private async Task<IEnumerable<ActionTemplateDto>> GetActionTemplatesAsync(HttpClient client, string vehicleId)

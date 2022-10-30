@@ -5,11 +5,11 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>Maintenance buddy</title>
+	<meta name="description" content="Remember and organize necessary maintenances" />
 </svelte:head>
 
-<h1>Welcome</h1>
+
 
 <style>
 	section {

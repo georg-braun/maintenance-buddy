@@ -1,30 +1,62 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { getVehicleSummary } from '../../../api-communication/api-vehicles';
+	import { getVehicle, changeVehicleName, changeVehicleKilometer } from '../../../api-communication/api-vehicles';
+	import EditableField from '$lib/EditableField.svelte';
+	import { afterNavigate } from '$app/navigation';
+	import PendingActions from '$lib/PendingActions.svelte';
 
-
-	onMount(async () => {
-		vehicle = await getVehicleSummary(vehicleId);
-		console.log(vehicle)
-	});
+	afterNavigate(async () => {
+		
+        await refreshVehicle();
+    })
 
 	let vehicle;
-	let vehicleId = $page.params.vehicleId;
+	$: vehicleId = $page.params.vehicleId;
+
+
+	async function refreshVehicle() {
+		vehicle = undefined;
+		let newVehicle = await getVehicle(vehicleId);
+		vehicle = newVehicle;
+		console.log(newVehicle);
+	}
 
 </script>
 
-
 <section>
-	<div>
-		ID: {vehicleId}
-		<!--
-		{vehicle?.name}
-		{vehicle?.kilometer}
-		({vehicle?.id})
-		-->
-	</div>
+	{#if vehicle != undefined}
+		<h2 class="text-xl mt-4">Vehicle details</h2>
+		<div>
+			<div class="w-1/2 grid grid-rows-2 grid-cols-2">
+				<div>Name</div>
+				<div>
+							<EditableField
+					value={vehicle.name}
+					on:value-changed={(e) => changeVehicleName(vehicle.id, e.detail.newValue)}
+				/>
+				</div>
 
-	<a href="{vehicleId}/action-templates">Action templates</a>
-	<a href="{vehicleId}/actions">Actions</a>
+				<div>Kilometer</div>
+				<div>
+					<EditableField
+					value={vehicle.kilometer}
+					on:value-changed={(e) => changeVehicleKilometer(vehicle.id, e.detail.newValue)}
+				/>
+				</div>
+				<div />
+			</div>
+		</div>
+
+		<ul class="mt-2">
+			<li>
+				<a href="{vehicleId}/action-templates">Schedule</a>
+			</li>
+			<li>
+				<a href="{vehicleId}/actions">Actions</a>
+			</li>
+		</ul>
+
+		<h2 class="text-xl mt-4">Pending actions</h2>
+		<PendingActions vehicleId={vehicleId}/>
+	{/if}
 </section>

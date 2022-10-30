@@ -4,6 +4,7 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import auth from '../auth-service';
+	import Vehicles from '$lib/Vehicles.svelte';
 	
 
 	onMount(async () => {
@@ -20,22 +21,35 @@
 		auth.logout();
 	}
 
+
+
+
 	let { isAuthenticated, user } = auth;
 	// just for developing purposes to ignore the login
 </script>
 
 <main>
-	<div>
-		{#if $isAuthenticated || env?.PUBLIC_DEV_MODE == "active"}
-			<a href="/#" on:click={logout}>Log Out</a>
-			<span>{$user.name} ({$user.email})</span>
+
+	<div class="flex flex-wrap">
+		{#if $isAuthenticated}
 			<Header />
-			<slot />
+		{/if}
+		<div class="ml-auto">
+		{#if $isAuthenticated}
+		<span>{$user.name}</span>
+		<a href="/#" on:click={logout}>Log Out</a>
 		{:else}
 			<a href="/#" on:click={login}>Log In</a>
 			<span>Not logged in</span>
 		{/if}
+		</div>
 	</div>
+	{#if $isAuthenticated}
+	<div class="mt-4">
+		<Vehicles />
+		<slot />
+	</div>
+	{/if}
 </main>
 
 <footer>
