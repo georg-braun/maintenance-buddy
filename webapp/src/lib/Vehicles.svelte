@@ -1,5 +1,4 @@
 <script>
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { getVehicles, deleteVehicle } from '../api-communication/api-vehicles';
 
@@ -16,12 +15,14 @@
 <div class="flex">
 	{#each vehicles as vehicle}
 		<div class="mr-4 mb-4">
-			<div on:click={() => {goto(window.location.origin + "/vehicles/" + vehicle.id)}}>
+            <a href="/vehicles/{vehicle.id}">
+			<div >
 				<div class="border rounded-t-md p-4">
 					<p title={vehicle.id} class="text-center">{vehicle.name}</p>
 					<p>{vehicle.kilometer} km</p>
 				</div>
 			</div>
+            </a>
 			<div
 				class="bg-red-200 hover:bg-red-500 rounded-b-md text-center"
 				on:click={async () => {
