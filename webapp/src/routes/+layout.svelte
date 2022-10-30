@@ -25,17 +25,24 @@
 </script>
 
 <main>
-	<div>
-		{#if $isAuthenticated || env?.PUBLIC_DEV_MODE == "active"}
-			<a href="/#" on:click={logout}>Log Out</a>
-			<span>{$user.name} ({$user.email})</span>
+
+	<div class="flex flex-wrap">
+		{#if $isAuthenticated}
 			<Header />
-			<slot />
+		{/if}
+		<div class="ml-auto">
+		{#if $isAuthenticated}
+		<span>{$user.name}</span>
+		<a href="/#" on:click={logout}>Log Out</a>
 		{:else}
 			<a href="/#" on:click={login}>Log In</a>
 			<span>Not logged in</span>
 		{/if}
+		</div>
 	</div>
+	{#if $isAuthenticated}
+		<slot />
+	{/if}
 </main>
 
 <footer>
