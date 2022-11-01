@@ -27,7 +27,7 @@
 	{#if vehicle != undefined}
 		<h2 class="text-xl mt-4">Vehicle details</h2>
 		<div>
-			<div class="w-1/2 grid grid-rows-2 grid-cols-2">
+			<div class="w-1/2 grid grid-rows-2 grid-cols-2 gap-1">
 				<div>Name</div>
 				<div>
 							<EditableField
