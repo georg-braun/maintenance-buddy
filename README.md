@@ -19,7 +19,7 @@ The app has a [web frontend](https://maintenance-buddy.georg-braun.de) that conn
 You can add vehicles and add necessary maintenances templates. A template is a recurring maintenance like a oil exchange every 5000 km or every year.
 Add a finished maintenance that corresponds to a previously created maintenance template.
 
-### See pending maintenances
+### ✔️ See pending maintenances
 You get a list of pending maintenances or maintenances that will be relevant in the near future
 
 ### Get a notification of pending changes
@@ -54,16 +54,14 @@ To get everything running you need an authentication provider (e.g. Auth0), a po
 
 ## [1/4] Setup an authentication provider
 
-I will show the necessary Auth0 steps 
-- [ ] create application
-  - [ ] redirects, allowed origins, ...
-- [ ] create api
+I use Auth0 for my instances. You have to add a frontend and backend application.
 
 
 ## [2/4] Setup database
 
-- [ ] run docker container with postgresql
-migration via cli tool
+You have to setup a postgres database server. Most of the time I use a postgres docker container.
+
+In this repository you can find a cli tool that will help to migrate the database.
 
 ```bash
 ./utility-cli.exe migrate "Host=localhost;Port=5432;Database=maintenance;Username=postgres;Password=postgres" "C:\Development\Repositories\maintenance-buddy\maintenance-buddy-api\maintenance-buddy-api\Migrations"
@@ -81,8 +79,7 @@ One possiblity is to modify the appsettings.json
     "Audience": ""
 ```
 
-- [ ] add environment variables
-  - [ ] secrets manager
+But I recommend to use the dotnet secrets manager.
 
 ## [4/4] Setup frontend
 
