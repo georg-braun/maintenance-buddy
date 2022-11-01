@@ -9,7 +9,7 @@
 <div class="">
 	<h1>Add a new vehicle</h1>
 	
-	<div class="grid grid-cols-2 w-1/2">
+	<div class="grid grid-cols-2 w-1/2 gap-1">
 		<div>Name</div>
 		<input placeholder="BMW" class="w-32 bg-slate-50" bind:value={name} />
 		<div>Kilometer</div>

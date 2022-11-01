@@ -13,7 +13,7 @@
 	});
 </script>
 
-<div class="w-1/2 grid grid-cols-3">
+<div class="w-1/2 grid grid-cols-3 gap-1">
     <div>Schedule</div>
     <div>Time</div>
     <div>Kilometer</div>

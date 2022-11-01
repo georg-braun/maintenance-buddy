@@ -5,12 +5,10 @@
 	import { onMount } from 'svelte';
 	import auth from '../auth-service';
 	import Vehicles from '$lib/Vehicles.svelte';
-	
 
 	onMount(async () => {
 		console.log(env?.PUBLIC_DEV_MODE);
-		if (env?.PUBLIC_DEV_MODE != "active")
-			await auth.createClient();
+		if (env?.PUBLIC_DEV_MODE != 'active') await auth.createClient();
 	});
 
 	function login() {
@@ -21,34 +19,39 @@
 		auth.logout();
 	}
 
-
-
-
 	let { isAuthenticated, user } = auth;
 	// just for developing purposes to ignore the login
 </script>
 
 <main>
-
+	<div class="py-2 text-center bg-gradient-to-r from-slate-400 to-white">
+		<div class="mx-auto text-2xl">Maintenance buddy</div>
+		<div class="md:absolute top-2 right-2 ">
+			{#if $isAuthenticated}
+				<span>{$user.name}</span>
+				<a href="/#" on:click={logout}>Log Out</a>
+			{:else}
+				<a href="/#" on:click={login}>Log In</a>
+			
+			{/if}
+		</div>
+	</div>
 	<div class="flex flex-wrap">
 		{#if $isAuthenticated}
 			<Header />
 		{/if}
-		<div class="ml-auto">
-		{#if $isAuthenticated}
-		<span>{$user.name}</span>
-		<a href="/#" on:click={logout}>Log Out</a>
-		{:else}
-			<a href="/#" on:click={login}>Log In</a>
-			<span>Not logged in</span>
-		{/if}
-		</div>
+		<div class="ml-auto" />
 	</div>
+	{#if !$isAuthenticated}
+	<div class="mt-10 text-center">
+		<a href="/#" on:click={login}>Log In</a>
+	</div>
+	{/if}
 	{#if $isAuthenticated}
-	<div class="mt-4">
-		<Vehicles />
-		<slot />
-	</div>
+		<div class="m-4">
+			<Vehicles />
+			<slot />
+		</div>
 	{/if}
 </main>
 
@@ -57,17 +60,6 @@
 </footer>
 
 <style>
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 1024px;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
 	footer {
 		display: flex;
 		flex-direction: column;
