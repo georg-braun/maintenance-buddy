@@ -25,7 +25,7 @@
 	let vehicles = [];
 </script>
 
-<div class="flex flex-wrap">
+<div class="flex flex-wrap m-4">
 	{#each vehicles as vehicle}
 		<div class="mr-4 mb-4 flex-none">
             <a href="/vehicles/{vehicle.id}">
