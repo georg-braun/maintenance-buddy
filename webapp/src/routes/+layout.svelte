@@ -26,7 +26,7 @@
 <main>
 	<div class="py-2 text-center bg-gradient-to-r from-slate-400 to-white">
 		<div class="mx-auto text-2xl">Maintenance buddy</div>
-		<div class="absolute top-2 right-2 ">
+		<div class="md:absolute top-2 right-2 ">
 			{#if $isAuthenticated}
 				<span>{$user.name}</span>
 				<a href="/#" on:click={logout}>Log Out</a>
@@ -48,7 +48,7 @@
 	</div>
 	{/if}
 	{#if $isAuthenticated}
-		<div class="mt-4">
+		<div class="m-4">
 			<Vehicles />
 			<slot />
 		</div>
